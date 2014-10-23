@@ -43,11 +43,12 @@ layout: default
   {% endfor %}
   </ul>
   <div class="divider"></div>
+
   <h2>{{ page.title }}</h2>
 　　<p>最新文章</p>
 　　<ul>
 　　　　{% for post in site.posts %}
-　　　　　　<li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+　　　　　　<li>{{ post.date | date:"%Y-%m-%d" }} <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
 　　　　{% endfor %}
 　　</ul>
 
@@ -61,7 +62,7 @@ layout: default
     {% endif %}
     <li class="listing-item">
       <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-      <a href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
     </li>
   {% endfor %}
     <li class="listing-seperator"><a href="/archive.html">Long long ago</a></li>
