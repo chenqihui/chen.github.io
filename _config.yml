@@ -1,11 +1,4 @@
 baseurl: /chen.github.io
---markdown: rdiscount
---highlighter: true
---permalink: /:year/:month/:day/:title.html
-name: "chen's blog"
-
-author: "chen"
-disqus: "chen???"
 
 navigations:
   - title: Archive
