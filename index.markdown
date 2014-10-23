@@ -1,5 +1,6 @@
 ---
 layout: default
+title: @陈奇辉
 ---
 
 <div>
