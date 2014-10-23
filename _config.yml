@@ -1,6 +1,6 @@
 baseurl: /chen.github.io
 --markdown: rdiscount
-highlighter: true
+--highlighter: true
 --permalink: /:year/:month/:day/:title.html
 name: "chen's blog"
 
