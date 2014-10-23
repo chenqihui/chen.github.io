@@ -43,6 +43,14 @@ layout: default
   {% endfor %}
   </ul>
   <div class="divider"></div>
+  <h2>{{ page.title }}</h2>
+　　<p>最新文章</p>
+　　<ul>
+　　　　{% for post in site.posts %}
+　　　　　　<li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+　　　　{% endfor %}
+　　</ul>
+
   <ul class="listing main-listing">
     <li class="listing-seperator">Happend earlier this year</i>
   {% capture year %}{{ site.time | date:"%Y"}}{% endcapture %}
