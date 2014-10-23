@@ -23,10 +23,8 @@ layout: default
     <!-- BEGIN this would not work on any other domain -->
     <span
       class           = 'like-wrapper'
-      like-shortname  = '{{ site.disqus }}'
-      like-identifier = '{{ post.guid }}'
       like-name       = '{{ post.title }}'
-      like-link       = '{{ site.atom-baseurl }}{{ page.url }}'
+      like-link       = '{{ site.baseurl }}{{ page.url }}'
       like-btn        = '&#xf087;'
     ></span>
     <script type="text/javascript">
@@ -53,7 +51,7 @@ layout: default
 　　</ul>
 
   <ul class="listing main-listing">
-    <li class="listing-seperator">Happend earlier this year</i>
+    <li class="listing-seperator">Happend earlier this year</li>
   {% capture year %}{{ site.time | date:"%Y"}}{% endcapture %}
   {% for post in site.posts offset:1 %}
     {% capture y %}{{ post.date | date:"%Y"}}{% endcapture %}
@@ -65,6 +63,6 @@ layout: default
       <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
     </li>
   {% endfor %}
-    <li class="listing-seperator"><a href="/archive.html">Long long ago</a></li>
+    <li class="listing-seperator"><a href="{{ site.baseurl }}/archive.html">Long long ago</a></li>
   </ul>
 </div>
