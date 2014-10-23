@@ -1,9 +1,8 @@
 baseurl: /chen.github.io
-markdown: rdiscount
+--markdown: rdiscount
 highlighter: true
-permalink: /:year/:month/:day/:title.html
+--permalink: /:year/:month/:day/:title.html
 name: "chen's blog"
-markdown: rdiscount
 
 author: "chen"
 disqus: "chen???"
