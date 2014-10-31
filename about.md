@@ -3,22 +3,25 @@ layout: page
 title: About
 permalink: /about/
 ---
-
 {% highlight ruby %}
-|__About__File__Edit__View__Find_____________________________/__O__X______
+|____About__File__Edit__View__Find_______________________________-__O__X__|
 |                                                                          |
-|<card>                                                                    |
+|<card>                                                                    | 
+|                                                                          |                                                                
+|    <name>qihui chen<\name>                                               | 
+|                                                                          |                                                                
+|    <title>iOS Software Engineer<\title>                                  | 
+|                                                                          |                                                                
+|    <email>chen_qihui@qq.com<\email>                                      | 
 |                                                                          |                                                                 
-|    <name>qihui chen</name>                                               |
-|                                                                          |                                                                 
-|    <title>iOS Software Engineer</title>                                  |
-|                                                                          |                                                                 
-|    <email>chen_qihui@qq.com</email>                                      |
-|                                                                          |                                                                 
-|    <weibo>@喜欢无语伦次[http://weibo.com/chenforworld]</weibo>             |   
-|                                                                          |
-|    <link>@Ryuukup[https://github.com/chenqihui]</link>                   |
-|                                                                          |
-|</card\>                                                                  |
+|    <address>china<\address>                                              |   
+|                                                                          | 
+|<\card>                                                                   |
 |__________________________________________________________________________|
-{% endhighlight %}                                                        
+{% endhighlight %}      
+#社交网络#
+新浪微博:[@喜欢无语伦次](http://weibo.com/chenforworld)
+
+github:[@Ryuukup](https://github.com/chenqihui)   
+
+twitter:[@MrChen2013](https://twitter.com/MrChen2013)
