@@ -7,7 +7,7 @@ baseurl: "/chen.github.io" # the subpath of your site, e.g. /blog/
 url: "" # the base hostname & protocol for your site
 sitemapurl: "http://chen.github.io"
 twitter_username: MrChen2013
-github_username:  Ryuuku
+github_username:  chenqihui
 
 # Build settings
 markdown: kramdown
