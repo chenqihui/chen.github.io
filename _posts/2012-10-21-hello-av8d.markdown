@@ -1,0 +1,17 @@
+---
+layout: post
+title:  "你好，everybody"
+date:   2014-10-21
+categories: jekyll update
+---
+
+{% highlight ruby %}
+def print_hi(name)
+  puts "Hi, #{name}"
+end
+print_hi('Tom')
+#=> prints 'Hi, Tom' to STDOUT.
+{% endhighlight %}
+
+我的第一篇文章
+{{ page.date | date_to_string }}
