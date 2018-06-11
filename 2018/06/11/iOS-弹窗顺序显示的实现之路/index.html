@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当产品搞了一堆弹窗的需要后，如各自提示、引导，然后发现这样不好，需要进行排序显示，也就是显示一个之后再显示下一个，这事就落到开发手上。这些弹窗有各种不同类型，并且每种弹窗可能有取消（好的），或者还有确定（来进入下一弹窗)，也就是说整个业务完成之后才算消失。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 弹窗顺序显示的实现之路">
+<meta property="og:url" content="http://yoursite.com/2018/06/11/iOS-弹窗顺序显示的实现之路/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当产品搞了一堆弹窗的需要后，如各自提示、引导，然后发现这样不好，需要进行排序显示，也就是显示一个之后再显示下一个，这事就落到开发手上。这些弹窗有各种不同类型，并且每种弹窗可能有取消（好的），或者还有确定（来进入下一弹窗)，也就是说整个业务完成之后才算消失。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-11T04:51:18.899Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 弹窗顺序显示的实现之路">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;当产品搞了一堆弹窗的需要后，如各自提示、引导，然后发现这样不好，需要进行排序显示，也就是显示一个之后再显示下一个，这事就落到开发手上。这些弹窗有各种不同类型，并且每种弹窗可能有取消（好的），或者还有确定（来进入下一弹窗)，也就是说整个业务完成之后才算消失。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/11/iOS-弹窗顺序显示的实现之路/"/>
+
+
+
+
+
+  <title>iOS 弹窗顺序显示的实现之路 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/11/iOS-弹窗顺序显示的实现之路/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS 弹窗顺序显示的实现之路</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-11T11:39:46+08:00">
+                2018-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当产品搞了一堆弹窗的需要后，如各自提示、引导，然后发现这样不好，需要进行排序显示，也就是显示一个之后再显示下一个，这事就落到开发手上。这些弹窗有各种不同类型，并且每种弹窗可能有取消（好的），或者还有确定（来进入下一弹窗)，也就是说整个业务完成之后才算消失。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个弹窗显示的内容是根据服务端下发的数据来配置。下发的方式有 HTTP （一次性下发所有需要显示的弹窗数据）或 Socket （分开下发各个弹窗数据，也就是说下发的先后顺序可能不同）。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;场景描述完了，用我的真实需求来说明：弹窗分别有心愿审核结果（A）、心愿填写（B）、心愿分享引导（C）。A有两种状态，审核通过（A1，只有确定，点击则消失）和审核拒绝（A2，有取消和确定，取消点击则消失，确定则进入下个流程），在 A2 时点击确定则显示 B，然后可以进行心愿的修改，也可以取消来结束，当上面流程结束后显示 C，以上都需要先判断是否有 A、B、C 可供显示，有就显示，无则跳过。下面是简单的顺序图，任意节点没有则跳过，直接到下一个。</p>
+<pre><code>      A
+  /        \
+A1        A2
+    \          \
+    C           B
+            /
+           C 
+</code></pre><a id="more"></a>
+<p>接着聊聊排序显示的实现：</p>
+<h4 id="一、"><a href="#一、" class="headerlink" title="一、"></a>一、</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最初的解决方案是想简单暴力点，因为细看上面的需求，其实就是两层。要记录的就是 A 是否出现，是否点击显示 B，然后是否显示显示 C 。前面说的如果是 Socket 下发 A 和 C 时，暂不考虑 C 在 A 前面的情况（其实后续实现 FIFO 就可以不理会），因为目前需求是 A 肯定在 C 前面。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过 bShowWishResult 记录是否显示 A，而接着是显示 B 则等 B 消失时把 bShowWishResult = NO，不然则 A 消失时置 NO，此时再通过 shareGuideDic 判断是否显示 C。当 A 和 C 同时下发，C 先判断 bShowWishResult，为 NO 才显示，不然先记录 shareGuideDic 再等待。代码实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">// 是否显示心愿结果 A 中</span><br><span class="line">@property (nonatomic) BOOL bShowWishResult;</span><br><span class="line">// 心愿分享引导 C 的数据</span><br><span class="line">@property (nonatomic, strong) NSDictionary *shareGuideDic;</span><br><span class="line"></span><br><span class="line">- (void)doConnectSocket:(NSDictionary *)dic &#123;</span><br><span class="line">	if (type == A) &#123;</span><br><span class="line">		self.bShowWishResult = YES;</span><br><span class="line">		[self p_showWishResultView:dic];</span><br><span class="line">	&#125;</span><br><span class="line">	else if (type == C) &#123;</span><br><span class="line">		if (self.bShowWishResult == YES) &#123;</span><br><span class="line">			self.shareGuideDic = dic;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			[self p_showShareGuideView:dic];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 显示 A 页面</span><br><span class="line">- (void)p_showWishResultView:(NSDictionary *)dic &#123;</span><br><span class="line">	...</span><br><span class="line">	// 显示完消失，通过 delegate 或者 block 来调用 p_nextView 显示 C</span><br><span class="line">	self.bShowWishResult = NO;</span><br><span class="line">	[self p_nextView];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 显示 C 页面</span><br><span class="line">- (void)p_showShareGuideView:(NSDictionary *)dic &#123;</span><br><span class="line">	// 显示完消失，通过 delegate 或者 block 来调用，来清空记录</span><br><span class="line">	self.shareGuideDic = nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)p_nextView &#123;</span><br><span class="line">	// 有 C 的数据则显示 C 页面</span><br><span class="line">	if (self.shareGuideDic != nil) &#123;</span><br><span class="line">		[self p_showShareGuideView:self.shareGuideDic];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不论是 A 之后直接到 C， 还是 A 到 B，再到 C，都得通过 delegate 或者 block 到主 VC 来调用 <strong><em>[self p_nextView];</em></strong> 来显示下个弹窗。这里有个问题是每个页面的都需要这种消失的回调。而类似 A1，本来就是个简单的提醒弹窗，此时就不得不也添加回调。这样等于增加了总的代码量，主 VC 也增加处理。所以后面会讨论是否使用 <strong><em>监听</em></strong> 来减低这种耦合。</p>
+<h4 id="二、"><a href="#二、" class="headerlink" title="二、"></a>二、</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当完成第一版的时候，已经满足了需求。可是再细想下，会发现其实这样做并不通用，也就是说再增加一个类似A或者C的弹窗时候，需要再增加 property 的字典等逻辑。而这种排序显示让人想到了堆（heap），FIFO。所以使用堆的数据结构来保存这种顺序的话，然后再拿出来显示。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要增加：项目中 Socket 过来的数据是要判断同一场次的，就是推 type 为 A 的gameId 需要和 type 为 B 的 gameId 要一致。gameId 是在进场的 HTTP 或者初始的 Socket 路由得到的，我们额外保存当前 gameId 就可以。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现在我们使用 heap 管理类，将同个 gameId 的弹窗数据一一添加到对应 key-value 数组中。这样就不用因为多个弹窗再添加类似第一版的 bShowWishResult 和 shareGuideDic，现在直接通过 QHHeapManager 的 queueDicValue 来管理。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">#define QHHeapTypeKey @&quot;type&quot;</span><br><span class="line">#define QHHeapDicKey @&quot;dic&quot;</span><br><span class="line"></span><br><span class="line">typedef enum : NSUInteger &#123;</span><br><span class="line">    QHHeapTypeWish,</span><br><span class="line">    QHHeapTypeShare</span><br><span class="line">&#125; QHHeapType;</span><br><span class="line"></span><br><span class="line">@interface QHHeapManager()</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) NSMutableDictionary *queueDicValue;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation QHHeapManager</span><br><span class="line"></span><br><span class="line">- (NSArray *)hasNext:(NSSting *)gameId &#123;</span><br><span class="line">    NSArray *value = self.queueDicValue[gameId];</span><br><span class="line">    if (value != nil &amp;&amp; value.count &gt; 0) &#123;</span><br><span class="line">        return [value copy];</span><br><span class="line">    &#125;</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)addQueue:(NSSting *)gameId value:(nonnull id)data &#123;</span><br><span class="line">    NSArray *value = self.queueDicValue[gameId];</span><br><span class="line">    if (value != nil) &#123;</span><br><span class="line">        NSMutableArray *newValue = [NSMutableArray arrayWithArray:value];</span><br><span class="line">        [newValue addObject:[data copy]];</span><br><span class="line">        [self.queueDicValue setObject:newValue forKey:gameId];</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        [self.queueDicValue setObject:@[[data copy]] forKey:gameId];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)goNext:(NSSting *)gameId &#123;</span><br><span class="line">    NSArray *value = self.queueDicValue[gameId];</span><br><span class="line">    if (value != nil &amp;&amp; value.count &gt; 0) &#123;</span><br><span class="line">        NSMutableArray *newValue = [NSMutableArray arrayWithArray:value];</span><br><span class="line">        [newValue removeObjectAtIndex:0];</span><br><span class="line">        [self.queueDicValue setObject:newValue forKey:gameId];</span><br><span class="line">        if (newValue.count &gt; 0) &#123;</span><br><span class="line">        	// 下一个</span><br><span class="line">       		[self.delegate nextQueue:[newValue firstObject]];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>调用方式，及回调逻辑代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// A</span><br><span class="line">[self.heapManager addQueue:@&quot;123&quot; value:@&#123;QHHeapTypeKey: @QHHeapTypeWish, QHHeapDicKey: dic&#125;];</span><br><span class="line">// B</span><br><span class="line">[self.heapManager addQueue:@&quot;123&quot; value:@&#123;QHHeapTypeKey: @QHHeapTypeShare, QHHeapDicKey: dic&#125;];</span><br><span class="line">// 完成 A 之后，调用</span><br><span class="line">[self.heapManager goNext:@&quot;123&quot;];</span><br><span class="line"></span><br><span class="line">// delegate</span><br><span class="line">- (void)nextQueue:(id)value &#123;</span><br><span class="line">	NSDictionary *dic = ((NSDictionary *) alue);</span><br><span class="line">	if ([dic[QHHeapTypeKey] integerValue] == QHHeapTypeShare) &#123;</span><br><span class="line">		[self p_showShareGuideView:dic[QHHeapDicKey]];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="三、"><a href="#三、" class="headerlink" title="三、"></a>三、</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说到这里可以看出 QHHeapManager 的 API 只支持用于 gameId，或者类似 gameId 的 key。但是注意他们不能一起使用，除非使用特殊字符区分，必须唯一。而 delegate 的 <strong><em>- (void)nextQueue:(id)value;</em></strong> 也需要区分大类，再区分小类。因此需要修改上面的 delegate 的API。最终我通过增加枚举来维护不同的字段，这样也方便查看目前使用的排序种类，避免重复。而下面的完整版也增加了上面提到的 NSNotificationCenter 来解耦，让 A1 无须多写 delegate，只需在页面消失添加 Notif 的 post。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[NSNotificationCenter defaultCenter] postNotificationName:GONEXT_LUACYQUEUE_NOTIFICATIONNAME object:@(QHQueueTypeEnter)];</span><br></pre></td></tr></table></figure>
+<p>QHHeapManager 的完整代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line">//  通知</span><br><span class="line">#define GONEXT_LUACYQUEUE_NOTIFICATIONNAME @&quot;GONEXTLUACYQUEUENOTIFICATIONNAME&quot;</span><br><span class="line">// 增加大类</span><br><span class="line">typedef enum : NSUInteger &#123;</span><br><span class="line">    QHQueueTypeFinal,</span><br><span class="line">    QHQueueTypeEnter</span><br><span class="line">&#125; QHQueueType;</span><br><span class="line"></span><br><span class="line">typedef enum : NSUInteger &#123;</span><br><span class="line">    QHHeapTypeWish,</span><br><span class="line">    QHHeapTypeShare</span><br><span class="line">&#125; QHHeapType;</span><br><span class="line"></span><br><span class="line">#define QHHeapTypeKey @&quot;type&quot;</span><br><span class="line">#define QHHeapDicKey @&quot;dic&quot;</span><br><span class="line">// 大类的 key</span><br><span class="line">#define QHHeapOtherKey @&quot;otherKey&quot;</span><br><span class="line"></span><br><span class="line">#define QHQueueValue @&quot;queueValue&quot;</span><br><span class="line"></span><br><span class="line">@interface QHHeapManager()</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) NSMutableDictionary *queueDicValue;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation QHHeapManager</span><br><span class="line"></span><br><span class="line">- (void)dealloc &#123;</span><br><span class="line">    [[NSNotificationCenter defaultCenter] removeObserver:self name:GONEXT_LUACYQUEUE_NOTIFICATIONNAME object:nil];</span><br><span class="line">    _queueDicValue = nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (instancetype)init &#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">        [self p_setup];</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)p_setup &#123;</span><br><span class="line">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goLuckyQueueNextAction:) name:GONEXT_LUACYQUEUE_NOTIFICATIONNAME object:nil];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSArray *)nextValue:(QHQueueType)type &#123;</span><br><span class="line">    NSArray *value = self.queueDicValue[@(type)];</span><br><span class="line">    if (value != nil &amp;&amp; value.count &gt; 0) &#123;</span><br><span class="line">        return [value copy];</span><br><span class="line">    &#125;</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)deleteValue:(QHQueueType)type &#123;</span><br><span class="line">    [self.queueDicValue removeObjectForKey:@(type)];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)addQueue:(QHQueueType)type value:(nonnull id)data &#123;</span><br><span class="line">    NSArray *value = self.queueDicValue[@(type)];</span><br><span class="line">    if (value != nil) &#123;</span><br><span class="line">        NSMutableArray *newValue = [NSMutableArray arrayWithArray:value];</span><br><span class="line">        [newValue addObject:[data copy]];</span><br><span class="line">        [self.queueDicValue setObject:newValue forKey:@(type)];</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        [self.queueDicValue setObject:@[[data copy]] forKey:@(type)];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)goNext:(QHQueueType)type dicComplete:(BOOL(^)(QHQueueType type, id value))complete &#123;</span><br><span class="line">    if (type == QHQueueTypeFinal ||</span><br><span class="line">        type == QHQueueTypeEnter) &#123;</span><br><span class="line">        NSArray *value = self.queueDicValue[@(type)];</span><br><span class="line">        if (value != nil &amp;&amp; value.count &gt; 0) &#123;</span><br><span class="line">            NSMutableArray *newValue = [NSMutableArray arrayWithArray:value];</span><br><span class="line">            [newValue removeObjectAtIndex:0];</span><br><span class="line">            [self.queueDicValue setObject:newValue forKey:@(type)];</span><br><span class="line">            if (newValue.count &gt; 0) &#123;</span><br><span class="line">                if (complete == nil || complete(type, [newValue firstObject]) == YES) &#123;</span><br><span class="line">                    if (newValue.count &gt; 0) &#123;</span><br><span class="line">                        [self.delegate nextQueue:type value:[newValue firstObject]];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)goLuckyQueueNextAction:(NSNotification *)notif &#123;</span><br><span class="line">    id type = notif.object;</span><br><span class="line">    if (type != nil) &#123;</span><br><span class="line">        [self goNext:[type integerValue] dicComplete:nil];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSMutableDictionary *)queueDicValue &#123;</span><br><span class="line">    if (_queueDicValue == nil) &#123;</span><br><span class="line">        _queueDicValue = [NSMutableDictionary new];</span><br><span class="line">    &#125;</span><br><span class="line">    return _queueDicValue;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#pragma mark - QHHeapManagerDelegate</span><br><span class="line"></span><br><span class="line">- (void)nextQueue:(QHQueueType)type value:(id)value &#123;</span><br><span class="line">    if (type == QHQueueTypeFinal) &#123;</span><br><span class="line">        NSDictionary *dicValue = value;</span><br><span class="line">        if ([dicValue[QHHeapTypeKey] integerValue] == QHHeapTypeShare) &#123;</span><br><span class="line">            [self p_showFinalShareGuideView];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else if (type == QHQueueTypeEnter) &#123;</span><br><span class="line">        NSDictionary *dicValue = value;</span><br><span class="line">        if ([dicValue[QHHeapTypeKey] integerValue] == QHHeapTypeWish) &#123;</span><br><span class="line">            [self p_wishAction];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意上面有个 goNext 函数的增加了 block，用于对已保存的字典数据进行再比较，来判断是否继续 goNext。如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)goNext:(QHQueueType)type dicComplete:(BOOL(^)(QHQueueType type, id value))complete;</span><br></pre></td></tr></table></figure>
+<p>总结：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目前的解决方案是使用字典，大类作为key，内容及小类使用数组。其实就是利用数组的堆结构，add 和 firstObject，从而达到 FIFO，顺序获取需要显示的弹窗类型及数据等。而增加的通知，它虽然能减耦，但是但有多个类都创建 <strong><em>QHHeapManager</em></strong> 时，会有多处收到通知，可是通过类型判断可以避免触发对应逻辑（这也是为什么每个顺序都得添加一个大类），但是这种通知是消耗资源的。所以页面的逻辑要以使用回调为主，通知为辅。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/11/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、"><span class="nav-number">1.</span> <span class="nav-text">一、</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、"><span class="nav-number">2.</span> <span class="nav-text">二、</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、"><span class="nav-number">3.</span> <span class="nav-text">三、</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
