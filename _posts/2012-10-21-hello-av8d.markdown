@@ -1,9 +1,0 @@
----
-layout: post
-title:  "你好，everybody"
-date:   2014-10-21
-categories: jekyll update
----
-
-我的第一篇文章
-{{ page.date | date_to_string }}
