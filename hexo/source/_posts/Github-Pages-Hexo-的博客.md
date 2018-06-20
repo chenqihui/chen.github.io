@@ -9,7 +9,7 @@ categories:
 
 ---
 
-最近找资料时看到的博客，然后就想到自己虽然没有独立的博客，但早前的尝试是使用 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最近找资料时看到的博客，然后就想到自己虽然没有独立的博客，但早前的尝试是使用 
 
 >[GitHub Pages](https://pages.github.com/) | Websites for you and your projects, hosted directly from your GitHub repository. Just edit, push, and your changes are live.  
  
@@ -88,14 +88,17 @@ deploy:
 
 注意：
 
->输入npm install hexo-deployer-git --save，然后再执行hexo d来部署。否则会出现Deployer not found:git的错误。耐心等待，出现Deployer done: git表示你部署成功了！输入网址your_username.github.io去看看吧。一般来说如果出现莫名的问题，按照以下步骤即可解决。
->
->```
->1、删除.deploy_git文件夹
->2、hexo clean
->3、hexo g
->4、hexo d
->```
+```
+npm install hexo-deployer-git --save
+```
+输入上面的命令来发布到 Github 上，然后再执行hexo d来部署。否则会出现Deployer not found:git的错误。耐心等待，出现Deployer done: git表示你部署成功了！输入网址your_username.github.io去看看吧。一般来说如果出现莫名的问题，按照以下步骤即可解决。
+
+```
+1、删除.deploy_git文件夹
+2、hexo clean
+3、hexo g
+4、hexo d
+```
 
 
 #### Markdown

@@ -9,14 +9,16 @@ categories:
   - 音视频
 
 ---
-本着了解直播行业的初心。那先来看看视频播放的文件格式之一 -- FLV，进行简单访谈。首先通过 ffmpeg 将直播流保存为 flv 文件
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本着了解直播行业的初心。那先来看看视频播放的文件格式之一 -- FLV，进行简单访谈。首先通过 ffmpeg 将直播流保存为 flv 文件。
 
-```
+```shell
 ffmpeg -i rtmp://server/live/streamName -c copy dump.flv
 ```
-决定自己开发 Mac 上的 FLV 解析工具，源码在此 [QHFlvParserMan](https://github.com/chenqihui/QHFlvParserMan)。原因是在 Mac 上搜索的解析工具只有 App Store 上付费的软件 [FLV Analyzer](https://itunes.apple.com/cn/app/flv-analyzer/id1182196829?mt=12)，这不是打广告，因为我的工具界面是模仿它的。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;决定自己开发 Mac 上的 FLV 解析工具，源码在此 [QHFlvParserMan](https://github.com/chenqihui/QHFlvParserMan)。原因是在 Mac 上搜索的解析工具只有 App Store 上付费的软件 [FLV Analyzer](https://itunes.apple.com/cn/app/flv-analyzer/id1182196829?mt=12)，这不是打广告，因为我的工具界面是模仿它的。
 
-工具解析了 FLV 文件的数据类型，各个类型包的大小、时间戳和简单信息。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;工具解析了 FLV 文件的数据类型，各个类型包的大小、时间戳和简单信息。
+
+<!-- more -->
 
 ![QHFlvParserMan 工具截图](http://pacfu36li.bkt.clouddn.com/QHFlvParserMan.png?attname=)
 
@@ -26,20 +28,20 @@ ffmpeg -i rtmp://server/live/streamName -c copy dump.flv
 
 >FLV(FLASH VIDEO)，是一种常用的文件封装格式，目前国内外大部分视频分享网站都是采用的这种格式。其标准定义为[《Adobe Flash Video File Format Specification》](https://link.jianshu.com/?t=http%3A%2F%2Fwwwimages.adobe.com%2Fcontent%2Fdam%2Facom%2Fen%2Fdevnet%2Fflv%2Fvideo_file_format_spec_v10_1.pdf)。RTMP协议也是基于FLV视频格式的。
 
-其实在 金山云 的文章大致已经说明了。这里结合代码说下。简单来说，它由一个 FLV Header 和 多个 FLV body（previousTagSize + tag）组成，而 tag 则分为video、audio或者scripts，也是由一个 Tag Header 和一个 Tag Body 组成。不同的 tag 的 Tag Header 不同。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其实在 金山云 的文章大致已经说明了。这里结合代码说下。简单来说，它由一个 FLV Header 和 多个 FLV body（previousTagSize + tag）组成，而 tag 则分为video、audio或者scripts，也是由一个 Tag Header 和一个 Tag Body 组成。不同的 tag 的 Tag Header 不同。
 
-以下内容标准都可以参考 [《Adobe Flash Video File Format Specification》](https://link.jianshu.com/?t=http%3A%2F%2Fwwwimages.adobe.com%2Fcontent%2Fdam%2Facom%2Fen%2Fdevnet%2Fflv%2Fvideo_file_format_spec_v10_1.pdf) 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以下内容标准都可以参考 [《Adobe Flash Video File Format Specification》](https://link.jianshu.com/?t=http%3A%2F%2Fwwwimages.adobe.com%2Fcontent%2Fdam%2Facom%2Fen%2Fdevnet%2Fflv%2Fvideo_file_format_spec_v10_1.pdf) 
 
 #### FLV Header
 
-它共 9 个字节，包含 FLV 文件标识，版本号，文件包含的内容（音频、视频或者音视频）和长度。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它共 9 个字节，包含 FLV 文件标识，版本号，文件包含的内容（音频、视频或者音视频）和长度。
 
 | Signature | Version | TypeFlags | DataOffset |   
 | --------- | ------- | --------- | ---------- |  
 | 3 Bytes   | 1 Byte | 1 Byte 	| 4 Bytes |  
 | 文件标识   | 版本	 | 文件包含的内容 | 长度 |  
 
-```ObjC
+```objc
 if isFlvFile() {
     print("是 flv 文件")
     print("版本：\(version())")
@@ -53,18 +55,18 @@ else {
 
 #### FLV Body
 
-FLV File Body是由一系列的PreviousTagSize + Tag组成，其中PreviousTagSize的长度为4个字节，用来表示前一个Tag的长度；Tag里面的数据可能是video、audio或者scripts。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FLV File Body是由一系列的PreviousTagSize + Tag组成，其中PreviousTagSize的长度为4个字节，用来表示前一个Tag的长度；Tag里面的数据可能是video、audio或者scripts。
 
-| PreviousTagSize0 | Tag1 | PreviousTagSize1 | ... | TagN | PreviousTagSizeN |  
+| PreviousTag Size0 | Tag1 | PreviousTag Size1 | ... | TagN | PreviousTag SizeN |  
 | --------- | ---------- | ---- | ---- | ---- | ---- |  
-| 4 Bytes   | N Byte | 4 Byte 	|  | N Byte | 4 Byte |  
-| 前一个Tag的长度   | 数据	 | | | | |  
+| 4 Bytes   		 | N Byte | 4 Byte 	|  | N Byte | 4 Byte |  
+| 前一个Tag的长度   | 数据	 | | | | | |  
 
 ##### PreviousTagSize
 
 共 4 个字节
 
-```ObjC
+```objc
 private func previousTagSize() -> uint {
     if fileData.count > flvOffset + previousTagSizeBytes {
         let v1 = uint(fileData[Int(flvOffset + 1)])
@@ -84,16 +86,16 @@ private func previousTagSize() -> uint {
 
 ##### Tag
 
-Tag里面的数据可能是video、audio或者scripts
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tag里面的数据可能是video、audio或者scripts
 
 1、header
 
-| Signature | Filter | TagType | DataSize | Timestamp | TimestampExtended | StreamID |   
-| --------- | ------- | ---- | ---- | ---- | ---- | ---- |   
+| Signature | Filter | TagType | DataSize | Timestamp | Timestamp Extended | StreamID |   
+| --------- | ------- | ---- | ---- | ---- | :----: | ---- |   
 | 2 bits | 1 bit | 5 bits 	| 24 bits | 24 bits | 8 bits | 24 bits |  
 |    | 加扰标识	 | 数据类型 | 长度 | 时间戳 | 扩展时间戳 | ID |  
 
-```
+```objc
 //2.2、Tag里面的数据可能是video、audio或者scripts
 var tag = QHFlvTag()
 if fileData.count > flvOffset + tagSizeBytesExceptHeaderAndBody {
@@ -150,16 +152,17 @@ if fileData.count > flvOffset + tagSizeBytesExceptHeaderAndBody {
 
 | Audio/Video TagHeader | Audio/Video TagBody |   
 | --------- | ------- |  
+| 头部信息 | 内容数据 |   
 
 2.1、scripts
 
 ***[TODO] 后期需要再开发解析 scripts***。
 
-如果TAG包中的TagType等于18，表示该Tag中包含的数据类型为SCRIPT。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果TAG包中的TagType等于18，表示该Tag中包含的数据类型为SCRIPT。
 
 SCRIPTDATA 结构十分复杂，定义了很多格式类型，每个类型对应一种结构，详细可参考E.4.4 Data Tags
 
-onMetaData是SCRIPTDATA中一个非常重要的信息，其结构定义可参考 [E.5 onMetaData](https://link.jianshu.com/?t=http%3A%2F%2Fwwwimages.adobe.com%2Fcontent%2Fdam%2Facom%2Fen%2Fdevnet%2Fflv%2Fvideo_file_format_spec_v10_1.pdf)。它通常是FLV文件中的第一个Tag，用来表示当前文件的一些基本信息: 比如视音频的编码类型id、视频的宽和高、文件大小、视频长度、创建日期等。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onMetaData是SCRIPTDATA中一个非常重要的信息，其结构定义可参考 [E.5 onMetaData](https://link.jianshu.com/?t=http%3A%2F%2Fwwwimages.adobe.com%2Fcontent%2Fdam%2Facom%2Fen%2Fdevnet%2Fflv%2Fvideo_file_format_spec_v10_1.pdf)。它通常是FLV文件中的第一个Tag，用来表示当前文件的一些基本信息: 比如视音频的编码类型id、视频的宽和高、文件大小、视频长度、创建日期等。
 
 
 2.2、audio
@@ -167,9 +170,9 @@ onMetaData是SCRIPTDATA中一个非常重要的信息，其结构定义可参考
 | SoundFormat | SoundRate | SoundSize | SoundType | AACPacketType | AudioTagBody |   
 | --------- | ------- | ---- | ---- | ---- | ---- |    
 | 4 bits | 2 bits | 1 bit 	| 1 bit | 8 bits |  | 
-| 编码格式   | 采样率	 | 采样点位宽 | 立体声标识 | AudioSpecificConfig |  |
+| 编码格式   | 采样率	 | 采样点位宽 | 立体声标识 | AudioSpecificConfig |  | |
 
-```
+```objc
 //3、audio data
 private func audioParser(audioData: Data) -> QHAudioTag {
     var audioTag = QHAudioTag()
@@ -216,9 +219,9 @@ private func audioParser(audioData: Data) -> QHAudioTag {
 | FrameType | CodecID | AVCPacketType | CompositionTime | VideoTagBody |   
 | --------- | ------- | ---- | ---- | ---- |    
 | 4 bits | 4 bits | 8 bits 	| 24 bits |  | 
-| 关键帧标识   | 编码格式	 | 相对时间戳 | AVCDecoderConfigurationRecord |  |
+| 关键帧标识   | 编码格式	 | 相对时间戳 | AVCDecoderConfigurationRecord |  | |
 
-```
+```objc
 //4、video data
 private func videoParser(videoData: Data) -> QHVideoTag {
     var videoTag = QHVideoTag()
