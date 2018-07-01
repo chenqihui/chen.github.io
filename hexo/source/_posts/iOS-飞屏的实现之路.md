@@ -21,7 +21,7 @@ categories:
 
 #### CALayer
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它是 iOS 实现自定义图形及动画的必要之路，这里可看后续的篇章[TODO]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它是 iOS 实现自定义图形及动画的必要之路，这里可看 **[《iOS 自定义图形的实现 | RyuukuSpace》](http://chenqihui.github.io/2018/07/02/iOS-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2%E7%9A%84%E5%AE%9E%E7%8E%B0/#more)**
 
 #### Animation
 
