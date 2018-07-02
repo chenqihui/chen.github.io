@@ -92,7 +92,7 @@ categories:
 }
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要注意 ***locationInView*** 是获取相对位置。因为这里用的是父类的 presentationLayer ，所以 ***[self.layer.presentationLayer hitTest:touchPoint]*** 是以整个屏幕，需要再计算对应的 touchPoint 才能得到需要的飞屏上的 layer。***tappedLayer.superlayer*** 这里是获取飞屏的根 layer。之前发布的 [QHGoldCoinsMan：抢金币](https://github.com/chenqihui/QHGoldCoinsMan) 和 弹幕系统 都没留意，因为它们的 cell 只是一个控件（UIImageView 或者 UILabel），所以获取的 tappedLayer 就是根  layer。可是这里飞屏布局控件样式不同，它由多个控件构成，因此 tappedLayer 只能拿到最上面的 layer，不是飞屏的根 layer，需要通过 superlayer 来获取（类似 superclass 或 superview）。可是又无法确切知道需要 superlayer 获取多少层。最后解决方案是在飞屏最后加上 maskView，也就是说点击获取的 tappedLayer 是这个 maskView，再通过一次 superlayer 即获取到根 layer（如果有其他方案可以告知）。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要注意 ***locationInView*** 是获取相对位置。因为这里用的是父类的 presentationLayer ，所以 ***[self.layer.presentationLayer hitTest:touchPoint]*** 是以整个屏幕，需要再计算对应的 touchPoint 才能得到需要的飞屏上的 layer。***tappedLayer.superlayer*** 这里是获取飞屏的根 layer。之前发布的 [QHGoldCoinsMan：抢金币](https://github.com/chenqihui/QHGoldCoinsMan) 和 弹幕系统 都没留意，因为它们的 cell 只是一个控件（UIImageView 或者 UILabel），所以获取的 tappedLayer 就是根  layer。可是这里飞屏布局控件样式不同，它由多个控件构成，因此 tappedLayer 只能拿到最上面的 layer，不是飞屏的根 layer，需要通过 superlayer 来获取（类似 superclass 或 superview）。可是又无法确切知道需要 superlayer 获取多少层。最后解决方案是在飞屏最后加上 maskView，也就是说点击获取的 tappedLayer 是这个 maskView，再通过一次 superlayer 即获取到根 layer。
 
 ```objc
 UIView *maskV = [[UIView alloc] init];
@@ -102,25 +102,29 @@ maskV.backgroundColor = [UIColor clearColor];
 
 ##### v2
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v1 的时候讲了使用 maskView，再通过一次 superlayer 即获取到根 layer，实践是OK。但是当这个飞屏的整个区域还存在的时候，其手势就会阻碍底部的其他点击事件，这样就得在没有飞屏的时候回收它。开始是先通过 NSTimer 来控制，即超出时间没有 addCell 的时候就 remove view。但还是觉得一般，最终决定通过将手势添加到每个飞屏上（当然大伙可以自己评估下孰优孰劣）。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v1 的时候讲了使用 maskView，再通过一次 superlayer 即获取到根 layer，实践是OK。但是当这个飞屏的整个区域还存在的时候，其手势就会阻碍底部的其他点击事件，这样就得在没有飞屏的时候回收它。开始是先通过 NSTimer 来控制，即超出时间没有 addCell 的时候就 remove view。但还是觉得一般，最终决定通过将手势添加到每个飞屏上（当然，可以自己评估下孰优孰劣）。
 
 ```objc
-UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:cellView action:@selector(tapClickAction:)];
+UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClickAction:)];
 [cellView addGestureRecognizer:tap];
 ``` 
 
-通过 hitTest 这个飞屏的 self.layer.presentationLayer 来判断是否点击的是飞行区域，呈现图层才是飞屏在飞行时的位置。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;依然通过 hitTest 这个飞行区域 self.layer.presentationLayer 来获取对应的飞屏，呈现图层才是飞屏在飞行时的位置，这部分跟 v1 是一样的方式。
 
 ```objc
 - (void)tapClickAction:(UITapGestureRecognizer *)tap {
-    CGPoint touchPoint = [tap locationInView:self.superview];
-    if ([self.layer.presentationLayer hitTest:touchPoint]) {
+    CGPoint touchPoint = [tap locationInView:self];
+    touchPoint = CGPointMake(touchPoint.x + self.frame.origin.x, touchPoint.y + self.frame.origin.y);
+    CALayer *tappedLayer;
+    tappedLayer = [self.layer.presentationLayer hitTest:touchPoint];
+    id layerDelegate = [tappedLayer.superlayer delegate];
+    if ([layerDelegate isKindOfClass:[SHLuckyWishWallCellView class]]) {
         [self clickHeart];
     }
 }
 ```
 
-然后，父 view 添加 hitTest 响应函数来过滤自己，这样就只响应子 view，即飞屏。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后，添加 hitTest 响应函数来过滤自己，这样就只响应子 view，即飞屏。
 
 ```objc
 - (nullable UIView *)hitTest:(CGPoint)point withEvent:(nullable UIEvent *)event {
@@ -132,6 +136,16 @@ UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:cel
     return tmpView;
 }
 ```
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;***重点来了***，需要给每个飞屏添加如下代码。
+
+```objc
+- (nullable UIView *)hitTest:(CGPoint)point withEvent:(nullable UIEvent *)event {
+    return self;
+}
+```
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;***这里主要让飞行区域点击都会触发飞屏响应，然后通过父类的飞行 presentationLayer 来判断并获取对应的飞屏***。问题在于，这样写的话，无论点击哪里（只要飞屏区域），都会触发并返回后一个最后添加的 飞屏view，其实也说明手势只能添加在父类，添加在飞行的 view 是无法触发事件的（当然这只是目前实践的情况，后续如有新发现还会继续更新）。
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过上述逻辑，就不用再考虑飞屏区域问题（即不用移除它），因为只在有飞屏的时候，其才会响应点击。
 
 #### 线程
