@@ -107,7 +107,7 @@ maskV.backgroundColor = [UIColor clearColor];
 ```objc
 UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClickAction:)];
 [cellView addGestureRecognizer:tap];
-``` 
+```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;依然通过 hitTest 这个飞行区域 self.layer.presentationLayer 来获取对应的飞屏，呈现图层才是飞屏在飞行时的位置，这部分跟 v1 是一样的方式。
 
