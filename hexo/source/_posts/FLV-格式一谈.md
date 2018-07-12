@@ -161,9 +161,14 @@ if fileData.count > flvOffset + tagSizeBytesExceptHeaderAndBody {
 | SoundFormat | SoundRate | SoundSize | SoundType | AACPacketType | AudioTagBody |   
 | --------- | ------- | ---- | ---- | ---- | ---- |    
 | 4 bits | 2 bits | 1 bit 	| 1 bit | 8 bits |  | 
-| 编码格式   | 采样率	 | 采样点位宽 | 立体声标识 | AudioSpecificConfig |  | |
+| 编码格式   | 采样率	 | 采样点位宽 | 立体声标识 | 表示接下来 AUDIODATA 的内容  | AudioSpecificConfig / data | |
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**AACPacketType：需要说明的是，通常情况下 AudioTagHeader 之后跟着的就是 AUDIODATA 数据了，但有个特例，如果音频编码格式为 AAC，AudioTagHeader 中会多出1个字节的数据 AACPacketType，这个字段来表示 AACAUDIODATA 的类型：**
+
+SoundFormat = 10 时，即音频为 AAC。
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 AACPacketType = 0 时，AUDIODATA 为 AAC sequence header (AudioSpecificConfig)。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 AACPacketType = 1 时，AUDIODATA 为 AAC raw，即音频的 data。
 
 >为什么 AudioTagHeader 中定义了音频的相关参数，我们还需要传递AudioSpecificConfig 呢？
 >
@@ -210,10 +215,12 @@ private func audioParser(audioData: Data) -> QHAudioTag {
     if audioTag.soundFormat == 10 {
         //3.6、Audio的编码格式为AAC，并且十进制为0时，说明AACAUDIODATA中存放的是AAC sequence header，为0时，说明AACAUDIODATA中存放的是AAC raw；
         let v1 = uint(audioData[audioData.startIndex + 1])
-        audioTag.accPackType = v1
+        audioTag.aacPackType = v1
         if v1 == 0 {//AAC sequence header
-            //AudioSpecificConfig，再拿具体配置
-            
+            //AudioSpecificConfig，再拿具体配置 
+        }
+        else {
+            //aac raw
         }
         
         //3.7、AUDIODATA数据，即AAC sequence header。
@@ -230,15 +237,15 @@ private func audioParser(audioData: Data) -> QHAudioTag {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对 AudioSpecificConfig，工具代码还没实现。进一步了解的话，需要查阅 ISO 标准或者参考 ffmpeg 实现的解析逻辑。
 
->AAC sequence header中存放的是AudioSpecificConfig，该结构包含了更加详细的音频信息，《ISO-14496-3 Audio》中的1.6.2.1 章节对此作了详细定义。
+>AAC sequence header 中存放的是 AudioSpecificConfig，该结构包含了更加详细的音频信息，《ISO-14496-3 Audio》中的 1.6.2.1 章节对此作了详细定义。
 >
->通常情况下，AAC sequence header这种Tag在FLV文件中只出现1次，并且是第一个Audio Tag，它存放了解码AAC音频所需要的详细信息。
+>通常情况下，AAC sequence header 这种 Tag 在FLV文件中只出现1次，并且是第一个Audio Tag ，它存放了解码AAC音频所需要的详细信息。
 >
->有关AudioSpecificConfig结构的代码解析，可以参考ffmpeg/libavcodec/mpeg4audio.c中的[avpriv_mpeg4audio_get_config](https://www.jianshu.com/writer#L155)方法。
+>有关 AudioSpecificConfig 结构的代码解析，可以参考 ffmpeg/libavcodec/mpeg4audio.c 中的 [avpriv_mpeg4audio_get_config](https://www.jianshu.com/writer#L155) 方法。
 >
->为什么AudioTagHeader中定义了音频的相关参数，我们还需要传递AudioSpecificConfig呢？
+>为什么 AudioTagHeader 中定义了音频的相关参数，我们还需要传递 AudioSpecificConfig 呢？
 >
->因为当SoundFormat为AAC时，SoundType须设置为1（立体声），SoundRate须设置为3（44KHZ），但这并不意味着FLV文件中AAC编码的音频必须是44KHZ的立体声。播放器在播放AAC音频时，应忽略AudioTagHeader中的参数，并根据AudioSpecificConfig来配置正确的解码参数。
+>因为当 SoundFormat 为 AAC 时，SoundType 须设置为1（立体声），SoundRate 须设置为3（44KHZ），但这并不意味着 FLV 文件中 AAC 编码的音频必须是 44KHZ 的立体声。播放器在播放 AAC 音频时，应忽略 AudioTagHeader 中的参数，并根据 AudioSpecificConfig 来配置正确的解码参数。
 
 
 2.2、video
@@ -246,7 +253,12 @@ private func audioParser(audioData: Data) -> QHAudioTag {
 | FrameType | CodecID | AVCPacketType | CompositionTime | VideoTagBody |   
 | --------- | ------- | ---- | ---- | ---- |    
 | 4 bits | 4 bits | 8 bits 	| 24 bits |  | 
-| 关键帧标识   | 编码格式	 | 相对时间戳 | AVCDecoderConfigurationRecord |  | |
+| 关键帧标识   | 编码格式	 | 表示 VIDEODATA 的内容 | 相对时间戳 | AVCDecoderConfigurationRecord / data | |
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**VideoTagHeader 之后跟着的就是 VIDEODATA 数据了，但是和 AAC 音频一样，它也存在一个特例，就是当视频编码格式为 H.264 的时候，VideoTagHeader 会多出4个字节的信息，AVCPacketType 和 CompositionTime 。**  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 AVCPacketType = 0 时，并且Video 的编码格式为 AVC，说明 VideoTagBody 中存放的是 AVCDecoderConfigurationRecord（AVC sequence header），没有相对时间戳概念，即对应的字节是 0；  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 AVCPacketType = 1 时，CompositonTime 相对时间戳有效，说明 VideoTagBody 为 video data。
 
 ```objc
 //4、video data
@@ -283,33 +295,31 @@ private func videoParser(videoData: Data) -> QHVideoTag {
 
 2.2.1、AVCDecoderConfigurationRecord
 
->AVCDecoderConfigurationRecord.包含着是H.264解码相关比较重要的sps和pps信息，再给AVC解码器送数据流之前一定要把sps和pps信息送出，否则的话解码器不能正常解码。而且在解码器stop之后再次start之前，如seek、快进快退状态切换等，都需要重新送一遍sps和pps的信息.AVCDecoderConfigurationRecord在FLV文件中一般情况也是出现1次，也就是第一个video tag.
+>AVCDecoderConfigurationRecord 包含着是 H.264 解码相关比较重要的 sps 和 pps 信息，再给 AVC 解码器送数据流之前一定要把 sps 和 pps 信息送出，否则的话解码器不能正常解码。而且在解码器 stop 之后再次 start 之前，如 seek、快进快退状态切换等，都需要重新送一遍 sps 和 pps 的信息。 AVCDecoderConfigurationRecord 在 FLV 文件中一般情况也是出现1次，也就是第一个 video tag。
 >
->AVCDecoderConfigurationRecord的定义在ISO 14496-15, 5.2.4.1中.
+>AVCDecoderConfigurationRecord 的定义在 ISO 14496-15, 5.2.4.1 中.
 
 &
 
->通常情况下，AVC sequence header这种Tag在FLV文件中只出现1次，并且第一个Video Tag。
+>通常情况下，AVC sequence header 这种 Tag 在 FLV 文件中只出现1次，并且第一个 Video Tag。
 >
->有关AVCDecoderConfigurationRecord结构的代码解析，可以参考中的[ff_isom_write_avcc](https://www.jianshu.com/writer#L107)方法。
+>有关 AVCDecoderConfigurationRecord 结构的代码解析，可以参考中的[ff_isom_write_avcc](https://www.jianshu.com/writer#L107) 方法。
 
-2.2.2、CompositionTime(相对时间戳)
+2.2.2、CompositionTime (相对时间戳)
 
->相对时间戳的概念需要和PTS、DTS一起理解：
+>相对时间戳的概念需要和 PTS、DTS 一起理解：
 >
 >DTS : Decode Time Stamp，解码时间戳，用于告知解码器该视频帧的解码时间；
+>PTS : Presentation Time Stamp，显示时间戳，用于告知播放器该视频帧的显示时间；  
+>CTS : Composition Time Stamp，相对时间戳，用来表示 PTS 与 DTS 的差值。
 >
->PTS : Presentation Time Stamp，显示时间戳，用于告知播放器该视频帧的显示时间；
+>如果视频里各帧的编码是按输入顺序依次进行的，则解码和显示时间相同，应该是一致的。但在编码后的视频类型中，如果存在 B 帧，输入顺序和编码顺序并不一致，所以才需要 PTS 和 DTS 这两种时间戳。视频帧的解码一定是发生在显示前，所以视频帧的 PTS，一定是大于等于 DTS 的，因此 CTS = PTS - DTS。
 >
->CTS : Composition Time Stamp，相对时间戳，用来表示PTS与DTS的差值。
+>FLV Video Tag 中的 TimeStamp，不是 PTS，而是 DTS，视频帧的PTS需要我们通过 DTS + CTS 计算得到。
 >
->如果视频里各帧的编码是按输入顺序依次进行的，则解码和显示时间相同，应该是一致的。但在编码后的视频类型中，如果存在B帧，输入顺序和编码顺序并不一致，所以才需要PTS和DTS这两种时间戳。视频帧的解码一定是发生在显示前，所以视频帧的PTS，一定是大于等于DTS的，因此CTS=PTS-DTS。
+>为什么 Audio Tag 不需要 CompositionTime 呢？
 >
->FLV Video Tag中的TimeStamp，不是PTS，而是DTS，视频帧的PTS需要我们通过DTS + CTS计算得到。
->
->为什么Audio Tag不需要CompositionTime呢？
->
->因为Audio的编码顺序和输入顺序一致，即PTS=DTS，所以它没有CompositionTime的概念。
+>因为 Audio 的编码顺序和输入顺序一致，即 PTS = DTS，所以它没有 CompositionTime 的概念。
 
 2.3、scriptdata
 
