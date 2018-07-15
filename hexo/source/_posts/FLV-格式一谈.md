@@ -77,7 +77,7 @@ QHFlvParser+Tag.swift
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tag里面的数据可能是 video、audio 或者 scripts 等，它们都由 header + body 组成。
 
-1、header
+##### 1、header
 
 | Signature | Filter | TagType | DataSize | Timestamp | Timestamp Extended | StreamID |   
 | --------- | ------- | ---- | ---- | ---- | :----: | ---- |   
@@ -99,13 +99,13 @@ QHFlvParser+Tag.swift
 QHFlvParser+Tag.swift
 ```
 
-2、body
+##### 2、body
 
 | Script/Audio/Video TagHeader | Script/Audio/Video TagBody |   
 | --------- | ------- |  
 | 头部信息 | 内容数据 |  
 
-2.1、script data
+##### 2.1、script data
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果 TAG 包中的 TagType 等于18，表示该 Tag 中包含的数据类型为 SCRIPT。SCRIPTDATA 结构十分复杂，定义了很多格式类型，每个类型对应一种结构。
 
@@ -120,7 +120,7 @@ QHFlvParser+Script.swift
 | Type | UI8 | UI8	Type of the ScriptDataValue.<br>The following types are defined:<br>0 = Number<br>1 = Boolean<br>2 = String<br>3 = Object<br>4 = MovieClip (reserved, not supported)<br>5 = Null<br>6 = Undefined<br>7 = Reference<br>8 = ECMA array<br>9 = Object end marker<br>10 = Strict array<br>11 = Date<br>12 = Long string |  
 | ScriptDataValue | IF Type == 0<br>DOUBLE<br>IF Type == 1<br>UI8<br>IF Type == 2<br>SCRIPTDATASTRING<br>IF Type == 3<br>SCRIPTDATAOBJECT<br>IF Type == 7<br>UI16<br>IF Type == 8<br>SCRIPTDATAECMAARRAY<br>IF Type == 10<br>SCRIPTDATASTRICTARRAY<br>IF Type == 11<br>SCRIPTDATADATE<br>IF Type == 12<br>SCRIPTDATALONGSTRING | Script data value.<br>The Boolean value is (ScriptDataValue ≠ 0). |  
 
-2.2、onMetaData
+##### 2.2、onMetaData
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它是 SCRIPTDATA 中一个非常重要的信息。它通常是 FLV 文件中的第一个 Tag，用来表示当前文件的一些基本信息: 比如视音频的编码类型id、视频的宽和高、文件大小、视频长度、创建日期等。
 
@@ -142,7 +142,7 @@ QHFlvParser+Script.swift
 | videodatarate | Number | Video bit rate in kilobits per second |  
 | width | Number | Width of the video in pixels |  |  
 
-2.2、audio
+##### 2.2、audio
 
 | SoundFormat | SoundRate | SoundSize | SoundType | AACPacketType | AudioTagBody |   
 | --------- | ------- | ---- | ---- | ---- | ---- |    
@@ -204,7 +204,7 @@ QHFlvParser+Script.swift
 QHFlvParser+Audio.swift
 ```
 
-2.2.1、AudioSpecificConfig
+##### 2.2.1、AudioSpecificConfig
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对 AudioSpecificConfig，工具代码还没实现。进一步了解的话，需要查阅 ISO 标准或者参考 ffmpeg 实现的解析逻辑。
 
@@ -219,7 +219,7 @@ QHFlvParser+Audio.swift
 >因为当 SoundFormat 为 AAC 时，SoundType 须设置为1（立体声），SoundRate 须设置为3（44KHZ），但这并不意味着 FLV 文件中 AAC 编码的音频必须是 44KHZ 的立体声。播放器在播放 AAC 音频时，应忽略 AudioTagHeader 中的参数，并根据 AudioSpecificConfig 来配置正确的解码参数。
 
 
-2.3、video
+##### 2.3、video
 
 | FrameType | CodecID | AVCPacketType | CompositionTime | VideoTagBody |   
 | --------- | ------- | ---- | ---- | ---- |    
@@ -262,7 +262,7 @@ when CodecID == 7:
 QHFlvParser+Video.swift
 ```
 
-2.3.1、AVCDecoderConfigurationRecord
+##### 2.3.1、AVCDecoderConfigurationRecord
 
 >AVCDecoderConfigurationRecord 包含着是 H.264 解码相关比较重要的 sps 和 pps 信息，再给 AVC 解码器送数据流之前一定要把 sps 和 pps 信息送出，否则的话解码器不能正常解码。而且在解码器 stop 之后再次 start 之前，如 seek、快进快退状态切换等，都需要重新送一遍 sps 和 pps 的信息。 AVCDecoderConfigurationRecord 在 FLV 文件中一般情况也是出现1次，也就是第一个 video tag。
 
