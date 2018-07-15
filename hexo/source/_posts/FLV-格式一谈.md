@@ -23,8 +23,9 @@ ffmpeg -i rtmp://server/live/streamName -c copy dump.flv
 ![QHFlvParserMan 工具截图](http://pacfu36li.bkt.clouddn.com/QHFlvParserMan.png?attname=)
 
 工具的实现主要参考：  
-《[FFmpeg从入门到出家（FLV文件结构解析） - 简书](https://www.jianshu.com/p/d68d6efe8230)》  
-《[FLV 文件格式 - 小小程序员001 - 博客园](https://www.cnblogs.com/musicfans/archive/2012/11/07/2819291.html) 》
+* 《[FFmpeg从入门到出家（FLV文件结构解析） - 简书](https://www.jianshu.com/p/d68d6efe8230)》  
+* 《[FLV 文件格式 - 小小程序员001 - 博客园](https://www.cnblogs.com/musicfans/archive/2012/11/07/2819291.html) 》  
+* 《[FLV科普12 FLV脚本数据解析-Metadata Tag解析 - CSDN博客](https://blog.csdn.net/cabbage2008/article/details/50500021)》
 
 #### 聊回 FLV 格式
 
@@ -34,206 +35,176 @@ ffmpeg -i rtmp://server/live/streamName -c copy dump.flv
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以下内容标准都可以参考 [《Adobe Flash Video File Format Specification》](https://link.jianshu.com/?t=http%3A%2F%2Fwwwimages.adobe.com%2Fcontent%2Fdam%2Facom%2Fen%2Fdevnet%2Fflv%2Fvideo_file_format_spec_v10_1.pdf) 
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源码 Demo [QHFlvParserMan](https://github.com/chenqihui/QHFlvParserMan) 是采用 Swift 实现的，内容可结合此工程进行了解：
+
 #### FLV Header
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它共 9 个字节，包含 FLV 文件标识，版本号，文件包含的内容（音频、视频或者音视频）和长度。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;版本为 1 的FLV，其 Header 共 9 个字节，字段如下：
 
 | Signature | Version | TypeFlags | DataOffset |   
 | --------- | ------- | --------- | ---------- |  
 | 3 Bytes   | 1 Byte | 1 Byte 	| 4 Bytes |  
-| 文件标识   | 版本	 | 文件包含的内容 | 长度 |  
+| 文件标识   | 版本号	 | 文件包含的内容（音频、视频或者音视频 | 长度，版本为 1 时，该值为 9 |  
 
-```objc
-if isFlvFile() {
-    print("是 flv 文件")
-    print("版本：\(version())")
-    print("类型：\(type())")
-    print("头部长度：\(headerLength())")
-}
-else {
-    print("不是 flv 文件")
-}
+| | Type | Binary Type | Comment |   
+| --------- | :-------: | --------- | ---------- |
+| **TypeFlags** 	| 1 | 0000 0001 | only video |  
+|  					| 4 | 0000 0100 | only audio |   
+|  					| 5 | 0000 0101 | audio & video |  
+
+```swift
+QHFlvParser+Tag.swift
 ```
 
 #### FLV Body
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FLV File Body是由一系列的PreviousTagSize + Tag组成，其中PreviousTagSize的长度为4个字节，用来表示前一个Tag的长度；Tag里面的数据可能是video、audio或者scripts。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FLV File Body 是由一系列的PreviousTagSize + Tag 组成，其中 PreviousTagSize 的长度为 4 个字节，用来表示前一个 Tag 的长度；Tag 里面的数据可能是 video、audio 或者 scripts 等。
 
-| PreviousTag Size0 | Tag1 | PreviousTag Size1 | ... | TagN | PreviousTag SizeN |  
+| PreviousTag Size 0 | Tag 1 | PreviousTag Size 1 | ... | PreviousTag Size N - 1 | Tag N |  
 | --------- | ---------- | ---- | ---- | ---- | ---- |  
-| 4 Bytes   		 | N Byte | 4 Byte 	|  | N Byte | 4 Byte |  
-| 前一个Tag的长度   | 数据	 | | | | | |  
+| 4 Bytes   		 | N Bytes | 4 Bytes 	|  | 4 Bytes | M Bytes |  
+| 前一个 Tag 的长度 | 数据 | 前一个 Tag 的长度 | | | | |  
 
 ##### PreviousTagSize
 
-共 4 个字节
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共 4 个字节
 
-```objc
-private func previousTagSize() -> uint {
-    if fileData.count > flvOffset + previousTagSizeBytes {
-        let v1 = uint(fileData[Int(flvOffset + 1)])
-        let v2 = uint(fileData[Int(flvOffset + 2)])
-        let v3 = uint(fileData[Int(flvOffset + 3)])
-        let v4 = uint(fileData[Int(flvOffset + 4)])
-        let l1 = v1 * 1<<24
-        let l2 = v2 * 1<<16
-        let size = l1 + l2 + v3 * 1<<8 + v4
-        
-        return size
-    }
-    return 0
-}
+```swift
+QHFlvParser+Tag.swift
 ```
-
 
 ##### Tag
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tag里面的数据可能是video、audio或者scripts
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tag里面的数据可能是 video、audio 或者 scripts 等，它们都由 header + body 组成。
 
 1、header
 
 | Signature | Filter | TagType | DataSize | Timestamp | Timestamp Extended | StreamID |   
 | --------- | ------- | ---- | ---- | ---- | :----: | ---- |   
 | 2 bits | 1 bit | 5 bits 	| 24 bits | 24 bits | 8 bits | 24 bits |  
-|    | 加扰标识	 | 数据类型 | 长度 | 时间戳 | 扩展时间戳 | ID（总是0） |  
+|    | 加扰标识	 | 数据类型 | StreamID 之后的数据长度 | 时间戳 | 扩展时间戳 | ID（总是0） |  
 
-```objc
-//2.2、Tag里面的数据可能是video、audio或者scripts
-var tag = QHFlvTag()
-if fileData.count > flvOffset + tagSizeBytesExceptHeaderAndBody {
-    let v1 = uint(fileData[Int(flvOffset + 1)])
-    //2.2.1、0x08, 二进制为0000 1000，第3位为0, 表示为非加扰文件;
-    if v1 & 0b00100000 == 0b00100000 {
-        //加扰文件
-        tag.signature = true
-    }
-    else {
-        //非加扰文件
-        tag.signature = false
-    }
-    //2.2.2、低5位01000为8，说明这个Tag包含的数据类型为Audio；
-    let v1_2 = v1 & 0b00011111
-    if v1_2 == 8 {
-        tag.tagType = .audio
-    }
-    else if v1_2 == 9 {
-        tag.tagType = .video
-    }
-    else if v1_2 == 18 {
-        tag.tagType = .script
-    }
-    //2.2.4、Tag的内容长度为，与该tag后面的previousTagSize() - 11相同；
-    let v2 = uint(fileData[Int(flvOffset + 2)])
-    let v3 = uint(fileData[Int(flvOffset + 3)])
-    let v4 = uint(fileData[Int(flvOffset + 4)])
-    
-    tag.dataSize = v2 * 1<<16 + v3 * 1<<8 + v4
-    
-    //2.2.5、当前Audio数据的时间戳；
-    let v5 = uint(fileData[Int(flvOffset + 5)])
-    let v6 = uint(fileData[Int(flvOffset + 6)])
-    let v7 = uint(fileData[Int(flvOffset + 7)])
-    
-    tag.timestamp = v7 * 1<<16 + v6 * 1<<8 + v5
-    
-    //2.2.6、扩展时间戳，如果扩展时间戳不为0，那么该Tag的时间戳应为：Timestamp | TimestampExtended<<24；
-    let v8 = uint(fileData[Int(flvOffset + 8)])
-    
-    tag.timestampExtended = v8
-    
-    //2.2.7、StreamID
-    let v9 = uint(fileData[Int(flvOffset + 9)])
-    let v10 = uint(fileData[Int(flvOffset + 10)])
-    let v11 = uint(fileData[Int(flvOffset + 11)])
-    
-    tag.streamID = v11 * 1<<16 + v10 * 1<<8 + v9
-}
+| | Type | Binary Type | Comment |   
+| --------- | :-------: | --------- | ---------- |
+| **TagType** 	| 8 	| 0 1000 | audio |  
+|  					| 9		| 0 1001 | video |   
+|  					| 18 	| 1 0010 | cripts | 
+
+>PTS = Timestamp | TimestampExtended<<24  
+>PTS（Presentation Time Stamp）：即显示时间戳，这个时间戳用来告诉播放器该在什么时候显示这一帧的数据。
+
+[理解音视频 PTS 和 DTS | SamirChen](http://www.samirchen.com/about-pts-dts/)
+
+```swift
+QHFlvParser+Tag.swift
 ```
 
 2、body
 
-| Audio/Video TagHeader | Audio/Video TagBody |   
+| Script/Audio/Video TagHeader | Script/Audio/Video TagBody |   
 | --------- | ------- |  
 | 头部信息 | 内容数据 |  
 
-2.1、audio
+2.1、script data
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果 TAG 包中的 TagType 等于18，表示该 Tag 中包含的数据类型为 SCRIPT。SCRIPTDATA 结构十分复杂，定义了很多格式类型，每个类型对应一种结构。
+
+scriptdata = Type + body
+
+```swift
+QHFlvParser+Script.swift
+```
+
+| Field | Type | Comment |  
+| --- | --- | --- |  
+| Type | UI8 | UI8	Type of the ScriptDataValue.<br>The following types are defined:<br>0 = Number<br>1 = Boolean<br>2 = String<br>3 = Object<br>4 = MovieClip (reserved, not supported)<br>5 = Null<br>6 = Undefined<br>7 = Reference<br>8 = ECMA array<br>9 = Object end marker<br>10 = Strict array<br>11 = Date<br>12 = Long string |  
+| ScriptDataValue | IF Type == 0<br>DOUBLE<br>IF Type == 1<br>UI8<br>IF Type == 2<br>SCRIPTDATASTRING<br>IF Type == 3<br>SCRIPTDATAOBJECT<br>IF Type == 7<br>UI16<br>IF Type == 8<br>SCRIPTDATAECMAARRAY<br>IF Type == 10<br>SCRIPTDATASTRICTARRAY<br>IF Type == 11<br>SCRIPTDATADATE<br>IF Type == 12<br>SCRIPTDATALONGSTRING | Script data value.<br>The Boolean value is (ScriptDataValue ≠ 0). |  
+
+2.2、onMetaData
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它是 SCRIPTDATA 中一个非常重要的信息。它通常是 FLV 文件中的第一个 Tag，用来表示当前文件的一些基本信息: 比如视音频的编码类型id、视频的宽和高、文件大小、视频长度、创建日期等。
+
+| Property Name | Type | Comment |  
+| --- | --- | --- | --- |  
+| audiocodecid | Number	 | Audio codec ID used in the file (see E.4.2.1 for available SoundFormat values) |  
+| audiodatarate | Number | Audio bit rate in kilobits per second |  
+| audiodelay | Number | Delay introduced by the audio codec in seconds |  
+| audiosamplerate | Number | Frequency at which the audio stream is replayed |  
+| audiosamplesize | Number | Resolution of a single audio sample |  
+| canSeekToEnd | Boolean | Indicating the last video frame is a key frame |  
+| creationdate | String | Creation date and time |  
+| duration | Number | Total duration of the file in seconds |  
+| filesize | Number | Total size of the file in bytes |  
+| framerate | Number | Number of frames per second |  
+| height | Number | Height of the video in pixels |  
+| stereo | Boolean | Indicating stereo audio |  
+| videocodecid | Number	 | Video codec ID used in the file (see E.4.3.1 for available CodecID values) |  
+| videodatarate | Number | Video bit rate in kilobits per second |  
+| width | Number | Width of the video in pixels |  |  
+
+2.2、audio
 
 | SoundFormat | SoundRate | SoundSize | SoundType | AACPacketType | AudioTagBody |   
 | --------- | ------- | ---- | ---- | ---- | ---- |    
 | 4 bits | 2 bits | 1 bit 	| 1 bit | 8 bits |  | 
 | 编码格式   | 采样率	 | 采样点位宽 | 立体声标识 | 表示接下来 AUDIODATA 的内容  | AudioSpecificConfig / data | |
 
+| | Type | Comment |   
+| --------- | :-------: | ---------- |
+| **SoundFormat** 	| 0 	| Linear PCM, platform endia |  
+|  						| 1 	| ADPCM |   
+|  						| 2 	| MP3 |
+|  						| 3		| Linear PCM, little endian |   
+|  						| 4 	| Nellymoser 16 kHz mono |   
+|  						| 5 	| Nellymoser 8 kHz mono |   
+|  						| 6 	| Nellymoser |   
+|  						| 7 	| G.711 A-law logarithmic PCM |   
+|  						| 8 	| G.711 mu-law logarithmic PCM |   
+|  						| 9 	| reserved |   
+|  						| 10 	| AAC |   
+|  						| 11 	| Speex |   
+|  						| 14 	| MP3 8 kHz |   
+|  						| 15 	| Device-specific sound | 
+
+| | Type | Comment |   
+| --------- | :-------: | ---------- |
+| **SoundRate** 		| 0 	| 5.5 kHz |  
+|  						| 1 	| 11 kHz |  
+|  						| 2 	| 22 kHz |  
+|  						| 3 	| 44 kHz |  
+
+| | Type | Comment |   
+| --------- | :-------: | ---------- |
+| **SoundSize** 		| 0 	| 8-bit samples |  
+|  						| 1 	| 16-bit samples |  
+
+| | Type | Comment |   
+| --------- | :-------: | ---------- |
+| **SoundType** 		| 0 	| Mono sound |  
+|  						| 1 	| Stereo sound |  
+
+接下来主要介绍 AAC：  
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**AACPacketType：需要说明的是，通常情况下 AudioTagHeader 之后跟着的就是 AUDIODATA 数据了，但有个特例，如果音频编码格式为 AAC，AudioTagHeader 中会多出1个字节的数据 AACPacketType，这个字段来表示 AACAUDIODATA 的类型：**
 
-SoundFormat = 10 时，即音频为 AAC。
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 AACPacketType = 0 时，AUDIODATA 为 AAC sequence header (AudioSpecificConfig)。  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 AACPacketType = 1 时，AUDIODATA 为 AAC raw，即音频的 data。
+| | Type | Comment |   
+| --------- | :-------: | ---------- |
+| **AACPacketType** | 0 	| AAC sequence header (AudioSpecificConfig) |  
+|  						| 1 	| AAC raw |  
 
 >为什么 AudioTagHeader 中定义了音频的相关参数，我们还需要传递AudioSpecificConfig 呢？
 >
->因为当 SoundFormat 为 AAC 时，SoundType 须设置为1（立体声），SoundRate 须设置为3（44KHZ），但这并不意味着 FLV 文件中 AAC 编码的音频必须是 44KHZ 的立体声。播放器在播放 AAC 音频时，应忽略 AudioTagHeader 中的参数，并根据AudioSpecificConfig 来配置正确的解码参数。
+>因为当 SoundFormat 为 AAC 时，SoundType 须设置为1（立体声），SoundRate 须设置为3（44KHZ），但这并不意味着 FLV 文件中 AAC 编码的音频必须是 44KHZ 的立体声。播放器在播放 AAC 音频时，应忽略 AudioTagHeader 中的参数，并根据AudioSpecificConfig 来配置正确的解码参数。  
 
-```objc
-//3、audio data
-private func audioParser(audioData: Data) -> QHAudioTag {
-    var audioTag = QHAudioTag()
-    let v1 = uint(audioData[audioData.startIndex])
-    //3.1、高4位为1010，转十进制为10，表示Audio的编码格式为AAC；
-    audioTag.soundFormat = uint(v1>>4)//10为AAC
-    //3.2、第3、2位为11，转十进制为3，表示该音频的采样率为44KHZ；
-    let v1_2 = v1 & 0b00001100
-    if v1_2>>2 == 3 {
-        audioTag.soundRate = "44KHZ"
-    }
-    else if v1_2>>2 == 2 {
-        audioTag.soundRate = "22KHZ"
-    }
-    else if v1_2>>2 == 1 {
-        audioTag.soundRate = "11KHZ"
-    }
-    else if v1_2>>2 == 0 {
-        audioTag.soundRate = "5.5KHZ"
-    }
-    //3.3、第1位为1，表示该音频采样点位宽为16bits；
-    let v1_3 = v1 & 0b00000010
-    if v1_3>>1 == 1 {
-        audioTag.soundSize = "16bits"
-    }
-    else if v1_3>>1 == 0 {
-        audioTag.soundSize = "8bits"
-    }
-    //3.4、第0位为1，表示该音频为立体声。
-    let v1_4 = v1 & 0b00000001
-    if v1_4 == 1 {
-        audioTag.soundType = "立体声"
-    }
-    else if v1_4 == 0 {
-        audioTag.soundType = "单声道"
-    }
-    //3.5、AudioSpecificConfig
-    if audioTag.soundFormat == 10 {
-        //3.6、Audio的编码格式为AAC，并且十进制为0时，说明AACAUDIODATA中存放的是AAC sequence header，为0时，说明AACAUDIODATA中存放的是AAC raw；
-        let v1 = uint(audioData[audioData.startIndex + 1])
-        audioTag.aacPackType = v1
-        if v1 == 0 {//AAC sequence header
-            //AudioSpecificConfig，再拿具体配置 
-        }
-        else {
-            //aac raw
-        }
-        
-        //3.7、AUDIODATA数据，即AAC sequence header。
-        audioTag.audioBody = audioData[audioData.startIndex + 2..<audioData.endIndex]
-    }
-    else {
-        audioTag.audioBody = audioData[audioData.startIndex + 1..<audioData.endIndex]
-    }
-    return audioTag
-}
+&
+
+>在 FLV 的文件中，一般情况下 AAC sequence header 这种包只出现1次，而且是第一个audio tag，为什么要提到这种 tag，因为当时在做 FLV demux 的时候，如果是 AAC 的音频，需要在每帧 AAC ES流 前边添加 7 个字节 ADST 头, ADST 在音频的格式中会详细解读，这是解码器通用的格式，就是 AAC 的纯 ES流 要打包成 ADST 格式的 AAC 文件，解码器才能正常播放.就是在打包 ADST 的时候，需要 samplingFrequencyIndex 这个信息，samplingFrequencyIndex 最准确的信息是在 AudioSpecificConfig 中，所以就对 AudioSpecificConfig 进行解析并得到了 samplingFrequencyIndex。
+
+```swift
+QHFlvParser+Audio.swift
 ```
 
-2.1.1、AudioSpecificConfig
+2.2.1、AudioSpecificConfig
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对 AudioSpecificConfig，工具代码还没实现。进一步了解的话，需要查阅 ISO 标准或者参考 ffmpeg 实现的解析逻辑。
 
@@ -248,61 +219,53 @@ private func audioParser(audioData: Data) -> QHAudioTag {
 >因为当 SoundFormat 为 AAC 时，SoundType 须设置为1（立体声），SoundRate 须设置为3（44KHZ），但这并不意味着 FLV 文件中 AAC 编码的音频必须是 44KHZ 的立体声。播放器在播放 AAC 音频时，应忽略 AudioTagHeader 中的参数，并根据 AudioSpecificConfig 来配置正确的解码参数。
 
 
-2.2、video
+2.3、video
 
 | FrameType | CodecID | AVCPacketType | CompositionTime | VideoTagBody |   
 | --------- | ------- | ---- | ---- | ---- |    
 | 4 bits | 4 bits | 8 bits 	| 24 bits |  | 
 | 关键帧标识   | 编码格式	 | 表示 VIDEODATA 的内容 | 相对时间戳 | AVCDecoderConfigurationRecord / data | |
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**VideoTagHeader 之后跟着的就是 VIDEODATA 数据了，但是和 AAC 音频一样，它也存在一个特例，就是当视频编码格式为 H.264 的时候，VideoTagHeader 会多出4个字节的信息，AVCPacketType 和 CompositionTime 。**  
+| | Type | Comment |   
+| --------- | :-------: | ---------- |  
+| **FrameType**		| 1 	| key frame (for AVC, a seekable frame) |   
+|  						| 2 	| inter frame (for AVC, a non-seekable frame) |
+|  						| 3		| disposable inter frame (H.263 only) |   
+|  						| 4 	| generated key frame (reserved for server use only) |   
+|  						| 5 	| video info/command frame |    
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 AVCPacketType = 0 时，并且Video 的编码格式为 AVC，说明 VideoTagBody 中存放的是 AVCDecoderConfigurationRecord（AVC sequence header），没有相对时间戳概念，即对应的字节是 0；  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 AVCPacketType = 1 时，CompositonTime 相对时间戳有效，说明 VideoTagBody 为 video data。
+| | Type | Comment |   
+| --------- | :-------: | ---------- |  
+| **CodecID**			| 2 	| Sorenson H.263 |   
+|  						| 3 	| Screen video |
+|  						| 4		| On2 VP6 |   
+|  						| 5 	| On2 VP6 with alpha channel |   
+|  						| 6 	| Screen video version 2 |    
+|  						| 7 	| AVC |  
 
-```objc
-//4、video data
-private func videoParser(videoData: Data) -> QHVideoTag {
-    var videoTag = QHVideoTag()
-    let v1 = uint(videoData[videoData.startIndex])
-    //4.1、高4位为0001，转十进制为1，表示当前帧为关键帧；
-    let v1_1 = v1 & 0b11110000
-    if v1_1>>4 == 1 {
-        videoTag.frameType = 1
-    }
-    //4.2、低4位为0111，转十进制为7，说明当前视频的编码格式为AVC
-    let v1_2 = v1 & 0b00001111
-    videoTag.codecID = v1_2//7为AVC
-    //4.3、十进制为0，并且Video的编码格式为AVC，说明VideoTagBody中存放的是AVC sequence header
-    let v2 = uint(videoData[videoData.startIndex + 1])
-    
-    //4.4、VIDEODATA的内容
-    videoTag.avcPackType = v2
-    
-    let v3 = uint(videoData[videoData.startIndex + 2])
-    let v4 = uint(videoData[videoData.startIndex + 3])
-    let v5 = uint(videoData[videoData.startIndex + 4])
-    
-    //4.5、CompositonTime相对时间戳，如果AVCPacketType=0x01，为相对时间戳，其它均为0；
-    videoTag.compositionTime = v3 * 1<<16 + v4 * 1<<8 + v5
-    
-    //4.6、VIDEODATA数据，即AVC sequence header
-    videoTag.videoBody = videoData[videoData.startIndex + 5..<videoData.endIndex]
-    
-    return videoTag
-}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**VideoTagHeader 之后跟着的就是 VIDEODATA 数据了，但是和 AAC 音频一样，它也存在一个特例，就是当视频编码格式为 H.264 的时候，VideoTagHeader 会多出4个字节的信息，AVCPacketType 和 CompositionTime 。** 
+
+when CodecID == 7:
+
+| | Type | Comment |   
+| --------- | :-------: | ---------- |  
+| **AVCPacketType**	| 0 	| AVC sequence header |   
+|  						| 1 	| AVC NALU |
+|  						| 2		| AVC end of sequence (lower level NALU sequence ender is not required or supported) |  
+
+| | condition | Comment |   
+| --------- | :-------: | ---------- |  
+| **CompositionTime**	| AVCPacketType == 1 | Composition time offset |
+|  											| AVCPacketType != 1 | 0 |   
+
+```swift
+QHFlvParser+Video.swift
 ```
 
-2.2.1、AVCDecoderConfigurationRecord
+2.3.1、AVCDecoderConfigurationRecord
 
 >AVCDecoderConfigurationRecord 包含着是 H.264 解码相关比较重要的 sps 和 pps 信息，再给 AVC 解码器送数据流之前一定要把 sps 和 pps 信息送出，否则的话解码器不能正常解码。而且在解码器 stop 之后再次 start 之前，如 seek、快进快退状态切换等，都需要重新送一遍 sps 和 pps 的信息。 AVCDecoderConfigurationRecord 在 FLV 文件中一般情况也是出现1次，也就是第一个 video tag。
->
->AVCDecoderConfigurationRecord 的定义在 ISO 14496-15, 5.2.4.1 中.
 
-&
-
->通常情况下，AVC sequence header 这种 Tag 在 FLV 文件中只出现1次，并且第一个 Video Tag。
->
 >有关 AVCDecoderConfigurationRecord 结构的代码解析，可以参考中的[ff_isom_write_avcc](https://www.jianshu.com/writer#L107) 方法。
 
 2.2.2、CompositionTime (相对时间戳)
@@ -315,19 +278,11 @@ private func videoParser(videoData: Data) -> QHVideoTag {
 >
 >如果视频里各帧的编码是按输入顺序依次进行的，则解码和显示时间相同，应该是一致的。但在编码后的视频类型中，如果存在 B 帧，输入顺序和编码顺序并不一致，所以才需要 PTS 和 DTS 这两种时间戳。视频帧的解码一定是发生在显示前，所以视频帧的 PTS，一定是大于等于 DTS 的，因此 CTS = PTS - DTS。
 >
->FLV Video Tag 中的 TimeStamp，不是 PTS，而是 DTS，视频帧的PTS需要我们通过 DTS + CTS 计算得到。
+>FLV Video Tag 中的 TimeStamp，不是 PTS，而是 DTS，视频帧的 PTS 需要我们通过 DTS + CTS 计算得到。
 >
 >为什么 Audio Tag 不需要 CompositionTime 呢？
 >
 >因为 Audio 的编码顺序和输入顺序一致，即 PTS = DTS，所以它没有 CompositionTime 的概念。
-
-2.3、scriptdata
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果 TAG 包中的 TagType 等于18，表示该 Tag 中包含的数据类型为 SCRIPT。SCRIPTDATA 结构十分复杂，定义了很多格式类型，每个类型对应一种结构
-
-2.3.1、onMetaData
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它是 SCRIPTDATA 中一个非常重要的信息。它通常是 FLV 文件中的第一个 Tag，用来表示当前文件的一些基本信息: 比如视音频的编码类型id、视频的宽和高、文件大小、视频长度、创建日期等。
 
 
 #### 扩展阅读
