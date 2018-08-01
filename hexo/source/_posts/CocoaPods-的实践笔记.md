@@ -14,45 +14,102 @@ categories:
 
 #### CocoaPods 基本
 
-##### CocoaPods 环境
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安装环境官网和网上资料都很多，在国内没有梯子的需要先执行<命令 2>，不需要翻墙可直接执行<命令 4>。
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安装环境官网和网上资料都很多，在国内没有梯子的需要先执行<命令 1>，不需要翻墙可直接执行<命令 3>。
+##### 安装
 
-1、把下载资源替换成国内源
+```shell
+#1、执行以下命令查看当前源，确保已经替换成功，否则再执行以上命令。
+gem sources -l
 
-```
+#2、把下载资源替换成国内源
 gem sources --remove https://rubygems.org/
 gem sources -a https://gems.ruby-china.org/
-```
 
-2、执行以下命令查看当前源，确保已经替换成功，否则再执行以上命令。
+#3、再次执行 1 查看是否替换成功
 
-```
-gem sources -l
-```
-
-3、安装 CocoaPods，后面执行setup的时候时间稍长，文件大约600M。
-
-```
+#4、安装。
 sudo gem install cocoapods
+
+#5、初始化，时间稍长，文件大约600M
 pod setup
 ```
 
-4、查看版本
+##### 使用
 
-```
+```shell
+#查看版本
 pod --version
+
+#添加第三方类库时，如果无论是执行 pod install 还是 pod update 都卡在了 Analyzing dependencies 不动，原因在于当执行以上两个命令的时候会升级 CocoaPods 的 spec 仓库。
+pod install // 不推荐该命令
+
+#而加一个参数可以省略这一步，然后速度就会提升不少。加参数的命令如下:
+pod install --verbose --no-repo-update
+pod update --verbose --no-repo-update
 ```
 
-##### 创建 CocoaPods 项目
+##### 更新
+
+```shell
+#更新 gem
+sudo gem update --system
+
+#安装指定版本
+sudo gem install cocoapods -v 0.39.0
+
+#更新本地 podspec 列表
+pod repo update
 
 ```
+
+##### 卸载
+
+```shell
+#1、查看 Cocoapods组件 安装的地址 (比如：/usr/local/bin/pod)
+which pod
+
+#2、移除这个组件，如（/usr/local/bin）
+sudo rm -rf +地址
+
+#3、查看 gems 的程序包
+gem list
+
+#4、删除
+sudo gem uninstall cocoapods -v 版本
+sudo gem uninstall cocoapods-core -v 版本
+```
+
+##### pod install 与 update 的区别：
+
+>《cocoapods进阶》的结论  
+>结论一    
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据 installer.repo_update 来看，pod update 默认是更新 repo 的，而 pod install 是不更新的。
+所以我们有时候 pod update 时会特别慢，就是因为在跟新 repo，特别是 CocoaPods 的官方 repo。  
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这时我们就常常会使用 pod update --no-repo-update 来禁止更新 repo 。而 pod install 是不需要 --no-repo-update，因为它本来就不会更新 repo。
+>
+>结论二  
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pod update podName 的时候会去 Podfile.lock 文件检查这个 pod 是否安装过，如果没有安装过会抛出异常。  
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是如果直接 pod update 的话就算 Podfile.lock 中没有某个 pod，这是不会抛出异常，它会默认帮你先安装好，然后写入到 Podfile.lock 文件中。
+>
+>结论三  
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据 installer.update 来看，pod update 默认是更新 pod 的，而 pod install 是不更新的。
+但是这是相对于 pod 'SDWebImage', '~>3.8.0' 这样的写法来用的。比如原来已经安装过 3.8.0 版本，Podfile.lock 中就为 3.8.0 版本，满足 ~>3.8.0 这个条件，那么pod install的时候是是不会更新到最新版的。  
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是 pod update 会更新到最新版，同时改写 Podfile.lock 中的版本号为最新版。  
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而 pod 'SDWebImage', '3.8.1' 这种写法的话，pod install 和 pod update 是一样的。比如 Podfile.lock 中原来为 3.8.0 版本，那么不管怎样都是不等于 '3.8.1' 的。  
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pod install 的时候就会重新安装 '3.8.1' 版本，同时改写 Podfile.lock 中的版本号为 '3.8.1'。
+
+#### CocoaPods 项目
+
+##### 创建
+
+```shell
 pod lib create “Pod项目名称”
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接着会有设置选项来生成 Xcode 项目，每个设置之后可能出现不同的设置，不过大致如下。其中第 3 个不管选择 Yes 还是 No，都会创建 Demo。[CocoaPods Guides - Using Pod Lib Create](https://guides.cocoapods.org/making/using-pod-lib-create.html)
 
-```
+```shell
 1、What platform do you want to use?? [ iOS / macOS ]
 2、What language do you want to use?? [ Swift / ObjC ]
 3、Would you like to include a demo application with your library? [ Yes / No ]
@@ -78,7 +135,7 @@ pod lib create “Pod项目名称”
 
 <!--|  |  |  |  |  -->
 
-```
+```shell
 Pod::Spec.new do |s|
   s.name             = 'podName'
   s.version          = '0.1.0'
@@ -117,7 +174,7 @@ end
 
 其中 subspec 如下：
 
-```
+```shell
 s.subspec 'SDK' do |sdk|
    sdk.source_files = '~/*.{h}'
    sdk.resource = '~/*.bundle'
@@ -127,29 +184,9 @@ end
 
 ##### 使用
 
-```
+```shell
 pod install | update
 ```
-
-install 与 update 的区别：
-
->《cocoapods进阶》的结论  
->结论一    
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据installer.repo_update来看，pod update默认是更新repo的，而pod install是不更新的。
-所以我们有时候pod update时会特别慢，就是因为在跟新repo，特别是CocoaPods的官方repo。
->
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这时我们就常常会使用pod update --no-repo-update来禁止更新repo。而pod install是不需要--no-repo-update，因为它本来就不会更新repo。
->
->结论二  
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pod update podName的时候会去Podfile.lock文件检查这个pod是否安装过，如果没有安装过会抛出异常。
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是如果直接pod update的话就算Podfile.lock中没有某个pod，这是不会抛出异常，它会默认帮你先安装好，然后写入到Podfile.lock文件中。
->
->结论三  
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据installer.update来看，pod update默认是更新pod的，而pod install是不更新的。
-但是这是相对于pod 'SDWebImage', '~>3.8.0'这样的写法来用的。比如原来已经安装过3.8.0版本，Podfile.lock中就为3.8.0版本，满足~>3.8.0这个条件，那么pod install的时候是是不会更新到最新版的。  
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是pod update会更新到最新版，同时改写Podfile.lock中的版本号为最新版。  
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而pod 'SDWebImage', '3.8.1'这种写法的话，pod install和pod update是一样的。比如Podfile.lock中原来为3.8.0版本，那么不管怎样都是不等于'3.8.1'的。  
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pod install的时候就会重新安装'3.8.1'版本，同时改写Podfile.lock中的版本号为'3.8.1'。
 
 #### 公共 CocoaPods
 
@@ -157,70 +194,58 @@ install 与 update 的区别：
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过上述，基本创建了一个本地 CocoaPods。然后就是提供给其他人使用了。其实 CocoaPods 的原理在于建立索引，创建的 podspec 就是每个 CocoaPods 的索引目录。当我们使用官方的 cocoapods 时候，就是将这个 podspec 注册并上传到官方的 Git 仓库，也就是我们 podfile 里面最上面的 source，指向的保存众多 podspec 的仓库。
 
-```
+```shell
 source 'https://github.com/CocoaPods/Specs.git'
 ```
 
-##### 创建 .podspec
+##### 创建
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前面创建的 pod 项目中修改确认 podspec 和项目的内容。也可以使用自己的项目工程，将 podspec 复制到自己项目的目录下，并修改好对应的文件路径等。
 
-1、cocoapods 注册、然后通过收到一封邮件，点击确认一下（第一次）
-
-```
+```shell
+#1、cocoapods 注册、然后通过收到一封邮件，点击确认一下（第一次）
 pod trunk register YOUR_EMAIL 'YOUR_NAME'
-```
 
-2、验证 podspec 文件的合法性
-
-```
+#2、验证 podspec 文件的合法性
 pod spec lint
-```
 
-3、上传 podspec
-
-```
+#3、上传 podspec
 pod trunk push PodName.podspec
-```
-
-##### 更新 pod
-
-1、更新项目的代码。
-
-2、修改 podspec 对应的版本，并 push 到 GitHub 上。
-
-3、项目打 tag [Git - 打标签](https://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%89%93%E6%A0%87%E7%AD%BE)，GitHub 已经支持页面打 tag。
-
-```
-// 新建标签
-git tag -a v1.4 -m 'my version 1.4'
-// 删除标签
-git tag -d v1.4
-// 分享标签
-git push origin v1.4
 ```
 
 ##### 使用
 
-1、更新本地 podspec 列表
-
-```
+```shell
+#1、更新本地 podspec 列表
 pod repo update
-```
 
-2、搜索
-
-```
+#2、搜索
 pod search YOUR_CocoaPod_Name
-```
 
-3、仍然搜索不到，并且已经是 update 成功的话
-
-```
+#3、仍然搜索不到，并且已经是 update 成功的话
 rm ~/Library/Caches/CocoaPods/search_index.json
-```
-执行上面命令，清空搜索再 search
 
+#4、执行上面 3 命令，清空搜索再 search
+```
+
+##### 更新
+
+1、更新项目的代码。
+
+2、修改 .podspec 对应的版本，并 push 到 Git 上。
+
+3、项目打 tag [Git - 打标签](https://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%89%93%E6%A0%87%E7%AD%BE)，GitHub 已经支持页面打 tag。
+
+```shell
+#新建标签
+git tag -a v1.4 -m 'my version 1.4'
+
+#删除标签
+git tag -d v1.4
+
+#分享标签
+git push origin v1.4
+```
 
 #### 私有 CocoaPods
 
@@ -230,20 +255,20 @@ rm ~/Library/Caches/CocoaPods/search_index.json
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先要在 gitlab 或者其他 Git 服务器上建立一个仓库来存放 Spec repo 。然后将这个 repo 添加到本地：
 	
-```
+```shell
 pod repo add REPONAME http://git.xxxx.com/specrepo.git 
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这样在~/.cocoapod/repo/即可看到一个 REPONAME 文件夹，是 Spec repo 在本地的仓库，现在需要将上面建立的Pod项目的索引文件放到这个 repo 里，Pod 项目中的 TestPrivatePods.podspec 即为项目的索引文件，通过下面的命令将文件添加到repo里：
 	
-```
+```shell
 pod repo push REPONAME TestPrivatePods.podspec
 ```
 如果成功，Pod项目这时就可以使用了。
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"REPONAME" 等同于 master，是可以自定义的，通过如下查看，它是关联到对应的 Git 仓库
 
-```
+```shell
 pod repo
 ```
 
@@ -253,7 +278,7 @@ pod repo
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;给 podfile 添加如下的私有 Spec repo 的 git仓库 source 来搜索私有 pod。（作用就是模拟官方 CocoaPods 的方式，只是搜索 podspec 是使用私有的仓库）
 
-```
+```shell
 source 'git@git.xxxx.com:ios/pods-repo.git'
 ```
 
@@ -263,22 +288,33 @@ source 'git@git.xxxx.com:ios/pods-repo.git'
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更新时，按正常的公共库一样来更新 podspec 的内容之后，执行，其中 REPONAME 就是通过上面查看的
 	
-```
+```shell
 pod repo push REPONAME TestPrivatePods.podspec
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里 push 的是自己的 spec 仓库里，而不是 cocoapods 的仓库。当然，可以直接给 Git repo 仓库添加文件夹 podName -> version -> podspec，这样就跳过了 cocoapods。
 
 
-#### 本地
+#### 本地 CocoaPods
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本地 pod 就更直接了，它其实就是没有将 pod 库 push 到官方或者私有的 Git 上去，而是源码依然在本地项目，然后通过 podspec 来依靠 CocoaPods 进行项目的管理。如果留意前面创建的 pod 的项目目录就一目了然，它就是 Development Pods 里面的内容，就像它本身就是一个新建 pod 的 Demo 一样。而它除了不用 push，其他设置、配置和操作都跟公共或者私有的 CocoaPods 项目一样。
 
 ##### 使用
 
-```
+```shell
 pod 'SDK', :path => '../SDK'
 ```
+
+#### 其他
+
+1、[iOS开发中如何管理多个版本的Cocoapods、gem](https://blog.csdn.net/jnbbwyth/article/details/51910878)
+
+参考文章里面介绍了为项目指定使用的 cocoapods 版本，即在 Gemfile 里加入
+
+```
+gem 'cocoapods', '0.35.0'
+```
+实际操作使用正常 pod install 会生效，可是文中是说需要使用 bundle exec 来执行 pod 命令。
 
 #### 参考
 
@@ -286,4 +322,5 @@ pod 'SDK', :path => '../SDK'
 * [创建Podspec描述文件 - 简书](https://www.jianshu.com/p/b92fc992c745)
 * [cocoapods进阶 - 简书](https://www.jianshu.com/p/5cb284934be2)
 * [使用私有Cocoapods仓库 中高级用法 - 简书](https://www.jianshu.com/p/d6a592d6fced)
+* [iOS开发中如何管理多个版本的Cocoapods、gem](https://blog.csdn.net/jnbbwyth/article/details/51910878)
 
