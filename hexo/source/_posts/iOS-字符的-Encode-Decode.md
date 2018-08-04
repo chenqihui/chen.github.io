@@ -73,6 +73,15 @@ URLQueryAllowedCharacterSet     "#%<>[\]^`{|}
 URLUserAllowedCharacterSet      "#%/:<>?@[\]^`
 ```
 
+**补充：  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前 OC 常使用的 NSUTF8StringEncoding 对应的 NSCharacterSet 是 URLQueryAllowedCharacterSet**
+
+```objc
+NSString *filePath = [@"http://localhost/resource/iOS开发手册.pdf" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+filePath = [@"http://localhost/resource/iOS开发手册.pdf" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+```
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保留字符的百分号编码如下:
 
 | ! | # | $ | & | ' | ( | ) | * | + | , | / | : | ; | = | ? | @ | [ | ] |   

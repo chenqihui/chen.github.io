@@ -105,6 +105,9 @@ npm install hexo-deployer-git --save
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不论是写博文，简书，或者 Github 项目的 README，都已经习惯写 Markdown 格式。所以想简单介绍下它 《[README文件语法解读，即Github Flavored Markdown语法介绍](https://github.com/chenqihui/README)》。
 
+在线编辑阅读器：  
+[欢迎使用 Cmd Markdown 编辑阅读器](https://www.zybuluo.com/mdeditor#1237871)
+
 #### 七牛图床
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说到文章之类，难免添加图片。而 Markdown 添加图片是采取引用发的方式（就是必须图片是在某服务器上可访问的文件）。我的 Github 项目的 README 使用 图片是保存在对应项目的 images 文件夹。可是当写博文时，除了考虑单独开个 Git 仓库来保存图片，还有其他方式，就是使用 [七牛图床](https://portal.qiniu.com/create) 。
