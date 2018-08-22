@@ -120,9 +120,11 @@ CATiledLayer
 
 * [ios 超大图显示：CATiledLayer的使用，关于tileSize的用法 - 简书](https://www.jianshu.com/p/ee0628629f92)
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它除了将图层再次分割成独立更新的小块（类似于矩形自动更新的概念），还有一个有趣的特性：在多个线程中为每个小块同时调用 -drawLayer:inContext: 方法。这就避免了阻塞用户交互而且能够利用多核心新片来更快地绘制。只有一个小块的 CATiledLayer 是实现异步更新图片视图的简单方法。
+
 ##### 问题 1
 
-UIPageViewController 在快速翻页的时候，当动作没有完成时就翻另一页，控制台会提示：
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UIPageViewController 在快速翻页的时候，当动作没有完成时就翻另一页，控制台会提示：
 >'Unbalanced calls to begin/end appearance transitions for 
 
 * [ios - UIPageViewController transition 'Unbalanced calls to begin/end appearance transitions for ' - Stack Overflow](https://stackoverflow.com/questions/13248282/uipageviewcontroller-transition-unbalanced-calls-to-begin-end-appearance-transi)  
@@ -166,7 +168,7 @@ func pageViewController(_ pageViewController: UIPageViewController, viewControll
 
 ##### 问题 2
 
-UIScrollView 在初始高度时候，由于 PDF 的页码过多，所以计算出的高度也很大，而此时 PDFView 高度设置就会被警告
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UIScrollView 在初始高度时候，由于 PDF 的页码过多，所以计算出的高度也很大，而此时 PDFView 高度设置就会被警告
 
 > -[<CALayer: 0x1d0227980> display]: Ignoring bogus layer size (375.000000, 408748.235294), contentsScale 3.000000, backing store size (1125.000000, 1226244.705882)
 
@@ -174,6 +176,16 @@ UIScrollView 在初始高度时候，由于 PDF 的页码过多，所以计算�
 
 解决：应该是由于子页面的警告，这部分现在没解决，不过目前测试没遇到，得再测试测试。
 
+##### 问题 3
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UIScrollView 滑动加载 PDF 时候，猜测使用的 PDF 是黑白，即使页码多，但在绘制消耗相比彩色的 PDF 要小。通过使用 彩色PDF 的时候，发现滑动卡顿现象十分严重
+
+解决：  
+方案1、UIScrollView 停止滑动的时候才计算并加载相应的 PDF 页。  
+方案2、CATiledLayer，使用苹果提供的绘制此 layer
+
+结果：  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最终使用方案2，效果很好。测试最后只发现第一次运行加载会有线程警告，从分析上看 CATiledLayer 确实是切割多块，并在另一个线程绘制，Xcode 可能不认识 CATiledLayer，只是按正常逻辑绘制不在主线程就不合理，但这正是 CATiledLayer 的特点，所以警告在这里应该是可以忽略。
 
 #### PDFKit
 

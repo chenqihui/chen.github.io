@@ -302,8 +302,24 @@ pod repo push REPONAME TestPrivatePods.podspec
 ##### 使用
 
 ```shell
-pod 'SDK', :path => '../SDK'
+# 创建 podspec
+pod spec create Modules
+
+# 修改 podspec 后进行校验，大多时候本地 pod 校验时有些警告可暂时忽略，如没有 license 等，依然可以 pod 使用
+pod spec lint
+
+# podfile，path 是 podfile 与 被 pod 的本地代码的相对路径
+pod 'Modules', :path => 'Modules'
+# 或
+pod 'Modules', :path => '../Modules'
+
+# 引用
+import Modules
 ```
+
+##### 注意
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本地 pod 在 Swift 版下是 import 模块名称，并且需要将对外的类、方法和属性声明 public 或者 open，这样它们才会被引用，可以进入模块名称文件查看。
 
 #### 其他
 
