@@ -150,6 +150,22 @@ WEBP_EXTERN(VP8StatusCode) WebPDecode(const uint8_t* data, size_t data_size,
 * [genadyo/LivePhotoDemo](https://github.com/genadyo/LivePhotoDemo)
 * [三步为你的 App 集成 LivePhoto 功能](https://www.jianshu.com/p/83eb0ac3d9c0)
 
+##### 纸上电影
+
+<div align=center><img width = '320' height ='250' src ="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537249274742&di=d3c3bffb703b388fce26ace80b12b300&imgtype=0&src=http%3A%2F%2Fimg008.hc360.cn%2Fg1%2FM06%2F54%2FBA%2FwKhQL1Mhbd-EQByMAAAAANjfEiE062.jpg"/></div>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它的制作可以看看接下来的视频（杨超越喔，哈哈），只需一张图片 + 屏幕片，然后按方向拖动 屏幕片 即可出现动画。它算是模拟了屏幕的成像，跟走马灯其实是一样的，只是它采用一张原图，通过栅栏图片的遮罩显示不同的图片位置。至于在 iOS 实现，目前还在研究ing。
+
+* [看着她，我许下一个愿 密码信成像原理，拿走拿走不客气](https://www.iqiyi.com/w_19s2cx01w9.html)
+
+<!--<iframe width="560" height="315" src="https://www.iqiyi.com/w_19s2cx01w9.html" frameborder="0" allowfullscreen></iframe>-->
+
+参考：
+
+* [纸上电影](https://baike.baidu.com/item/%E7%BA%B8%E4%B8%8A%E7%94%B5%E5%BD%B1/8408505#3)
+* [视觉暂留](https://baike.baidu.com/item/%E8%A7%86%E8%A7%89%E6%9A%82%E7%95%99/5125149?fr=aladdin)
+* [这些神奇的“视觉暂留”动画，每一幅都让人拍案叫绝！](https://baike.baidu.com/tashuo/browse/content?id=08b8cb850d53c863d33764e6&lemmaId=&fromLemmaModule=list)
+
 #### 转换
 
 ##### pngs 转 GIF、Apng、WebP 工具
