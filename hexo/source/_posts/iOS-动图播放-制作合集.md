@@ -157,6 +157,7 @@ WEBP_EXTERN(VP8StatusCode) WebPDecode(const uint8_t* data, size_t data_size,
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它的制作可以看看接下来的视频（杨超越喔，哈哈），只需一张图片 + 屏幕片，然后按方向拖动 屏幕片 即可出现动画。它算是模拟了屏幕的成像，跟走马灯其实是一样的，只是它采用一张原图，通过栅栏图片的遮罩显示不同的图片位置。至于在 iOS 实现，目前还在研究ing。
 
 * [看着她，我许下一个愿 密码信成像原理，拿走拿走不客气](https://www.iqiyi.com/w_19s2cx01w9.html)
+* [新奇特玩具纸上电影院产品简介](http://video.tudou.com/v/XMjIxMzYzMzc2NA==.html?__fr=oldtd)
 
 <!--<iframe width="560" height="315" src="https://www.iqiyi.com/w_19s2cx01w9.html" frameborder="0" allowfullscreen></iframe>-->
 
