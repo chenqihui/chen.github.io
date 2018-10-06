@@ -11,7 +11,7 @@ categories:
   
 ---
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们已经了解到 m3u8 其实是一个文件，是 HLS 协议实现点播 & 直播的，还有 ts 文件。这里还有一篇讲解 AVPlayer 的，等编辑完再更新地址。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们已经了解到 m3u8 其实是一个文件，是 HLS 协议实现点播 & 直播的，还有 TS 文件。这里还有一篇讲解 AVPlayer 的，等编辑完再更新地址。
 
 #### 理论
 
@@ -31,7 +31,7 @@ categories:
 * [HTTP Live Streaming (HLS) - Apple Developer](https://developer.apple.com/streaming/)
 * [HTTP Live Streaming Overview](https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/StreamingMediaGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008332)
 
-* [HLS实现点播和直播时，M3U8文件的不同](https://blog.csdn.net/xiaojun111111/article/details/52102454)
+* [HLS 实现点播和直播时，M3U8 文件的不同](https://blog.csdn.net/xiaojun111111/article/details/52102454)
 
 #### 制作
 
@@ -171,7 +171,7 @@ Abort trap: 6
 参考
 
 * [HLS（HTTP Live Streaming）视频直播技术实战 - 简书](https://www.jianshu.com/p/7902a54c25f0)
-* [Mac OS环境下流媒体分割工具mediastreamsegmenter的简单使用](https://blog.csdn.net/musou_ldns/article/details/7493346)
+* [Mac OS环境下流媒体分割工具 mediastreamsegmenter 的简单使用](https://blog.csdn.net/musou_ldns/article/details/7493346)
 
 
 ##### mediafilesegmenter
@@ -204,9 +204,9 @@ Sep 20 2018 11:59:30.175: average bit rate is 814.53 kbits/sec - max file bit ra
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此命令还为新增与媒体文件同名的 plist & iframe_index.m3u8，plist。mediafilesegmenter 与 mediastreamsegmenter 区别主要是一个是针对文件，一个针对的是 UDP 的实时 HLS 流。
 
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Media Stream Segmenter（mediastreamsegmenter）通过UDP网络连接或stdin接收MPEG-2传输流，并将其分成一系列持续时间相同的小媒体段。然后，它会创建一个索引文件，其中包含对各个媒体段的引用。
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Media Stream Segmenter（mediastreamsegmenter）通过UDP网络连接或 stdin 接收 MPEG-2 传输流，并将其分成一系列持续时间相同的小媒体段。然后，它会创建一个索引文件，其中包含对各个媒体段的引用。
 >
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;媒体文件分段器（mediafilesegmenter）将MOV，MP4，M4V，M4A或MP3文件分成媒体段并创建索引文件。可以使用几乎任何Web服务器基础结构部署索引文件和媒体段，以便流式传输到iOS，macOS和tvOS。
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;媒体文件分段器（mediafilesegmenter）将 MOV，MP4，M4V，M4A 或 MP3 文件分成媒体段并创建索引文件。可以使用几乎任何Web服务器基础结构部署索引文件和媒体段，以便流式传输到 iOS，macOS 和 tvOS。
 
 参考：
 
@@ -229,7 +229,7 @@ Sep 20 2018 11:59:30.175: average bit rate is 814.53 kbits/sec - max file bit ra
 
 ![TS](http://pacfu36li.bkt.clouddn.com/ts.png)
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源码 Demo [QHFlvParserMan](https://github.com/chenqihui/QHFlvParserMan) 是采用 Swift 实现的，内容可结合此工程进行了解：
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源码 Demo [QHFlvParserMan](https://github.com/chenqihui/QHFlvParserMan) 是采用 Swift 实现的，内容可结合此工程进行了解。
 
 ##### M3U8 标签
 
@@ -285,6 +285,8 @@ gear3/prog_index.m3u8
 gear4/prog_index.m3u8
 ```
 
+总结：
+
 * EXTM3U：所有 HLS 播放列表必须以此标记开头
 * EXT-X-ENDLIST：区分是点播还是直播
 * 二级目录是 绝对路径还是相对路径
@@ -311,15 +313,15 @@ gear4/prog_index.m3u8
 | TSHead | \ | Pes2 - Pes(N-1) |
 | TSHead | Adaptation Field | PesN |
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如下参考里面有说明 TSHead、PAT、PMT、Adapt、Pes 等字段的内容。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如下参考里面有说明 TSHead、PAT、PMT、Adapt、PES、ES 等字段的内容。
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此处写出本人解码时遇到的几个点
 
 * TSHead 的 payload_unit_start_indicator 对应 PAT & PMT：在前4个字节后会有一个调整字节。所以实际数据应该为去除第一个字节后的数据。即上面数据中红色部分不属于有效数据包。而对于 Adapt & 其他：0x01表示含有PSI或者PES头。所以解析 PAT/PMT 时需要通过此字段来判断是否空一个字节。
-* 顺序查找，先是 PID为0 的PAT，通过其 Programs 里面的 PID 查找 PMT，再又 PMT 里面的 Streams 来查找音视频数据。这也就是 **"解析ts流要先找到PAT表，只要找到PAT就可以找到PMT，然后就可以找到音视频流了"** 的意思
-* 在 PAT/ PMT 遇到 section_length 这种 length 的解析，它是指后面数据的长度，即从解析出 length 的字节之后开始计算，如果length 的 Index 是 3，那么整个类型的真实数据长度则为 3 + length = len。
-* PMT 的 stream_type	：流类型，标志是Video还是Audio还是其他数据，h.264编码对应0x1b，aac编码对应0x0f，mp3编码对应0x03
-* adaption 包含 PCR：Program Clock Reference，节目时钟参考，用于恢复出与编码端一致的系统时序时钟STC（System Time Clock）。
+* 顺序查找，先是 PID为0 的 PAT，通过其 Programs 里面的 PID 查找 PMT，再又 PMT 里面的 Streams 来查找音视频数据。这也就是 **"解析ts流要先找到PAT表，只要找到PAT就可以找到PMT，然后就可以找到音视频流了"** 的意思
+* 在 PAT/PMT 遇到 section_length 这种 length 的解析，它是指后面数据的长度，即从解析出 length 的字节之后开始计算，如果length 的 Index 是 3（index 是从 0 开始的，即 length 是第四个字节），那么整个类型的实际数据长度则为 3 + 1 + length = len。
+* PMT 的 stream_type	：流类型，标志是 Video 还是 Audio 还是其他数据，h.264编码 对应 0x1b，aac编码 对应 0x0f，mp3编码 对应 0x03
+* adaption 包含 PCR：Program Clock Reference，节目时钟参考，用于恢复出与编码端一致的系统时序时钟 STC（System Time Clock）。
 
 ##### ES
 
@@ -327,15 +329,15 @@ gear4/prog_index.m3u8
 
 参考：
 
-* [hls之m3u8、ts流格式详解](https://blog.csdn.net/allnlei/article/details/53005350)
-* [SJIE · CodeIt!](http://www.lnmcc.net/page21/)
+* [hls 之 m3u8、ts 流格式详解](https://blog.csdn.net/allnlei/article/details/53005350)
+* [SJIE](http://www.lnmcc.net/page21/)
 * [TS 数据流分析学习](http://www.cnblogs.com/doscho/p/7678579.html)
-* [从TS流到PAT和PMT](https://blog.csdn.net/rongdeguoqian/article/details/18214627)
-* [ts文件格式解析](https://blog.csdn.net/occupy8/article/details/43115765)
-* [TS协议解析第一部分（PAT）](https://blog.csdn.net/u013354805/article/details/51578457)
-* [TS协议解析第二部分（PMT）](https://blog.csdn.net/u013354805/article/details/51586086)
-* [TS协议解析第三部分（PES）](https://blog.csdn.net/u013354805/article/details/51591229)
-* [TS协议解析第四部分（adaptation field）](https://blog.csdn.net/u013354805/article/details/51683830)
+* [从 TS 流到 PAT 和 PMT](https://blog.csdn.net/rongdeguoqian/article/details/18214627)
+* [ts 文件格式解析](https://blog.csdn.net/occupy8/article/details/43115765)
+* [TS 协议解析第一部分（PAT）](https://blog.csdn.net/u013354805/article/details/51578457)
+* [TS 协议解析第二部分（PMT）](https://blog.csdn.net/u013354805/article/details/51586086)
+* [TS 协议解析第三部分（PES）](https://blog.csdn.net/u013354805/article/details/51591229)
+* [TS 协议解析第四部分（adaptation field）](https://blog.csdn.net/u013354805/article/details/51683830)
 
 
 

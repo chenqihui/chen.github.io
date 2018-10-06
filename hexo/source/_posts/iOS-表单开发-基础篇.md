@@ -70,9 +70,7 @@ public enum UIKeyboardType : Int {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UITextFieldDelegate
 
-```
-//MARK: UITextFieldDelegate
-    
+```swift
 public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
     return false
@@ -81,7 +79,7 @@ public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在使用键盘回收的时候，可能会有输入面板的升降等类似 UI 的变化。当使用原生的键盘时候都是点击 return 作为确定按钮回收键盘。可是当使用第三方键盘时候，有多一个工具区域（即在正常键盘上方），其会有回收按钮，它不会触发上述的回调函数。因此需要增加如下回调
 
-```
+```swift
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	// doAction
 }
@@ -91,7 +89,7 @@ public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 
 ##### 键盘监听
 
-```
+```swift
 import UIKit
 
 class QHKeyboardEvent: NSObject {
@@ -134,7 +132,7 @@ class QHKeyboardEvent: NSObject {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用
 
-```
+```swift
 func p_addNotification() {
     QHKeyboardEvent.addKeyboardNotificationCenter(object: self, keyboardWillShow: #selector(self.keyboardWillShow(notification:)), keyboardWillHide: #selector(self.keyboardWillHide(notification:)))
 }
@@ -146,11 +144,11 @@ func p_removeNotification() {
 
 ##### 键盘弹出或者回收时，操作输入面板的上升与下降
 
-```
+```swift
 1、使用约束
 @IBOutlet weak var contentVTopLC: NSLayoutConstraint!
 2、frame 进行修改
-CGRect frame
+view.frame = CGRectZero()
 ```
 
 #### 按钮
@@ -159,7 +157,7 @@ CGRect frame
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用 qhImageWithColor & setBackgroundImage 来设置按钮各种的单色状态： normal disable highlight：
 
-```
+```swift
 // 正常状态的颜色
 doBtn.setBackgroundImage(SHRewardCashViewController.qhImageWithColor(UIColor(hexValue: 0x189AFF)), for: UIControlState.normal)
         
@@ -182,7 +180,7 @@ class func qhImageWithColor(_ color: UIColor) -> UIImage? {
 
 ##### 圆角
 
-```
+```swift
 // 圆角
 doBtn.layer.masksToBounds = true
 doBtn.layer.cornerRadius = 10
@@ -207,7 +205,7 @@ doBtn.layer.borderWidth = 1
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过 UITextFieldDelegate 的限制输入
 
-```
+```swift
 public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     if textField == accountTF {
         if let phoneNumber = textField.text {
@@ -224,7 +222,7 @@ public func textField(_ textField: UITextField, shouldChangeCharactersIn range: 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般通过 UIControlEvents.editingChanged 状态通知获得输入变化的实时校验控制
 
-``` 
+```swift 
 accountTF.addTarget(self, action: #selector(self.updateLoginButtonAction(sender:)), for: UIControlEvents.editingChanged)
 
 func p_updateLoginButton() {
@@ -252,7 +250,7 @@ func p_updateLoginButton() {
 
 1、单个输入
 
-```
+```swift
 cashTF.rx.text.orEmpty.changed
             .subscribe(onNext: {
                 if let b = Float($0) {
@@ -268,7 +266,7 @@ cashTF.rx.text.orEmpty.changed
 
 2、多个联动
 
-```
+```swift
 Observable.combineLatest(cashTF.rx.text.orEmpty, nameL.rx.text.orEmpty, accountL.rx.text.orEmpty) { (cash, name, account) -> Bool in
                 if cash.count > 0, name.count > 0, account.count > 0, self.errorTipL.isHidden == true {
                     return true
