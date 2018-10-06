@@ -164,7 +164,7 @@ doBtn.setBackgroundImage(SHRewardCashViewController.qhImageWithColor(UIColor(hex
 // 禁止点击状态的颜色doBtn.setBackgroundImage(SHRewardCashViewController.qhImageWithColor(UIColor(hexValue: 0x189AFF, alpha: 0.5)), for: UIControlState.disabled)
 ```
 
-```
+```swift
 class func qhImageWithColor(_ color: UIColor) -> UIImage? {
     let rect = CGRect(x: 0, y: 0, width: 100, height: 100)
     UIGraphicsBeginImageContext(rect.size)

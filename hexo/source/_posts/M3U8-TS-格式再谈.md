@@ -318,7 +318,7 @@ gear4/prog_index.m3u8
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此处写出本人解码时遇到的几个点
 
 * TSHead 的 payload_unit_start_indicator 对应 PAT & PMT：在前4个字节后会有一个调整字节。所以实际数据应该为去除第一个字节后的数据。即上面数据中红色部分不属于有效数据包。而对于 Adapt & 其他：0x01表示含有PSI或者PES头。所以解析 PAT/PMT 时需要通过此字段来判断是否空一个字节。
-* 顺序查找，先是 PID为0 的 PAT，通过其 Programs 里面的 PID 查找 PMT，再又 PMT 里面的 Streams 来查找音视频数据。这也就是 **"解析ts流要先找到PAT表，只要找到PAT就可以找到PMT，然后就可以找到音视频流了"** 的意思
+* 顺序查找，先是 PID为0 的 PAT，通过其 Programs 里面的 PID 查找 PMT，再又 PMT 里面的 Streams 来查找音视频数据。这也就是 **"解析 ts 流要先找到 PAT 表，只要找到 PAT 就可以找到 PMT，然后就可以找到 音视频流 了"** 的意思
 * 在 PAT/PMT 遇到 section_length 这种 length 的解析，它是指后面数据的长度，即从解析出 length 的字节之后开始计算，如果length 的 Index 是 3（index 是从 0 开始的，即 length 是第四个字节），那么整个类型的实际数据长度则为 3 + 1 + length = len。
 * PMT 的 stream_type	：流类型，标志是 Video 还是 Audio 还是其他数据，h.264编码 对应 0x1b，aac编码 对应 0x0f，mp3编码 对应 0x03
 * adaption 包含 PCR：Program Clock Reference，节目时钟参考，用于恢复出与编码端一致的系统时序时钟 STC（System Time Clock）。
