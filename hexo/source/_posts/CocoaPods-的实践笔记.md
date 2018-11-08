@@ -234,17 +234,27 @@ rm ~/Library/Caches/CocoaPods/search_index.json
 
 2、修改 .podspec 对应的版本，并 push 到 Git 上。
 
-3、项目打 tag [Git - 打标签](https://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%89%93%E6%A0%87%E7%AD%BE)，GitHub 已经支持页面打 tag。
+3、项目打 tag [Git - 打标签](https://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%89%93%E6%A0%87%E7%AD%BE)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过如下 Git命令 ，或者使用 GitHub 页面打 tag（在 release tab -> create a new release / draft a new release）。
 
 ```shell
 #新建标签
-git tag -a v1.4 -m 'my version 1.4'
+git tag -a 1.4 -m 'my version v1.4'
 
 #删除标签
-git tag -d v1.4
+git tag -d 1.4
 
 #分享标签
-git push origin v1.4
+git push origin 1.4
+```
+
+4、以上步骤执行完之后就进行创建里面的 校验 & 上传 spec，之后就可以更新使用了。
+
+5、如果在上传时碰到如下错误提示，说明需要再通过注册来校验邮箱。
+
+```
+[!] Authentication token is invalid or unverified. Either verify it with the email that was sent or register a new session.
 ```
 
 #### 私有 CocoaPods
