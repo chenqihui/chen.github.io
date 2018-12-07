@@ -23,7 +23,7 @@ categories:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过它的 ***open func draw(_ rect: CGRect)*** 来绘制图形。如经常使用的控件 UILabel ，其文本的显示说到底也是通过绘制出来。
 
-![QHCountdownView](http://pacfu36li.bkt.clouddn.com/QHCountdownView.png)
+![QHCountdownView](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHCountdownView.png)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;来试试手，绘制倒计时的圆圈和倒计时数值，代码如下：
 

@@ -17,7 +17,7 @@ categories:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;飞屏的实现效果截图如下：
 
-![飞屏GIF](http://pacfu36li.bkt.clouddn.com/QHFlyView.gif)
+![飞屏GIF](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHFlyView.gif)
 
 #### CALayer
 

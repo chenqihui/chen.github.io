@@ -23,7 +23,7 @@ categories:
 
 <!-- 截图 -->
 
-![](http://pacfu36li.bkt.clouddn.com/QHMP4ParserMan.png)
+![](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHMP4ParserMan.png)
 
 文章和工具的实现主要参考：
 
@@ -53,7 +53,7 @@ ffmpeg -i bad.mp4 -movflags faststart good.mp4
 | Header | Size(4bytes) + Type(4bytes) <br/> + [ (if Size == 0 ? version(8bits) + flags(24bits) : 无) ] |  
 | Data | Container Boxes 或者 <br/> Box Size(4bytes) + Type(4bytes) + Version(1bytes) + Flay(3bytes) <br/> + [ EntryCount(4bytes) + EntryList(Nbytes) ] |  
 
-![](http://pacfu36li.bkt.clouddn.com/mp4-structure.gif)
+![](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/mp4-structure.gif)
 
 ##### Box
 
@@ -62,7 +62,7 @@ ffmpeg -i bad.mp4 -movflags faststart good.mp4
 1、trak：Track Box，判断是两种类型的 trak：media track 和 hint track 哪一种
 答：trak 里面的 mdia -> hdlr：Handler Reference Box，包含了表明该轨道类型的信息：Video Track、Audio Track 或者 Hint Track。
 
-<!--![](http://pacfu36li.bkt.clouddn.com/mp4-structure-2.jpg)-->
+<!--![](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/mp4-structure-2.jpg)-->
 
 #### 分析 MP4 文件信息  
 

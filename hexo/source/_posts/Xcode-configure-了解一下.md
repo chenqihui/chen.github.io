@@ -34,7 +34,7 @@ categories:
 >
 >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么，什么又是scheme呢？scheme就相当于一个组织者。在build的时候，schema会指定一个target和configuration，这样就能保证在build的时候configuration的唯一性，就能产生一个特定的product。
 
-![0](http://pacfu36li.bkt.clouddn.com/xcconfig0.png)
+![0](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig0.png)
 
 参考：
 
@@ -71,7 +71,7 @@ CONFIG_TEST = $(XCCONFIG_DISPLAY_NAME)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后在 project->info 里面给 target 配置 configure
 
-![0](http://pacfu36li.bkt.clouddn.com/xcconfig1.png)
+![0](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig1.png)
 
 #### 3、使用
 
@@ -83,7 +83,7 @@ CONFIG_TEST = $(XCCONFIG_DISPLAY_NAME)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如针对项目 App 名称的设置，使用 ${XCCONFIG_DISPLAY_NAME} 后，它将根据 configure 文件的配置来填充内容。
 
-![0](http://pacfu36li.bkt.clouddn.com/xcconfig2.png)
+![0](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig2.png)
 
 ##### 3.2、添加到 info.plist
 
@@ -101,7 +101,7 @@ if let dictionary = Bundle.main.infoDictionary {
 
 ##### 3.3、添加到 Swift 条件编译
 
-![0](http://pacfu36li.bkt.clouddn.com/xcconfig3.png)
+![0](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig3.png)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（注意： Objective-C & Swift 项目的配置条件宏位置不同）
 

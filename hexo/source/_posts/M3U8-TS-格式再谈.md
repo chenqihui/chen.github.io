@@ -227,7 +227,7 @@ Sep 20 2018 11:59:30.175: average bit rate is 814.53 kbits/sec - max file bit ra
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里主要解析 m3u8 描述文件 & ts 媒体文件，mp4 暂忽略
 
-![TS](http://pacfu36li.bkt.clouddn.com/ts.png)
+![TS](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/ts.png)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源码 Demo [QHFlvParserMan](https://github.com/chenqihui/QHFlvParserMan) 是采用 Swift 实现的，内容可结合此工程进行了解。
 

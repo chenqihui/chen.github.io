@@ -29,7 +29,7 @@ b.一个用例的功能太多时，可以使用包含关系建立若干个更小
 2.扩展关系  
 对扩展用例的限制规则：将一些常规的动作放在一个基本用例中，将可选的或只在特定条件下才执行的动作放在它的扩展用例中。
 
-![image](http://pacfu36li.bkt.clouddn.com/UseCaseDiagram1.png)
+![image](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/UseCaseDiagram1.png)
 
 
 #### 二、Class Diagrams（类图）
@@ -69,7 +69,7 @@ UML中类的图形符为长方形，用两条横线把长方形分成上、中�
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用实心菱形表示。
 
-![image](http://pacfu36li.bkt.clouddn.com/ClassDiagram1.png)
+![image](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/ClassDiagram1.png)
 
 ##### 2、泛化
 
@@ -121,14 +121,14 @@ UML中类的图形符为长方形，用两条横线把长方形分成上、中�
 3、符合  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;初态用实心圆表示，终态用一对同心圆（内圆为实心圆）表示。
 
-![image](http://pacfu36li.bkt.clouddn.com/StatechartDiagram1.png)
+![image](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/StatechartDiagram1.png)
 
 
 #### 五、Activity Diagrams（活动图）
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从用户的角度描述用例
 
-![image](http://pacfu36li.bkt.clouddn.com/ActivityDiagram1.png)
+![image](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/ActivityDiagram1.png)
 
 #### 六、Sequence Diagrams（序列图-时序图）
 
@@ -145,7 +145,7 @@ UML中类的图形符为长方形，用两条横线把长方形分成上、中�
 2.2、异步消息  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息的发送者将消息发送给消息的接受者后，不用等待回应的消息，即可开始另一个活动。  
 
-![image](http://pacfu36li.bkt.clouddn.com/SequenceDiagram1.png)
+![image](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/SequenceDiagram1.png)
 
 #### 七、Collaboration Diagrams（协作图）
 

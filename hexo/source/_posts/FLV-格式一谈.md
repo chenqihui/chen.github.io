@@ -20,7 +20,7 @@ ffmpeg -i rtmp://server/live/streamName -c copy dump.flv
 
 <!-- more -->
 
-![QHFlvParserMan 工具截图](http://pacfu36li.bkt.clouddn.com/QHFlvParserMan.png?attname=)
+![QHFlvParserMan 工具截图](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHFlvParserMan.png?attname=)
 
 工具的实现主要参考：  
 * 《[FFmpeg从入门到出家（FLV文件结构解析） - 简书](https://www.jianshu.com/p/d68d6efe8230)》  

@@ -41,7 +41,7 @@ hexo d   // 部署
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建 [GitHub Pages](https://pages.github.com/) 可看官网链接，搜索下也有不错的教程。只是大多文章还是依然写着控制分支到 gh-pages，可是当我部署代码前，查看项目配置发现工程已经被限制 master 分支，并且不允许修改。
 
-![](http://pacfu36li.bkt.clouddn.com/githubpagesmaster.png?attname=)
+![](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/githubpagesmaster.png?attname=)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最开始以为跟 jekyll 一样将工程推送到 Git 仓库就可以了。但明显不是，Hexo 提供的静态生成页面和推送到仓库的命令，应该算是 Hexo 转换到 jekyll 的工程或者 Github Pages 支持的静态网页目录文件。
 
@@ -116,4 +116,4 @@ npm install hexo-deployer-git --save
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里有一篇《[利用七牛做图床, python上传图片 - 简书](https://www.jianshu.com/p/7a97f3231b95)》，我还没测试。
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;好了，看到这里基本准备完毕，let‘s do it.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;好了，看到这里基本准备完毕，let‘s do it.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;好了，看到这里基本准备完毕，let‘s do it.
