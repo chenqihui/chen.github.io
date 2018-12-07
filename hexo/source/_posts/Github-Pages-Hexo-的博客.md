@@ -108,12 +108,8 @@ npm install hexo-deployer-git --save
 在线编辑阅读器：  
 [欢迎使用 Cmd Markdown 编辑阅读器](https://www.zybuluo.com/mdeditor#1237871)
 
-#### 七牛图床
+#### 图床（切换到腾讯COS）
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说到文章之类，难免添加图片。而 Markdown 添加图片是采取引用发的方式（就是必须图片是在某服务器上可访问的文件）。我的 Github 项目的 README 使用 图片是保存在对应项目的 images 文件夹。可是当写博文时，除了考虑单独开个 Git 仓库来保存图片，还有其他方式，就是使用 [七牛图床](https://portal.qiniu.com/create) 。
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;七牛图床还提供命令上传，cool。这样就可以通过脚本来上传图片。我影响有介绍过使用 Alfred 的 workflow 来将截图快速上传，这个后期找到再补上[TODO]。
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里有一篇《[利用七牛做图床, python上传图片 - 简书](https://www.jianshu.com/p/7a97f3231b95)》，我还没测试。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说到文章之类，难免添加图片。而 Markdown 添加图片是采取引用发的方式（就是必须图片是在某服务器上可访问的文件）。我的 Github 项目的 README 使用 图片是保存在对应项目的 images 文件夹。可是当写博文时，除了考虑单独开个 Git 仓库来保存图片，还有其他方式，就是使用 图床。
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;好了，看到这里基本准备完毕，let‘s do it.
