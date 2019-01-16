@@ -186,7 +186,33 @@ filePath = [@"http://localhost/resource/iOS开发手册.pdf" stringByAddingPerce
 
 #### Length
 
-《[字符串的长度，是字符数量，还是字节数量？](http://www.cnblogs.com/ljhdo/p/4546081.html)》
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Unicode 编码中：一个中文字符=2个 Unicode，一个英文字符=1个 Unicode。所以可以采用 Unicode 的个数来计算字符串长度，如下两种方法：
+
+
+```objc
+// 方法一、
+NSUInteger contentLength = 0;
+char* p = (char*)[contentString cStringUsingEncoding:NSUnicodeStringEncoding];
+for (int i = 0; i < [contentString lengthOfBytesUsingEncoding:NSUnicodeStringEncoding]; i++) {
+    if (*p) {
+        p++;
+        contentLength++;
+    }
+    else {
+        p++;
+    }
+}
+NSLog(@"%ld", contentLength);
+// 方法二、
+NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+NSData *data = [contentString dataUsingEncoding:enc];
+NSUInteger contentLength2 = [data length];
+NSLog(@"%ld", contentLength2);
+```
+
+* [iOS 中英文字符串的字数](https://www.jianshu.com/p/c7bbb1abeb76)
+* [深度解析IOS开发中编码转换方法](http://mobile.51cto.com/iphone-283494.htm)
+* [字符串的长度，是字符数量，还是字节数量？](http://www.cnblogs.com/ljhdo/p/4546081.html)
 
 #### 数字
 
