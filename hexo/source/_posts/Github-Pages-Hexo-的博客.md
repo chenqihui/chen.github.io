@@ -13,7 +13,7 @@ categories:
 
 >[GitHub Pages](https://pages.github.com/) | Websites for you and your projects, hosted directly from your GitHub repository. Just edit, push, and your changes are live.  
  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于 Github Pages 支持 jekyll，所以当时就（时间是14年的时候）决定使用 jekyll，可是最后没用上，好像是配置问题，具体的也忘了，最后就是 jekyll 的主题没使用上，所以它就只是个简单的页面（惭愧）。而这次看到 [小鱼周凌宇のCODE_HOME](http://zhoulingyu.com/) 萌妹子的博客主题不错，再次决定动手搞起来，采用 [Hexo](https://hexo.io/zh-cn/) + [NexT](http://theme-next.iissnan.com/) 主题，当然由于没有对外的 IP，所以依然部署到 Github Pages 上。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于 Github Pages 支持 jekyll，所以当时就（时间是14年的时候）决定使用 jekyll，可是最后没用上，好像是配置问题，具体的也忘了，最后就是 jekyll 的主题没使用上，所以它就只是个简单的页面（惭愧）。而这次看到其他人的博客主题不错，再次决定动手搞起来，采用 [Hexo](https://hexo.io/zh-cn/) + [NexT](http://theme-next.iissnan.com/) 主题，当然由于没有对外的 IP，所以依然部署到 Github Pages 上。
 
 <!-- more -->
 
@@ -84,7 +84,8 @@ deploy:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;还有例如名字的修改，主题的配置修改，如头像等等，我是通过比较别人在 Github 上传代码的来快速实现，也可以看看官网的说明。
 
 参考：  
-《[基于Hexo搭建博客并部署到Github Pages - 简书](https://www.jianshu.com/p/2b09156ee5b1)》
+
+* [基于Hexo搭建博客并部署到Github Pages](https://www.jianshu.com/p/2b09156ee5b1)
 
 注意：
 
@@ -103,13 +104,53 @@ npm install hexo-deployer-git --save
 
 #### Markdown
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不论是写博文，简书，或者 Github 项目的 README，都已经习惯写 Markdown 格式。所以想简单介绍下它 《[README文件语法解读，即Github Flavored Markdown语法介绍](https://github.com/chenqihui/README)》。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不论是写博文，简书，或者 Github 项目的 README，都已经习惯写 Markdown 格式。所以想简单介绍下它 
 
-在线编辑阅读器：  
-[欢迎使用 Cmd Markdown 编辑阅读器](https://www.zybuluo.com/mdeditor#1237871)
+* [README文件语法解读，即Github Flavored Markdown语法介绍](https://github.com/chenqihui/README)
+
+在线编辑阅读器： 
+ 
+* [欢迎使用 Cmd Markdown 编辑阅读器](https://www.zybuluo.com/mdeditor#1237871)
 
 #### 图床（切换到腾讯COS）
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说到文章之类，难免添加图片。而 Markdown 添加图片是采取引用发的方式（就是必须图片是在某服务器上可访问的文件）。我的 Github 项目的 README 使用 图片是保存在对应项目的 images 文件夹。可是当写博文时，除了考虑单独开个 Git 仓库来保存图片，还有其他方式，就是使用 图床。
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;好了，看到这里基本准备完毕，let‘s do it.
+
+#### 加密
+
+1、安装
+
+```
+npm install --save hexo-blog-encrypt
+```
+
+2、配置开启
+
+找到根目录下的_config.yml文件，添加如下：
+
+```
+# Security
+##
+encrypt:
+    enable: true
+```
+    
+3、使用，在博文开头添加
+
+```
+---
+title: Hello World
+date: 2018-06-11 11:29:46
+keywords: 博客文章密码
+password: Hello
+abstract: 密码：Hello
+message:  加密文章
+---
+```
+
+参考
+
+* [hexo文章加密](https://www.jianshu.com/p/44e211829447)
+

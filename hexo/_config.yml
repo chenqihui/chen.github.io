@@ -82,3 +82,8 @@ deploy:
   type: git
   repo: git@github.com:chenqihui/chenqihui.github.io.git
   branch: master
+
+# Security
+##
+encrypt:
+    enable: true
