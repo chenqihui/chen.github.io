@@ -118,6 +118,8 @@ npm install hexo-deployer-git --save
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;好了，看到这里基本准备完毕，let‘s do it.
 
+* [七牛图床备份](https://www.jianshu.com/p/f7ea1b23e860)
+
 #### 加密
 
 1、安装
@@ -153,4 +155,32 @@ message:  加密文章
 参考
 
 * [hexo文章加密](https://www.jianshu.com/p/44e211829447)
+
+#### 访问数
+
+1、配置使用
+
+>在 /theme/next/_config.yml 找到 busuanzi_count 
+>
+>将 enable 设置为 true，便可以看到页脚出现访问量，上述配置表示：
+>
+>site_uv 表示是否显示整个网站的UV数  
+>site_pv 表示是否显示整个网站的PV数  
+>page_pv 表示是否显示每个页面的PV数  
+
+2、注意
+
+>到hexo的themes文件夹下, 进入  
+>**\themes\next\layout_third-party\analytics** 
+> 
+>打开: busuanzi-counter.swig  
+>将src=“https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js”  
+>修改为src=“https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js”
+
+参考
+
+* [hexo页脚添加访客人数和总访问量](https://www.jianshu.com/p/c311d31265e0)
+* [Hexo Next 解决 Busuanzi 统计浏览失效 - 韦人人韦](https://blog.csdn.net/ddydavie/article/details/83020549)
+
+
 
