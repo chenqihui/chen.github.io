@@ -53,6 +53,7 @@ menu:
   tags: /tags/
   #sitemap: /sitemap.xml
   #commonweal: /404/
+  guestbook: /guestbook/
 
 # Enable/Disable menu icons.
 # Icon Mapping:

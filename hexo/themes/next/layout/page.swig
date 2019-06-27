@@ -46,6 +46,9 @@
               {{ list_categories() }}
             </div>
           </div>
+        {% elif page.type === 'issue' %}
+          {{ page.content }}
+          {% include '_custom/issue.swig' %}
         {% else %}
           {{ page.content }}
         {% endif %}
