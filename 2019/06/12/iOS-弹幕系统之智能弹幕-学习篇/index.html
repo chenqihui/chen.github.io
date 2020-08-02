@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="layer,mask,UIImage,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;智能弹幕不挡脸效果就是使刷屏弹幕无法遮挡想看的内容。目前很多视频网站 &amp;amp; App 都已经实现，且还运用到直播上，提高了观看的体验。具体效果可以看看斗鱼等直播平台（记得确认该直播间是否有此功能）。接下来从客户端角度探讨如何实现智能弹幕，下面的效果的代码实现都在 – 新弹幕系统 chenqihui/QHDanm">
+<meta name="keywords" content="layer,mask,UIImage">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 弹幕系统之智能弹幕 学习篇">
+<meta property="og:url" content="http://chenqihui.github.io/2019/06/12/iOS-弹幕系统之智能弹幕-学习篇/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;智能弹幕不挡脸效果就是使刷屏弹幕无法遮挡想看的内容。目前很多视频网站 &amp;amp; App 都已经实现，且还运用到直播上，提高了观看的体验。具体效果可以看看斗鱼等直播平台（记得确认该直播间是否有此功能）。接下来从客户端角度探讨如何实现智能弹幕，下面的效果的代码实现都在 – 新弹幕系统 chenqihui/QHDanm">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/G.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/S.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/v.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/GR.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/AI.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/CI.png">
+<meta property="og:updated_time" content="2020-08-02T18:16:51.470Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 弹幕系统之智能弹幕 学习篇">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;智能弹幕不挡脸效果就是使刷屏弹幕无法遮挡想看的内容。目前很多视频网站 &amp;amp; App 都已经实现，且还运用到直播上，提高了观看的体验。具体效果可以看看斗鱼等直播平台（记得确认该直播间是否有此功能）。接下来从客户端角度探讨如何实现智能弹幕，下面的效果的代码实现都在 – 新弹幕系统 chenqihui/QHDanm">
+<meta name="twitter:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/G.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chenqihui.github.io/2019/06/12/iOS-弹幕系统之智能弹幕-学习篇/">
+
+
+
+
+
+  <title>iOS 弹幕系统之智能弹幕 学习篇 | RyuukuSpace</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RyuukuSpace</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">iOS开发</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-paper-plane"></i> <br>
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chenqihui.github.io/2019/06/12/iOS-弹幕系统之智能弹幕-学习篇/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AnakinChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/RyuukuChen.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RyuukuSpace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS 弹幕系统之智能弹幕 学习篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-12T12:00:00+08:00">
+                2019-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>  阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;智能弹幕不挡脸效果就是使刷屏弹幕无法遮挡想看的内容。目前很多视频网站 &amp; App 都已经实现，且还运用到直播上，提高了观看的体验。具体效果可以看看斗鱼等直播平台（记得确认该直播间是否有此功能）。接下来从客户端角度探讨如何实现智能弹幕，下面的效果的代码实现都在 – 新弹幕系统 <a href="https://github.com/chenqihui/QHDanmu2Demo" target="_blank" rel="noopener">chenqihui/QHDanmu2Demo</a>，请同步工程了解。</p>
+<ul>
+<li><a href="https://www.admin5.com/article/20181108/884048.shtml" target="_blank" rel="noopener">虎牙推出弹幕黑科技：AI智能弹幕功能不挡脸</a></li>
+</ul>
+<a id="more"></a>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iOS客户端 首先想到是使用 mask 蒙层来实现。</p>
+<h4 id="CAGradientLayer"><a href="#CAGradientLayer" class="headerlink" title="CAGradientLayer"></a>CAGradientLayer</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实现之后会发现它只能进行线性渐隐的绘制。</p>
+<div align="center"><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/G.png"></div>
+
+<h4 id="CAShapeLayer-amp-UIBezierPath"><a href="#CAShapeLayer-amp-UIBezierPath" class="headerlink" title="CAShapeLayer &amp; UIBezierPath"></a>CAShapeLayer &amp; UIBezierPath</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这一次绘制出了镂空的多边形，此方案基本满足弹幕蒙层的需求，不足在于它无法实现边缘的渐隐效果。</p>
+<div align="center"><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/S.png"></div>
+
+<h4 id="UIView"><a href="#UIView" class="headerlink" title="UIView"></a>UIView</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只是采用 View 的话，比较容易绘制需要显示的区域（即整个 view 的 alpha 值为0，需要显示的位置添加 alpha 值为1的 view）。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;原本想着可以反选，即在整个 alpha 值为1的 view 上添加 alpha 值为0的 子view，从而实现镂空效果，再加入绘制四周阴影来实现。但事实上 父view 的 alpha 值为1后，在图层上已经是整个可见了，已无法再隐藏。</p>
+<div align="center"><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/v.png"></div>
+
+<h4 id="CGGradientRef-的圆半径方向渐变-UIImage"><a href="#CGGradientRef-的圆半径方向渐变-UIImage" class="headerlink" title="CGGradientRef 的圆半径方向渐变 UIImage"></a>CGGradientRef 的圆半径方向渐变 UIImage</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这其实使用了它来绘制一张 UIImage 来实现，它的不足在于其绘制多边形的能力有限。</p>
+<div align="center"><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/GR.png"></div>
+
+<h4 id="带-Alpha-的-UIImage"><a href="#带-Alpha-的-UIImage" class="headerlink" title="带 Alpha 的 UIImage"></a>带 Alpha 的 UIImage</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从上述的描述可以看出，从苹果提供的 API 来同时实现有 渐隐 &amp; 多边形镂空 效果暂时都没成功。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因此得借助其他方式，其实关键还是生成带有 alpha 值的 UIImage。这里通过 Python 生成一个简单的带 alpha 值的圆形图片。按理也可以使用 PS 生成。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">data = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">400</span>):</span><br><span class="line">	<span class="keyword">print</span> i+<span class="number">1</span></span><br><span class="line">	item = []</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">400</span>):</span><br><span class="line">		weight = math.sqrt((math.pow((i<span class="number">-200</span>), <span class="number">2</span>) + math.pow((j<span class="number">-200</span>), <span class="number">2</span>)))</span><br><span class="line">		<span class="keyword">if</span> weight &lt; <span class="number">50</span>:</span><br><span class="line">			item.append([<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>])</span><br><span class="line">		<span class="keyword">elif</span> weight &lt;= <span class="number">100</span>:</span><br><span class="line">			ap = int(<span class="number">255.0</span>/<span class="number">50</span>*(weight<span class="number">-50</span>))</span><br><span class="line">			item.append([<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,ap])</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			item.append([<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>])</span><br><span class="line">	data.append(item)</span><br><span class="line">	</span><br><span class="line"><span class="keyword">print</span> <span class="string">'start output img'</span>	</span><br><span class="line"></span><br><span class="line">img = np.array(data, </span><br><span class="line">		dtype=np.uint8)</span><br><span class="line"></span><br><span class="line">plt.imsave(<span class="string">'img.png'</span>, img)</span><br></pre></td></tr></table></figure>
+<div align="center"><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/AI.png"></div>
+
+<h4 id="自生成的带-Alpha-值的-UIImage"><a href="#自生成的带-Alpha-值的-UIImage" class="headerlink" title="自生成的带 Alpha 值的 UIImage"></a>自生成的带 Alpha 值的 UIImage</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果放在程序里面，不太好放很多已经生成的图片，所以还是需要 iOS 自己生成 alpha 值的 UIImage，生成的逻辑跟 Python 原理是一样的。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)p_addCustomUIImage &#123;</span><br><span class="line">    <span class="built_in">UIView</span> *v = [[<span class="built_in">UIView</span> alloc] initWithFrame:_showMainV.bounds];</span><br><span class="line">    v.backgroundColor = [<span class="built_in">UIColor</span> whiteColor];</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">UIGraphicsBeginImageContextWithOptions</span>(v.bounds.size, <span class="literal">NO</span>, [<span class="built_in">UIScreen</span> mainScreen].scale);</span><br><span class="line">    <span class="built_in">CGContextTranslateCTM</span>(<span class="built_in">UIGraphicsGetCurrentContext</span>(),</span><br><span class="line">                          v.frame.origin.x,</span><br><span class="line">                          v.frame.origin.y);</span><br><span class="line">    [v.layer renderInContext:<span class="built_in">UIGraphicsGetCurrentContext</span>()];</span><br><span class="line">    <span class="built_in">UIImage</span> *image = <span class="built_in">UIGraphicsGetImageFromCurrentImageContext</span>();</span><br><span class="line">    <span class="built_in">UIGraphicsEndImageContext</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">CGImageRef</span> originalMaskImage = [image <span class="built_in">CGImage</span>];</span><br><span class="line">    <span class="keyword">float</span> width = <span class="built_in">CGImageGetWidth</span>(originalMaskImage);</span><br><span class="line">    <span class="keyword">float</span> height = <span class="built_in">CGImageGetHeight</span>(originalMaskImage);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> strideLength = ceil(width);</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> * alphaData = calloc(strideLength * height, <span class="keyword">sizeof</span>(<span class="keyword">unsigned</span> <span class="keyword">char</span>));</span><br><span class="line">    <span class="built_in">CGContextRef</span> alphaOnlyContext = <span class="built_in">CGBitmapContextCreate</span>(alphaData,</span><br><span class="line">                                                          width,</span><br><span class="line">                                                          height,</span><br><span class="line">                                                          <span class="number">8</span>,</span><br><span class="line">                                                          strideLength,</span><br><span class="line">                                                          <span class="literal">NULL</span>,</span><br><span class="line">                                                          kCGImageAlphaOnly);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">CGContextDrawImage</span>(alphaOnlyContext, <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, width, height), originalMaskImage);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">CGPoint</span> c = <span class="built_in">CGPointMake</span>(width/<span class="number">2</span>, height/<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">float</span> r = <span class="number">80</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; height; y++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; width; x++) &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> <span class="keyword">char</span> val = alphaData[y*strideLength + x];</span><br><span class="line">            <span class="keyword">float</span> weight = sqrt(pow(x - c.x, <span class="number">2</span>) + pow(y - c.y, <span class="number">2</span>));</span><br><span class="line">            <span class="keyword">if</span> (weight &lt; r) &#123;</span><br><span class="line">                val = <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (weight &lt;= r * <span class="number">2</span>) &#123;</span><br><span class="line">                val = (<span class="keyword">int</span>)(<span class="number">255.0</span>/r*(weight-r));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                val = <span class="number">255</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            alphaData[y*strideLength + x] = val;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">CGImageRef</span> alphaMaskImage = <span class="built_in">CGBitmapContextCreateImage</span>(alphaOnlyContext);</span><br><span class="line">    <span class="built_in">UIImage</span> *resultImage = [<span class="built_in">UIImage</span> imageWithCGImage:alphaMaskImage];</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">UIImageView</span> *i = [[<span class="built_in">UIImageView</span> alloc] initWithFrame:_showMainV.bounds];</span><br><span class="line">    i.backgroundColor = [<span class="built_in">UIColor</span> clearColor];</span><br><span class="line">    i.image = resultImage;</span><br><span class="line">    i.contentMode = <span class="built_in">UIViewContentModeScaleAspectFill</span>;</span><br><span class="line">    _showMainV.maskView = i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div align="center"><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/Danmu/ai/CI.png"></div>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说了这么多，如果真的运用到智能弹幕上，虽然有些方案可以简单实现效果，只需要接入人形的坐标点即可。但是 MaskView 频繁使用的话，在 UIImage 的实时高效生成，会十分消耗性能，并且运用到直播与视频上的同步性也需要考虑。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那重新回顾虎牙的介绍，有这一段说法</p>
+<blockquote>
+<p>虎牙AI技术负责人吴晓东向我们介绍了AI智能弹幕功能的特点：</p>
+<ul>
+<li>常规处理弹幕的做法是“离线(Offline)”和云上处理，需要面对的只是识别问题；而虎牙是针对直播进行实时端上处理；</li>
+<li>有的网站采用类似PS蒙版技术，采用人工方式为特定视频添加蒙版来模糊弹幕；而虎牙则采用人景分离技术，让人物与场景分离，让弹幕在人物之后，场景之前；</li>
+<li>AI智能弹幕与传统直播弹幕相比，在几乎不增加带宽的前提下，把每帧的mask随视频流编码。而常规方法在视频点播的中则需要大量的流量来支撑弹幕传输;</li>
+</ul>
+</blockquote>
+<ul>
+<li><a href="http://ai.51cto.com/art/201811/586866.htm" target="_blank" rel="noopener">看与说同享 虎牙采用人景分离技术打造不遮脸智能弹幕 - 51CTO.COM</a></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;采用人景分离，那如果通过 OpenGL，将人像再绘制一次。从而输出多一个 UIView，将弹幕View 放置在景物View 与 人物View 直接。那么此部分开发实现就移到了 播放器 部分，无须弹幕做而外的工作，因此智能弹幕的介绍与实现就等后面 播放器 部分再研究。</p>
+<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人脸识别的数据，在 rtmp 上可以通过 SEI 帧传输，即播放器解析 SEI 数据后进行人景分离。至于 SEI 可以参考下面 金山云 的文章：</p>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s/BrSOPtDIOj5Lv1h1MLKCSA" target="_blank" rel="noopener">FFmpeg从入门到精通——进阶篇，SEI那些事儿</a></li>
+<li><a href="https://blog.csdn.net/y601500359/article/details/80943990" target="_blank" rel="noopener">h264解码之自定义信息（SEI）</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/layer/" rel="tag"># layer</a>
+          
+            <a href="/tags/mask/" rel="tag"># mask</a>
+          
+            <a href="/tags/UIImage/" rel="tag"># UIImage</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/04/iOS-Socket-学习篇/" rel="next" title="iOS Socket 学习篇">
+                <i class="fa fa-chevron-left"></i> iOS Socket 学习篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/30/Git-辅导/" rel="prev" title="Git 辅导">
+                Git 辅导 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/RyuukuChen.jpeg" alt="AnakinChen">
+          <p class="site-author-name" itemprop="name">AnakinChen</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#CAGradientLayer"><span class="nav-number">1.</span> <span class="nav-text">CAGradientLayer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CAShapeLayer-amp-UIBezierPath"><span class="nav-number">2.</span> <span class="nav-text">CAShapeLayer &amp; UIBezierPath</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UIView"><span class="nav-number">3.</span> <span class="nav-text">UIView</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CGGradientRef-的圆半径方向渐变-UIImage"><span class="nav-number">4.</span> <span class="nav-text">CGGradientRef 的圆半径方向渐变 UIImage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#带-Alpha-的-UIImage"><span class="nav-number">5.</span> <span class="nav-text">带 Alpha 的 UIImage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自生成的带-Alpha-值的-UIImage"><span class="nav-number">6.</span> <span class="nav-text">自生成的带 Alpha 值的 UIImage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#补充"><span class="nav-number">8.</span> <span class="nav-text">补充</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AnakinChen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

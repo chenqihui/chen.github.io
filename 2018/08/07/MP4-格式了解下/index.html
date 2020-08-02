@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Swift,MacOS,MP4,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;继 QHFlvParserMan 解析 FLV 之后，本次增加了对 MP4 视频格式的解析支持。而通过上一篇 《FLV 格式一谈》入门了音视频的知识后。可以通过对 MP4 了解，来更进一步学习音视频知识。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;MP4 多用于点播，它也是">
+<meta name="keywords" content="Swift,MacOS,MP4">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MP4 格式了解下">
+<meta property="og:url" content="http://chenqihui.github.io/2018/08/07/MP4-格式了解下/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;继 QHFlvParserMan 解析 FLV 之后，本次增加了对 MP4 视频格式的解析支持。而通过上一篇 《FLV 格式一谈》入门了音视频的知识后。可以通过对 MP4 了解，来更进一步学习音视频知识。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;MP4 多用于点播，它也是">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHMP4ParserMan.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/mp4-structure.gif">
+<meta property="og:updated_time" content="2020-08-02T18:16:51.464Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MP4 格式了解下">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;继 QHFlvParserMan 解析 FLV 之后，本次增加了对 MP4 视频格式的解析支持。而通过上一篇 《FLV 格式一谈》入门了音视频的知识后。可以通过对 MP4 了解，来更进一步学习音视频知识。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;MP4 多用于点播，它也是">
+<meta name="twitter:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHMP4ParserMan.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chenqihui.github.io/2018/08/07/MP4-格式了解下/">
+
+
+
+
+
+  <title>MP4 格式了解下 | RyuukuSpace</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RyuukuSpace</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">iOS开发</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-paper-plane"></i> <br>
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chenqihui.github.io/2018/08/07/MP4-格式了解下/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AnakinChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/RyuukuChen.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RyuukuSpace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MP4 格式了解下</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-07T01:32:02+08:00">
+                2018-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/音视频/" itemprop="url" rel="index">
+                    <span itemprop="name">音视频</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>  阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;继 <a href="https://github.com/chenqihui/QHFlvParserMan" target="_blank" rel="noopener">QHFlvParserMan</a> 解析 FLV 之后，本次增加了对 MP4 视频格式的解析支持。而通过上一篇 《<a href="http://chenqihui.github.io/2018/06/20/FLV-%E6%A0%BC%E5%BC%8F%E4%B8%80%E8%B0%88/">FLV 格式一谈</a>》入门了音视频的知识后。可以通过对 MP4 了解，来更进一步学习音视频知识。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MP4 多用于点播，它也是现在用的比较多的视频封装格式，它为了播放流式媒体的高质量视频而专门设计的，以求使用最少的数据获得最佳的图像质量。但是它的文件格式复杂，索引慢，时长较长的 MP4 视频在线播放时加载较慢。</p>
+<a id="more"></a>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MP4 是遵循 MPEG-4（ISO 14496-14）的官方容器格式定义的广义文件扩展名。它可以流媒体化并支持众多多媒体的内容（多音轨 (multiple audio)、视频流 (video)、字幕 (subtitlestreams)、图片(pictures)、可变桢率 (variable-framerates)、码率(bitrates)、采样率(samplerates)等）和高级内容 (advanced content)（官方称之为 “Richmedia” (超媒体) 或 “BIFS” (Binary Format for Scenes/二进制格式场景），类似 2D 和 3D 图形，动画、用户界面、类DVD 菜单，上述这些 AVI 搞不定的东西。</p>
+<h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它解析了 MP4 文件的数据类型，各个类型包的大小、时间戳和简单信息，还有需要重点了解的 boxes 及 各个box 的内容。</p>
+<!-- 截图 -->
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHMP4ParserMan.png" alt=""></p>
+<p>文章和工具的实现主要参考：</p>
+<ul>
+<li><a href="http://www.samirchen.com/video-playback-format/" target="_blank" rel="noopener">点播视频格式的选择 | SamirChen</a></li>
+<li><a href="http://www.52rd.com/Blog/wqyuwss/559/" target="_blank" rel="noopener">leslie - wqyuwss的专栏</a></li>
+<li><a href="https://www.cnblogs.com/ranson7zop/p/7889272.html" target="_blank" rel="noopener">mp4文件格式解析 - nigaopeng</a></li>
+</ul>
+<h4 id="视频一谈-amp-MP4-注意问题"><a href="#视频一谈-amp-MP4-注意问题" class="headerlink" title="视频一谈 &amp; MP4 注意问题"></a>视频一谈 &amp; MP4 注意问题</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先，了解到视频主要是 metadata 信息 + 音视频的 data，metadata 记录了视频的图像尺寸、编码格式、帧率、码率等信息。FLV 的 metadata 是保存在第一个视频和音频 tag 里。那 MP4 的 metadata 存放在 meta，它可以出现在视频的开头或者结尾，如果在结尾就会导致播放器只有下载完整个文件后才能成功解析并播放这个视频。又来介绍下 FFmpeg 了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i bad.mp4 -movflags faststart good.mp4</span><br></pre></td></tr></table></figure>
+<p>将其重新编码，将 metadata 数据块转移到文件头部，保证播放器在线请求时能较快播放。</p>
+<blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此外，需要注意的是，在通过网络请求 MP4 视频文件进行边下载边播放时，由于接收到的每帧音视频数据是需要根据时间戳来决定何时送入解码器解码，以及何时显示，如果时间没到只能等待。尤其是当视频编码存在 B 帧时，解码时间戳 DTS 与显示时间戳顺序 PTS 通常不一致，这时候就会出现已经下载好的一帧数据可能还不能立即解码和显示，需要等待其依赖的数据下载完成和解码完成。这时在播放的过程中就可能因为网络抖动而出现播放卡顿。</p>
+</blockquote>
+<h4 id="MP4-文件结构和-Box-描述"><a href="#MP4-文件结构和-Box-描述" class="headerlink" title="MP4 文件结构和 Box 描述"></a>MP4 文件结构和 Box 描述</h4><h5 id="基本构成"><a href="#基本构成" class="headerlink" title="基本构成"></a>基本构成</h5><table>
+<thead>
+<tr>
+<th></th>
+<th>构成</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MP4</td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td>Box</td>
+<td>Header + Data</td>
+</tr>
+<tr>
+<td>Header</td>
+<td>Size(4bytes) + Type(4bytes) <br> + [ (if Size == 0 ? version(8bits) + flags(24bits) : 无) ]</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>Container Boxes 或者 <br> Box Size(4bytes) + Type(4bytes) + Version(1bytes) + Flay(3bytes) <br> + [ EntryCount(4bytes) + EntryList(Nbytes) ]</td>
+</tr>
+</tbody>
+</table>
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/mp4-structure.gif" alt=""></p>
+<h5 id="Box"><a href="#Box" class="headerlink" title="Box"></a>Box</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于 MP4 文件的 Box 类型非常多，<strong>《<a href="http://mp4ra.org/#/atoms" target="_blank" rel="noopener">The ‘MP4’ Registration Authority</a>》</strong> 列出了当前注册过的一些 Box 类型，这么多的 Box 类型要完全支持还是很复杂的。而 Demo 解析的 box 可以查看  <a href="https://github.com/chenqihui/QHFlvParserMan" target="_blank" rel="noopener">QHFlvParserMan 里 QHMP4 的 类文件</a> 的注释。</p>
+<p>1、trak：Track Box，判断是两种类型的 trak：media track 和 hint track 哪一种<br>答：trak 里面的 mdia -&gt; hdlr：Handler Reference Box，包含了表明该轨道类型的信息：Video Track、Audio Track 或者 Hint Track。</p>
+<!--![](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/mp4-structure-2.jpg)-->
+<h4 id="分析-MP4-文件信息"><a href="#分析-MP4-文件信息" class="headerlink" title="分析 MP4 文件信息"></a>分析 MP4 文件信息</h4><h5 id="1、计算电影长度"><a href="#1、计算电影长度" class="headerlink" title="1、计算电影长度"></a>1、计算电影长度</h5><p>time scale 相当于定义了标准的1秒在这部电影里面的刻度是多少。<br>方法1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从 mvhd - movie header atom 中找到 time scale 和 duration ，duration 除以time scale 即是 整部MP4 的长度。<br>方法2<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个 trak -&gt; mdia -&gt; mdhd 里也会有 time scale 和 duration，通过其计算出 每个 track 的长度。<br>Demo: 只有一个 video track 和 audio track，所以它们分别的长度都等于总长度。<br>方法3<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;整部电影的duration = 每个帧的 duration 之和（从stts - Time-to-sample atoms中得出，即 sampleCount 乘以 sampleDuration），再除以 time scale（方法2 mdhd 读到的）</p>
+<h5 id="2、计算电影图像宽度和高度"><a href="#2、计算电影图像宽度和高度" class="headerlink" title="2、计算电影图像宽度和高度"></a>2、计算电影图像宽度和高度</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从tkhd – track header atom中找到宽度和高度即是（width &amp; height）</p>
+<h5 id="3、计算电影声音采样频率"><a href="#3、计算电影声音采样频率" class="headerlink" title="3、计算电影声音采样频率"></a>3、计算电影声音采样频率</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从tkhd – track header atom中找出audio track的time scale即是声音的采样频率。</p>
+<h5 id="4、计算视频帧率"><a href="#4、计算视频帧率" class="headerlink" title="4、计算视频帧率"></a>4、计算视频帧率</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先计算出整部电影的duration，和帧的数目然后<br>帧率 = 帧的数目 / 整部电影的duration<br>Demo: 192 / 12.8 = 15</p>
+<h5 id="5、计算电影的比特率"><a href="#5、计算电影的比特率" class="headerlink" title="5、计算电影的比特率"></a>5、计算电影的比特率</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;整部电影的尺寸除以长度，即是比特率（码率 kbps）<br>Demo: stsz<br>视频：1044840<em>8/12.8/1000=653.025kbit/s<br>音频：208772</em>8/12.8/1000=130.4825kbit/s    </p>
+<h5 id="6、查找sample"><a href="#6、查找sample" class="headerlink" title="6、查找sample"></a>6、查找sample</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当播放一部电影或者一个track的时候，对应的media handler必须能够正确的解析数据流，对一定的时间获取对应的媒体数据。如果是视频媒体， media handler可能会解析多个atom，才能找到给定时间的sample的大小和位置。</p>
+<p>具体步骤如下：</p>
+<ol>
+<li>确定时间 t，相对于媒体时间坐标系统 t 乘以 time scale（from mdhd）</li>
+<li>检查 stts（time-to-sample atom）来确定给定时间的 sample序号  </li>
+<li>检查 stsc（sample-to-chunk atom）来发现对应该 sample 的 chunk<br> （在 stsc 的 entrylist 里面：用下一个 entry 的 firstChunk 减去本次的 firstChunk，就得到了这组 chunk 的个数。最后一个 entry 结构体则表明从该firstChunk 到最后一个 chunk，每个 chunk 都有 samplsPerChunk 个 sample。<br> 即：firstChunk(N+1) - firstChunk(N) = chunkCount）</li>
+<li>从 stco（chunk offset atom）中提取该 chunk 的偏移量  </li>
+<li>利用 stsz（sample size atom）找到 sample 在 chunk 内的偏移量和 sample 的大小</li>
+</ol>
+<p>Demo：如果要找第1秒的视频数据，过程如下：</p>
+<ol>
+<li>第1秒的视频数据相对于此视频（timescale = 15360）的时间为 15360</li>
+<li>检查 stts（entryInfo = [[“sampleCount”: 192, “sampleDuration”: 1024]]），得出这里 sample 的 duration 都是 1024，从而得出需要寻找第15360/1024 = 15 + 1 = 16个sample</li>
+<li>检查 stsc（entryInfo = [[“firstChunk”: 1, “samplesPerChunk”: 2, “sampleDescriptionID”: 1], [“firstChunk”: 2, “samplesPerChunk”: 1, “sampleDescriptionID”: 1]]），为 2 列，则，第二个firstChunk减第一个 = 1，说明第一列是 1个chunk，包含 2个sample，然后通过 stco（entryCount = 191）知道 chunk 的总数是 191，也就是说 第二列 190 个chunk，各包含 1个sample，而 总smaple为192 也等于 stts（”sampleCount”: 192）。这样就得出在 第15（16个sample -&gt; 2 + 14 sample -&gt; 1 + 14 chunk -&gt; 15 chunk）个chunk。</li>
+<li>检查 stco（chunkOffset）找到 第15个chunk 的偏移量是 136470</li>
+<li>由于 第16个sample 是 第15个trunk 的 第一个sample，所以不用检查 sample size atom，chunk 的偏移量即是该 sample 的偏移量 136470。如果是这个 chunk 的第二个 sample，则从 sample size atom 中找到该 chunk 的前一个 sample 的大小，然后加上偏移量即可得到实际位置。</li>
+<li>得到位置后，即可取出相应数据进行解码，播放</li>
+</ol>
+<h5 id="7、查找关键帧"><a href="#7、查找关键帧" class="headerlink" title="7、查找关键帧"></a>7、查找关键帧</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查找过程与查找sample的过程非常类似，只是需要利用sync sample atom来确定key frame的sample序号  </p>
+<ol>
+<li>确定给定时间的sample序号 </li>
+<li>检查sync sample atom来发现这个sample序号之后的key frame</li>
+<li>检查sample-to-chunk atom来发现对应该sample的chunk</li>
+<li>从chunk offset atom中提取该trunk的偏移量</li>
+<li>利用sample size atom找到sample在trunk内的偏移量和sample的大小  </li>
+</ol>
+<h5 id="8、Seeking"><a href="#8、Seeking" class="headerlink" title="8、Seeking"></a>8、Seeking</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么我们如果对 MP4 文件做 Seek 操作呢？步骤如下：</p>
+<ol>
+<li>根据 mvhd(Movie Header Box) 中的 timescale 确定给定时间 t 在媒体时间坐标系统中的位置 p，即 t * timescale。</li>
+<li>根据 stts(Decoding Time to Sample Box) 查询指定 track 在时间坐标 p 之前的第一个 sample number。</li>
+<li>根据 stss(Sync Sample Box) 查询 sample number 前的第一个关键帧 sync sample。</li>
+<li>根据 stsc(Sample To Chunk Box) 查询对应 sync sample 的 chunk。</li>
+<li>根据 stco(Chunk Offset Box) 查询该 chunk 的在文件中的偏移量。</li>
+<li>根据 stsc(Sample To Chunk Box) 和 stsz(Sample Size Boxes) 的信息计算出该 chunk 中需要读取的 sample 数据，即完成 seek。</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;补充：<a href="http://www.52rd.com/Blog/Detail_RD.Blog_wqyuwss_7936.html" target="_blank" rel="noopener">Random access</a> </p>
+<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MP4文件、MOV文件和3GP文件，这三种媒体文件格式采用了相同的封装格式。<a href="https://my.oschina.net/alphajay/blog/4276" target="_blank" rel="noopener">Mp4编码全介绍 - AlphaJay</a></p>
+<h5 id="MOV"><a href="#MOV" class="headerlink" title="MOV"></a>MOV</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>苹果官方内容：<a href="https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFChap1/qtff1.html" target="_blank" rel="noopener">Overview of QTFF</a></strong>。它是1998年由苹果公司开发的一款视频格式，人们通常定义它为QuickTime播放器格式。它采用MPEG 4解码器进行压缩并兼容不同的轨道以便于储存电影和其他视频文件。它每一条轨道通常都要和至少一个或多个不同的编解码器进行编码。与其他视频格式相比，MOV毕竟是一种有损压缩文件，它之所以被广泛使用，主要还是因为它出色的兼容性能。它不仅可以与Macintosh平台兼容，也可以在Windows PC上运行的非常顺畅的。甚至是一些DVCPRO（一种高清的DV格式）文件也可以播放MOV视频。</p>
+<h4 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h4><ul>
+<li><a href="http://www.samirchen.com/video-playback-format/" target="_blank" rel="noopener">点播视频格式的选择 | SamirChen</a></li>
+<li><a href="http://www.52rd.com/Blog/wqyuwss/559/" target="_blank" rel="noopener">leslie - wqyuwss的专栏</a></li>
+<li><a href="https://www.cnblogs.com/ranson7zop/p/7889272.html" target="_blank" rel="noopener">mp4文件格式解析 - nigaopeng</a></li>
+<li><a href="http://zzqhost.github.io/hostwiki/%E5%A4%9A%E5%AA%92%E4%BD%93%E7%9B%B8%E5%85%B3_MP4%E5%AE%B9%E5%99%A8%E6%A0%BC%E5%BC%8F.html#toc_1.1" target="_blank" rel="noopener">MP4容器格式</a></li>
+<li><a href="https://my.oschina.net/alphajay/blog/4276" target="_blank" rel="noopener">Mp4编码全介绍 - AlphaJay</a></li>
+<li><a href="https://blog.csdn.net/luansxx/article/details/7721282" target="_blank" rel="noopener">播放器适配经验总结——IOS</a>  </li>
+<li><a href="https://blog.csdn.net/pirateleo/article/details/7590056/" target="_blank" rel="noopener">MP4文件格式详解——元数据moov（一）mvhd box</a></li>
+<li><a href="https://blog.csdn.net/koozxcv/article/details/50502034" target="_blank" rel="noopener">MP4解析</a></li>
+<li><a href="https://blog.csdn.net/tung214/article/details/30492895" target="_blank" rel="noopener">stagefright之MPEG4Extractor（二）(stts,stsc,stco)</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Swift/" rel="tag"># Swift</a>
+          
+            <a href="/tags/MacOS/" rel="tag"># MacOS</a>
+          
+            <a href="/tags/MP4/" rel="tag"># MP4</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/23/iOS-字符的-Encode-Decode/" rel="next" title="iOS 字符的 Encode & Decode">
+                <i class="fa fa-chevron-left"></i> iOS 字符的 Encode & Decode
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/16/PDF-预览-解析/" rel="prev" title="PDF 预览 & 解析">
+                PDF 预览 & 解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/RyuukuChen.jpeg" alt="AnakinChen">
+          <p class="site-author-name" itemprop="name">AnakinChen</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#工具"><span class="nav-number">1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视频一谈-amp-MP4-注意问题"><span class="nav-number">2.</span> <span class="nav-text">视频一谈 &amp; MP4 注意问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MP4-文件结构和-Box-描述"><span class="nav-number">3.</span> <span class="nav-text">MP4 文件结构和 Box 描述</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基本构成"><span class="nav-number">3.1.</span> <span class="nav-text">基本构成</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Box"><span class="nav-number">3.2.</span> <span class="nav-text">Box</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-MP4-文件信息"><span class="nav-number">4.</span> <span class="nav-text">分析 MP4 文件信息</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、计算电影长度"><span class="nav-number">4.1.</span> <span class="nav-text">1、计算电影长度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、计算电影图像宽度和高度"><span class="nav-number">4.2.</span> <span class="nav-text">2、计算电影图像宽度和高度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、计算电影声音采样频率"><span class="nav-number">4.3.</span> <span class="nav-text">3、计算电影声音采样频率</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、计算视频帧率"><span class="nav-number">4.4.</span> <span class="nav-text">4、计算视频帧率</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、计算电影的比特率"><span class="nav-number">4.5.</span> <span class="nav-text">5、计算电影的比特率</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6、查找sample"><span class="nav-number">4.6.</span> <span class="nav-text">6、查找sample</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7、查找关键帧"><span class="nav-number">4.7.</span> <span class="nav-text">7、查找关键帧</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8、Seeking"><span class="nav-number">4.8.</span> <span class="nav-text">8、Seeking</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#补充"><span class="nav-number">5.</span> <span class="nav-text">补充</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#MOV"><span class="nav-number">5.1.</span> <span class="nav-text">MOV</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考："><span class="nav-number">6.</span> <span class="nav-text">参考：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AnakinChen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

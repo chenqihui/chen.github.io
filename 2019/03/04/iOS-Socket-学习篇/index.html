@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Socket,TCP / UDP / IP,WebSocket,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;谈谈 Socket 的大纲  概念 基本操作 Socket、CFSocket、GCDCocoaAysnSocket 第三方封装 SocketRocket、Pemolo、SocketIO 简单功能：测试 &amp;amp; 域名访问 SimplePing 服务端（Mac） 数据格式：使用 二进制 或者 protocolbuf">
+<meta name="keywords" content="Socket,TCP &#x2F; UDP &#x2F; IP,WebSocket">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS Socket 学习篇">
+<meta property="og:url" content="http://chenqihui.github.io/2019/03/04/iOS-Socket-学习篇/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;谈谈 Socket 的大纲  概念 基本操作 Socket、CFSocket、GCDCocoaAysnSocket 第三方封装 SocketRocket、Pemolo、SocketIO 简单功能：测试 &amp;amp; 域名访问 SimplePing 服务端（Mac） 数据格式：使用 二进制 或者 protocolbuf">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2702646-5eaf55a2a5469d4e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/640/format/webp.p">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1156719-f11be16e57524586.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/489/format/webp.p">
+<meta property="og:updated_time" content="2020-08-02T18:16:51.467Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS Socket 学习篇">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;谈谈 Socket 的大纲  概念 基本操作 Socket、CFSocket、GCDCocoaAysnSocket 第三方封装 SocketRocket、Pemolo、SocketIO 简单功能：测试 &amp;amp; 域名访问 SimplePing 服务端（Mac） 数据格式：使用 二进制 或者 protocolbuf">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2702646-5eaf55a2a5469d4e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/640/format/webp.p">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chenqihui.github.io/2019/03/04/iOS-Socket-学习篇/">
+
+
+
+
+
+  <title>iOS Socket 学习篇 | RyuukuSpace</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RyuukuSpace</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">iOS开发</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-paper-plane"></i> <br>
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chenqihui.github.io/2019/03/04/iOS-Socket-学习篇/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AnakinChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/RyuukuChen.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RyuukuSpace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS Socket 学习篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-04T01:23:14+08:00">
+                2019-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>  阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谈谈 Socket 的大纲</p>
+<ul>
+<li>概念</li>
+<li>基本操作 Socket、CFSocket、GCDCocoaAysnSocket</li>
+<li>第三方封装 SocketRocket、Pemolo、SocketIO</li>
+<li>简单功能：测试 &amp; 域名访问 SimplePing</li>
+<li>服务端（Mac）</li>
+<li>数据格式：使用 二进制 或者 protocolbuffer </li>
+<li>模拟 HTTP 和 HTTPS（顺序学习 HTTP 协议头）</li>
+<li>抓包 基本协议、了解下 TCP、UDP</li>
+<li>WebSocket 协议（WebRTC）</li>
+</ul>
+<a id="more"></a>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Socket 在很多场景都使用上，如 IM、直播间公屏、推送、推流等等。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本博文所使用的 <a href="https://github.com/chenqihui/QHSocketDemo" target="_blank" rel="noopener">chenqihui/QHSocketDemo</a> 项目例子。</p>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;伯克利套接字（英语：Internet Berkeley sockets） ，又称为BSD 套接字(BSD sockets)是一种应用程序接口（API），用于网络套接字（ socket）与Unix域套接字，包括了一个用C语言写成的应用程序开发库，主要用于实现进程间通讯，在计算机网络通讯方面被广泛使用。</p>
+<ul>
+<li><a href="https://zh.wikipedia.org/wiki/Berkeley%E5%A5%97%E6%8E%A5%E5%AD%97" target="_blank" rel="noopener">Berkeley套接字</a></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作为介绍 Socket，墙裂推荐下面的文章，服务端的 node.js 也是采用下文作者提供的（只是增加了 SocketIO）。</p>
+<ul>
+<li><a href="https://www.jianshu.com/p/2dbb360886a8" target="_blank" rel="noopener">iOS即时通讯，从入门到“放弃”？</a></li>
+<li><a href="http://ios.jobbole.com/84039/" target="_blank" rel="noopener">深入浅出：iOS 的 TCP/IP 协议族剖析 &amp;&amp; Socket - IOS</a></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Socket 是在 TCP、UDP等协议基础上实现进程间通讯的封装。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2702646-5eaf55a2a5469d4e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/640/format/webp.p" alt=""></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而选择哪种协议可以测试在目前移动网络环境下，哪种更加稳定和功耗更小：</p>
+<ul>
+<li><a href="http://www.52im.net/thread-33-1-1.html" target="_blank" rel="noopener">移动端IM/推送系统的协议选型：UDP还是TCP</a></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他</p>
+<ul>
+<li><a href="https://baike.baidu.com/item/INADDR_ANY/1493998" target="_blank" rel="noopener">INADDR_ANY</a></li>
+</ul>
+<h4 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h4><h5 id="C-Socket"><a href="#C-Socket" class="headerlink" title="C Socket"></a>C Socket</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TCP 服务器端：<br>socket() -&gt; bind() -&gt; listen() -&gt; accept() -阻塞直到有客户端连接-&gt; read() -&gt; write() -&gt; read() -&gt; close()<br>创建套接字 -&gt; 绑定本机端口 -&gt; 侦听端口 -&gt; 建立连接 - 等待客户端连接 -&gt; 数据传输（请求、回应、请求数据 -&gt; 结束连接  </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TCP 客户端：<br>socket() -&gt; connect -&gt; write() -&gt; read() -&gt; close()<br>创建套接字 -&gt; 建立连接 -&gt; 数据传输（回应、请求数据） -&gt; 结束连接  </p>
+<p><img src="https://upload-images.jianshu.io/upload_images/1156719-f11be16e57524586.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/489/format/webp.p" alt=""></p>
+<p>创建 Socket，SOCKET_STREAM 是实现 TCP，SOCKET_DGRAM 则是实现 UDP</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">一 三种类型的套接字：</span><br><span class="line">1.流式套接字（SOCKET_STREAM)</span><br><span class="line">    提供面向连接的可靠的数据传输服务。数据被看作是字节流，无长度限制。例如FTP协议就采用这种。</span><br><span class="line">2.数据报式套接字（SOCKET_DGRAM）</span><br><span class="line">    提供无连接的数据传输服务，不保证可靠性。</span><br><span class="line">3.原始式套接字（SOCKET_RAW）</span><br><span class="line">    该接口允许对较低层次协议，如IP，ICMP直接访问。</span><br><span class="line">*/</span><br><span class="line">int socket(int domain, int type, int protocol);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 1、使用子线程进行 while 访问是否有数据</span><br><span class="line">while ((recvLen = recv(self.socketClient, buf, sizeof(buf), 0))) &#123;...&#125;</span><br><span class="line"></span><br><span class="line">// 2、在关闭 Socket 的时候，有可能 Host &amp; Port 会进入等待一段时间，而立即关闭可设置</span><br><span class="line">BOOL bDontLinger = FALSE;</span><br><span class="line">setsockopt(socket, SOL_SOCKET, SO_LINGER, (const char*)&amp;bDontLinger, sizeof(BOOL));</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>问题：</strong></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;服务端与客户端连接成功之后，服务端关闭，而客户端未关闭（或者在其之后关闭），会造成使用的端口暂时无法继续使用</p>
+<ul>
+<li><a href="https://blog.csdn.net/king16304/article/details/52278322" target="_blank" rel="noopener">socket 通信关于bind那点事1 - king16304的博客</a></li>
+<li><a href="https://blog.csdn.net/jnu_simba/article/details/9068059" target="_blank" rel="noopener">linux网络编程之socket（十）：shutdown 与 close 函数 的区别 - Meditation</a></li>
+<li><a href="https://baike.baidu.com/item/recv%28%29/10082153?fr=aladdin" target="_blank" rel="noopener">recv()</a></li>
+<li><a href="https://blog.csdn.net/cym64039/article/details/18269983" target="_blank" rel="noopener">(socket)如何解除绑定bind - cym64039的专栏</a></li>
+<li><a href="https://www.cnblogs.com/youxin/p/4056041.html" target="_blank" rel="noopener">tcp 服务端如何判断客户端断开连接 - youxin</a></li>
+</ul>
+<h5 id="CFSocket"><a href="#CFSocket" class="headerlink" title="CFSocket"></a>CFSocket</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它是 iOS 基于 BSD socket 实现的一套通讯 Socket。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 1、cfsocketref 怎么断开？</span><br><span class="line">CFSocketInvalidate(s);  //closes the socket, unless you set the option to not close on invalidation</span><br><span class="line">CFRelease(s);  //balance the create</span><br><span class="line"></span><br><span class="line">// 2、while read 时候需要判断读取状态，需要对 Socket 的错误 &amp; 终止情况进行处理</span><br></pre></td></tr></table></figure>
+<ul>
+<li><a href="https://developer.apple.com/documentation/corefoundation/cfsocket-rg7" target="_blank" rel="noopener">CFSocket | Apple Developer Documentation</a></li>
+<li><a href="https://www.jianshu.com/p/9353105a9129" target="_blank" rel="noopener">iOS 开发之CFSocket</a></li>
+<li><a href="https://www.cnblogs.com/kenshincui/p/6823841.html" target="_blank" rel="noopener">iOS刨根问底-深入理解RunLoop - KenshinCui</a></li>
+</ul>
+<h5 id="CocoaAsyncSocket"><a href="#CocoaAsyncSocket" class="headerlink" title="CocoaAsyncSocket"></a>CocoaAsyncSocket</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它是谷歌的开发者，基于BSD-Socket写的一个IM框架，它给Mac和iOS提供了易于使用的、强大的异步套接字库，向上封装出简单易用OC接口。</p>
+<ul>
+<li><a href="https://github.com/robbiehanson/CocoaAsyncSocket" target="_blank" rel="noopener">robbiehanson/CocoaAsyncSocket</a></li>
+<li><a href="https://www.jianshu.com/p/fdd3d429bdb3" target="_blank" rel="noopener">iOS即时通讯进阶 - CocoaAsyncSocket源码解析(Read篇)</a></li>
+<li><a href="http://www.cocoachina.com/ios/20170615/19529.html" target="_blank" rel="noopener">【iOS开发】之CocoaAsyncSocket使用</a></li>
+</ul>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而以上都是基于最底层的 Socket 实现，虽然在使用的 API 上略微有点不同，可是如果直接使用他们需要处理以下问题</p>
+<ul>
+<li>心跳</li>
+<li>粘包 &amp; 断包</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它们的处理在上面的参考文章都有所提及。而粘包 &amp; 断包 的处理可最常使用为以下三种</p>
+<ul>
+<li>协议头，如 JSON 这类格式，使用长度等参数记录</li>
+<li>分隔符</li>
+<li>固定长度</li>
+</ul>
+<h4 id="第三方封装"><a href="#第三方封装" class="headerlink" title="第三方封装"></a>第三方封装</h4><h5 id="SocketRocket"><a href="#SocketRocket" class="headerlink" title="SocketRocket"></a>SocketRocket</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它是 Objective-C 版的 WebSocket，使用的是 WebSocket 协议，此协议会在后面说明</p>
+<ul>
+<li><a href="https://github.com/facebook/SocketRocket" target="_blank" rel="noopener">facebook/SocketRocket: A conforming Objective-C WebSocket client library.</a></li>
+</ul>
+<h5 id="SocketIO"><a href="#SocketIO" class="headerlink" title="SocketIO"></a>SocketIO</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有很多人经常讲 Socket.io 与 websocket 搞混，实际上他们并不完全等同。它一个完全由 JavaScript 实现、基于Node.js、支持 WebSocket 协议用于实时通信、跨平台的开源框架，它包括了客户端的JavaScript和服务器端的Node.js。也就是说 Socket.io 将 Websocket 和轮询（Polling）机制以及其它的实时通信方式封装成了通用的接口，并且在服务端实现了这些实时通信机制。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Socket.io 中 主要使用了 websocket，将轮询作为其辅助选项，提供的是相同的接口。其与 node.js 一样，也是事件驱动的。</p>
+<ul>
+<li><a href="https://socket.io/docs/#Installing" target="_blank" rel="noopener">Socket.IO — Docs | Socket.IO</a></li>
+<li><a href="https://github.com/socketio/socket.io" target="_blank" rel="noopener">socketio/socket.io: Realtime application framework (Node.JS server)</a></li>
+<li><a href="https://github.com/nuclearace/Socket.IO-Client-Swift" target="_blank" rel="noopener">nuclearace/Socket.IO-Client-Swift: socket.io-client for Swift</a></li>
+</ul>
+<h5 id="Pomelo"><a href="#Pomelo" class="headerlink" title="Pomelo"></a>Pomelo</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网易的 pomelo 协议就是基于 SocketRocket\SocketIO 进行封装。它的分布式体现在了服务端。</p>
+<ul>
+<li><a href="https://github.com/NetEase" target="_blank" rel="noopener">NetEase</a></li>
+<li><a href="https://github.com/NetEase/pomelo/wiki/pomelo%E6%9E%B6%E6%9E%84%E6%A6%82%E8%A7%88" target="_blank" rel="noopener">pomelo架构概览 · NetEase/pomelo Wiki</a></li>
+</ul>
+<p>1、SocketIO-Pomelo </p>
+<ul>
+<li><a href="https://github.com/NetEase/pomelo-ioschat" target="_blank" rel="noopener">NetEase/pomelo-ioschat: A chat demo for pomelo iOS client</a></li>
+</ul>
+<p>2、SRWebsocket-Pomelo</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将 Pomelo 只使用 SRWebSocket</p>
+<ul>
+<li><a href="https://github.com/GeforceLee/Websocket-Pomelo/blob/480ec196bec4bba4df48d18612f1edbdf5d375f9/Client/Client/Pomelo/lib/PomeloClient.m" target="_blank" rel="noopener">Websocket-Pomelo/PomeloClient.m at GeforceLee/Websocket-Pomelo</a></li>
+</ul>
+<h5 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以发现上述的第三方封装清一色的使用 WebSocket 协议。可以提前了解下协议。</p>
+<ul>
+<li><a href="https://www.cnblogs.com/jiangzhaowei/p/8781635.html" target="_blank" rel="noopener">WebSocket、Socket、TCP、HTTP区别 - 江召伟</a></li>
+</ul>
+<h4 id="SimplePing"><a href="#SimplePing" class="headerlink" title="SimplePing"></a>SimplePing</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用它可以进行域名访问的简单测试，在 <a href="http://chenqihui.github.io/2018/09/05/iOS-%E7%BD%91%E9%80%9F%E7%9B%91%E6%8E%A7-%E5%AD%A6%E4%B9%A0%E7%AF%87/#SimplePing">《iOS 网速监控 学习篇》4.3. SimplePing</a> 也有提及。</p>
+<ul>
+<li><a href="https://developer.apple.com/library/archive/samplecode/SimplePing/Introduction/Intro.html#//apple_ref/doc/uid/DTS10000716-Intro-DontLinkElementID_2" target="_blank" rel="noopener">SimplePing</a></li>
+<li><a href="https://www.jianshu.com/p/106e35daff87" target="_blank" rel="noopener">iOS ping - SimplePing 源码解读</a></li>
+</ul>
+<h4 id="服务端（Mac）"><a href="#服务端（Mac）" class="headerlink" title="服务端（Mac）"></a>服务端（Mac）</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node.js 服务器：<a href="https://github.com/chenqihui/QHSocketDemo/tree/master/%E6%9C%8D%E5%8A%A1%E7%AB%AF\(node.js\" target="_blank" rel="noopener">QHSocketDemo/服务端</a>)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// node.js </span><br><span class="line">node server.js</span><br><span class="line"></span><br><span class="line">// 或者在 mac命令行终端 输入</span><br><span class="line">nc -lk [port]</span><br></pre></td></tr></table></figure>
+<h4 id="传输格式"><a href="#传输格式" class="headerlink" title="传输格式"></a>传输格式</h4><h5 id="二进制"><a href="#二进制" class="headerlink" title="二进制"></a>二进制</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Socket 传输都是 NSData.bytes。这里的二进制指的是协议，一般在接口传入 NSString/NSDate，最常采用类似是 json 或者 xml 等格式。但会增加多余的字段，而如果采取约定好的字段，如下</p>
+<p>length type value<br>4    4    length  </p>
+<p>电话    11 String 13812345678<br>姓名    3 String 某某某<br>性别    1 int 1/男<br>婚姻    1 int 0/未婚  </p>
+<p>爱好    4 String 游泳、跑步、篮球、唱歌  </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过使用 length + value 记录，即写入或者读取都先计算长度，在得到value，当然这里省略了 key，也就是取值顺序是固定的</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)readChar:(<span class="built_in">NSData</span> *)data &#123;</span><br><span class="line">    <span class="keyword">int</span> nOffset = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">NSString</span> *t = [<span class="keyword">self</span> readStringWithData:data output:&amp;nOffset];</span><br><span class="line">    <span class="built_in">NSString</span> *n = [<span class="keyword">self</span> readStringWithData:data output:&amp;nOffset];</span><br><span class="line">    <span class="built_in">NSInteger</span> s = [<span class="keyword">self</span> readIntWithData:data output:&amp;nOffset];</span><br><span class="line">    <span class="built_in">NSInteger</span> h = [<span class="keyword">self</span> readIntWithData:data output:&amp;nOffset];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@,%@,%li,%li"</span>, t, n, (<span class="keyword">long</span>)s, (<span class="keyword">long</span>)h);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="ProtocolBuffer"><a href="#ProtocolBuffer" class="headerlink" title="ProtocolBuffer"></a>ProtocolBuffer</h5><ul>
+<li><a href="https://www.jianshu.com/p/bc39f33146b0" target="_blank" rel="noopener">iOS 使用ProtocolBuffer进行数据传输</a></li>
+<li><a href="http://www.cnblogs.com/tandaxia/p/6181534.html" target="_blank" rel="noopener">iOS之ProtocolBuffer搭建和示例demo - TDX</a></li>
+<li><a href="https://www.jianshu.com/p/751aa2b621d5" target="_blank" rel="noopener">ProtocolBuffer在iOS中的使用</a></li>
+<li><a href="https://www.jianshu.com/p/f44b84b08289" target="_blank" rel="noopener">Google Protocol Buffer 的优点与不足</a></li>
+<li><a href="https://blog.csdn.net/gt9000/article/details/86354510" target="_blank" rel="noopener">我经历的 Protocol Buffers 那些坑 - gt9000的博客</a></li>
+<li><a href="https://blog.csdn.net/u013776188/article/details/77966092" target="_blank" rel="noopener">protocol buffer开发指南（官方） - 各位-请不吝赐教</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/linux/l-cn-gpb/index.html" target="_blank" rel="noopener">Google Protocol Buffer 的使用和原理</a></li>
+</ul>
+<h4 id="Http-amp-HTTPS"><a href="#Http-amp-HTTPS" class="headerlink" title="Http &amp; HTTPS"></a>Http &amp; HTTPS</h4><h5 id="抓包"><a href="#抓包" class="headerlink" title="抓包"></a>抓包</h5><ul>
+<li><a href="https://blog.csdn.net/liu251/article/details/52096142" target="_blank" rel="noopener">Mac OS 下Charles+Chrome Omega配置方法 - New World</a></li>
+<li><a href="https://www.jianshu.com/p/498884193013" target="_blank" rel="noopener">Charles抓https显示unknown解决方法</a></li>
+</ul>
+<h5 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h5><ul>
+<li><a href="https://github.com/FieldsOfHope/Socket_Interactive/blob/master/Socket_Interactive/Socket_Interactive/ViewController.m" target="_blank" rel="noopener">Socket_Interactive/ViewController.m</a></li>
+<li><a href="https://www.cnblogs.com/icez/p/3983240.html" target="_blank" rel="noopener">socket编程实现HTTP请求 - 艾斯泽</a><!--校验本地ssl--></li>
+<li><a href="https://stackoverflow.com/questions/19232228/ssl-socket-connection-ios" target="_blank" rel="noopener">SSL Socket connection iOS</a></li>
+</ul>
+<h5 id="Https（仍在实践中）"><a href="#Https（仍在实践中）" class="headerlink" title="Https（仍在实践中）"></a>Https（仍在实践中）</h5><p>1、 by CocoaAsyncSocket</p>
+<ul>
+<li><a href="https://www.jianshu.com/p/4d7b8a0627a6" target="_blank" rel="noopener">iOS开发之Socket实现HTTPS GET请求通过Body传参</a></li>
+</ul>
+<p>2、 for Android</p>
+<ul>
+<li><a href="https://blog.csdn.net/u013749540/article/details/73293921" target="_blank" rel="noopener">自己动手利用Socket 实现HTTP与HTTPS - 随手记两笔</a></li>
+<li><a href="https://www.cnblogs.com/cxwx/archive/2011/10/25/2224105.html" target="_blank" rel="noopener">通过Socket进行HttP/HTTPS网页操作 - lianghugg</a></li>
+</ul>
+<p>3、 Https 证书验证</p>
+<ul>
+<li><a href="https://www.cnblogs.com/zhang6332/p/6289949.html" target="_blank" rel="noopener">iOS 的三种自建证书方法https请求相关配置 - t天t天</a></li>
+<li><a href="https://www.jianshu.com/p/bf5da5dec233" target="_blank" rel="noopener">iOS安全-证书、密钥及信任服务(Certificate, Key, and Trust Se…</a></li>
+<li><a href="https://codeday.me/bug/20180927/264210.html" target="_blank" rel="noopener">用于在iOS上运行HTTPS服务器的SSL身份证书</a></li>
+</ul>
+<h4 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h4><ul>
+<li><a href="https://blog.csdn.net/sinat_31057219/article/details/72872359" target="_blank" rel="noopener">TCP、UDP、HTTP、SOCKET、WebSocket之间的区别 - 火星男孩的分享空间</a></li>
+<li><a href="https://blog.csdn.net/Pk_zsq/article/details/6087367" target="_blank" rel="noopener">TCP/IP、Http、Socket的区别 - Pk_zsq的专栏</a><!--删除下面博文关于 socket 的部分--></li>
+<li><a href="http://chenqihui.github.io/2018/09/05/iOS-%E7%BD%91%E9%80%9F%E7%9B%91%E6%8E%A7-%E5%AD%A6%E4%B9%A0%E7%AF%87/#Socket-%E7%BC%96%E7%A8%8B">5. Socket 编程</a></li>
+</ul>
+<h4 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h4><blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WebSocket 和 Socket 虽然名称上很像，但两者是完全不同的东西， WebSocket 是建立在 TCP/IP 协议之上，属于应用层的协议，而 Socket 是在应用层和传输层中的一个抽象层，它是将 TCP/IP 层的复杂操作抽象成几个简单的接口来提供给应用层调用。</p>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正如描述的一样，WebSocket 是一个应用层协议，它定义了握手的规则，数据传输的格式，格式如下：</p>
+<p>《<a href="http://zeeyang.com/2017/07/02/websocket/" target="_blank" rel="noopener">WebSocket 实现原理</a>》和<br>《<a href="https://www.jianshu.com/p/3d2908d6efcd?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" target="_blank" rel="noopener">WebSocket协议简介</a>》里面都详细地介绍了各个字段的含义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">0                   1                   2                   3</span><br><span class="line">0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1</span><br><span class="line">+-+-+-+-+-------+-+-------------+-------------------------------+</span><br><span class="line">|F|R|R|R| opcode|M| Payload len |    Extended payload length    |</span><br><span class="line">|I|S|S|S|  (4)  |A|     (7)     |             (16/64)           |</span><br><span class="line">|N|V|V|V|       |S|             |   (if payload len==126/127)   |</span><br><span class="line">| |1|2|3|       |K|             |                               |</span><br><span class="line">+-+-+-+-+-------+-+-------------+ - - - - - - - - - - - - - - - +</span><br><span class="line">|     Extended payload length continued, if payload len == 127  |</span><br><span class="line">+ - - - - - - - - - - - - - - - +-------------------------------+</span><br><span class="line">|                               |Masking-key, if MASK set to 1  |</span><br><span class="line">+-------------------------------+-------------------------------+</span><br><span class="line">| Masking-key (continued)       |          Payload Data         |</span><br><span class="line">+-------------------------------- - - - - - - - - - - - - - - - +</span><br><span class="line">:                     Payload Data continued ...                :</span><br><span class="line">+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +</span><br><span class="line">|                     Payload Data continued ...                |</span><br><span class="line">+---------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+<p>《<a href="https://www.cnblogs.com/Herzog3/p/5088130.html" target="_blank" rel="noopener">WebSocket的原理，以及和Http的关系</a>》不仅介绍了不同处，还相当趣味地介绍了 WebSocket 的握手规则，当然上面的博文也都有说明，和《<a href="https://www.jianshu.com/p/0e5b946880b4" target="_blank" rel="noopener">刨根问底HTTP和WebSocket协议</a>》、《<a href="https://www.jianshu.com/p/f666da1b1835" target="_blank" rel="noopener">刨根问底HTTP和WebSocket协议(二）</a>》</p>
+<blockquote>
+<p>二、WebSocket是什么样的协议，具体有什么优点。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先，相对于Http这种非持久的协议来说，WebSocket是一种持久化的协议。</p>
+<p>举例说明：</p>
+<p>（1）Http的生命周期通过Request来界定，也就是Request一个Response，那么在Http1.0协议中，这次Http请求就结束了。</p>
+<p>在Http1.1中进行了改进，是的有一个Keep-alive，也就是说，在一个Http连接中，可以发送多个Request，接收多个Response。</p>
+<p>但是必须记住，在Http中一个Request只能对应有一个Response，而且这个Response是被动的，不能主动发起。</p>
+<p>（2）WebSocket是基于Http协议的，或者说借用了Http协议来完成一部分握手，在握手阶段与Http是相同的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先我们来看个典型的Websocket握手（借用Wikipedia的。。）<br>GET /chat HTTP/1.1<br>Host: server.example.com<br>Upgrade: websocket<br>Connection: Upgrade<br>Sec-WebSocket-Protocol: chat, superchat<br>Sec-WebSocket-Version: 13<br>Origin: <a href="http://example.com" target="_blank" rel="noopener">http://example.com</a><br>熟悉HTTP的童鞋可能发现了，这段类似HTTP协议的握手请求中，多了几个东西。<br>我会顺便讲解下作用。<br>Upgrade: websocket<br>Connection: Upgrade<br>这个就是Websocket的核心了，告诉Apache、Nginx等服务器：注意啦，窝发起的是Websocket协议，快点帮我找到对应的助理处理~不是那个老土的HTTP。<br>Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==<br>Sec-WebSocket-Protocol: chat, superchat<br>Sec-WebSocket-Version: 13<br>首先，Sec-WebSocket-Key 是一个Base64   encode的值，这个是浏览器随机生成的，告诉服务器：泥煤，不要忽悠窝，我要验证尼是不是真的是Websocket助理。<br>然后，Sec_WebSocket-Protocol   是一个用户定义的字符串，用来区分同URL下，不同的服务所需要的协议。简单理解：今晚我要服务A，别搞错啦~<br>最后，Sec-WebSocket-Version 是告诉服务器所使用的Websocket Draft（协议版本），在最初的时候，Websocket协议还在 Draft 阶段，各种奇奇怪怪的协议都有，而且还有很多期奇奇怪怪不同的东西，什么Firefox和Chrome用的不是一个版本之类的，当初Websocket协议太多可是一个大难题。。不过现在还好，已经定下来啦~大家都使用的一个东西~ 脱水：服务员，我要的是13岁的噢→_→</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后服务器会返回下列东西，表示已经接受到请求， 成功建立Websocket啦！<br>HTTP/1.1 101 Switching Protocols<br>Upgrade: websocket<br>Connection: Upgrade<br>Sec-WebSocket-Accept:   HSmrc0sMlYUkAGmm5OPpG2HaGWk=<br>Sec-WebSocket-Protocol: chat<br>这里开始就是HTTP最后负责的区域了，告诉客户，我已经成功切换协议啦~<br>Upgrade: websocket<br>Connection: Upgrade<br>依然是固定的，告诉客户端即将升级的是Websocket协议，而不是mozillasocket，lurnarsocket或者shitsocket。<br>然后，Sec-WebSocket-Accept 这个则是经过服务器确认，并且加密过后的 Sec-WebSocket-Key。服务器：好啦好啦，知道啦，给你看我的ID CARD来证明行了吧。。<br>后面的，Sec-WebSocket-Protocol 则是表示最终使用的协议。</p>
+<p>至此，HTTP已经完成它所有工作了，接下来就是完全按照Websocket协议进行了。<br>其后是WebSocket协议的工作。</p>
+</blockquote>
+<ul>
+<li><a href="https://www.zhihu.com/question/20215561" target="_blank" rel="noopener">WebSocket 是什么原理？为什么可以实现持久连接？</a></li>
+<li><a href="http://www.antyme.com/2016/12/14/WebSocket%E5%8D%8F%E8%AE%AE-SocketRocket%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" target="_blank" rel="noopener">WebSocket协议、SocketRocket源码学习</a></li>
+<li><a href="https://www.cnblogs.com/cishengchongyan/p/6106602.html" target="_blank" rel="noopener">websocket与socket.io - 此生重演</a></li>
+<li><a href="https://www.cnblogs.com/foupwang/p/7865694.html" target="_blank" rel="noopener">WebSocket和SocketIO总结 - foupwang</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Socket/" rel="tag"># Socket</a>
+          
+            <a href="/tags/TCP-UDP-IP/" rel="tag"># TCP / UDP / IP</a>
+          
+            <a href="/tags/WebSocket/" rel="tag"># WebSocket</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/16/iOS-组合礼物特效/" rel="next" title="iOS 组合礼物特效">
+                <i class="fa fa-chevron-left"></i> iOS 组合礼物特效
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/12/iOS-弹幕系统之智能弹幕-学习篇/" rel="prev" title="iOS 弹幕系统之智能弹幕 学习篇">
+                iOS 弹幕系统之智能弹幕 学习篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/RyuukuChen.jpeg" alt="AnakinChen">
+          <p class="site-author-name" itemprop="name">AnakinChen</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本操作"><span class="nav-number">2.</span> <span class="nav-text">基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#C-Socket"><span class="nav-number">2.1.</span> <span class="nav-text">C Socket</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CFSocket"><span class="nav-number">2.2.</span> <span class="nav-text">CFSocket</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CocoaAsyncSocket"><span class="nav-number">2.3.</span> <span class="nav-text">CocoaAsyncSocket</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#总结"><span class="nav-number">2.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三方封装"><span class="nav-number">3.</span> <span class="nav-text">第三方封装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SocketRocket"><span class="nav-number">3.1.</span> <span class="nav-text">SocketRocket</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SocketIO"><span class="nav-number">3.2.</span> <span class="nav-text">SocketIO</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Pomelo"><span class="nav-number">3.3.</span> <span class="nav-text">Pomelo</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#总结-1"><span class="nav-number">3.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SimplePing"><span class="nav-number">4.</span> <span class="nav-text">SimplePing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服务端（Mac）"><span class="nav-number">5.</span> <span class="nav-text">服务端（Mac）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#传输格式"><span class="nav-number">6.</span> <span class="nav-text">传输格式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#二进制"><span class="nav-number">6.1.</span> <span class="nav-text">二进制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ProtocolBuffer"><span class="nav-number">6.2.</span> <span class="nav-text">ProtocolBuffer</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Http-amp-HTTPS"><span class="nav-number">7.</span> <span class="nav-text">Http &amp; HTTPS</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#抓包"><span class="nav-number">7.1.</span> <span class="nav-text">抓包</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HTTP"><span class="nav-number">7.2.</span> <span class="nav-text">HTTP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Https（仍在实践中）"><span class="nav-number">7.3.</span> <span class="nav-text">Https（仍在实践中）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#协议"><span class="nav-number">8.</span> <span class="nav-text">协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebSocket"><span class="nav-number">9.</span> <span class="nav-text">WebSocket</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AnakinChen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

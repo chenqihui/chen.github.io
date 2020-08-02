@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Swift,MacOS,M3U8,TS,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们已经了解到 m3u8 其实是一个文件，是 HLS 协议实现点播 &amp;amp; 直播的，还有 TS 文件。这里还有一篇讲解 AVPlayer 的，等编辑完再更新地址。 理论 HTTP Live Streaming (HLS) sends audio and video over HTTP from an ordin">
+<meta name="keywords" content="Swift,MacOS,M3U8,TS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="M3U8 &amp; TS 格式再谈">
+<meta property="og:url" content="http://chenqihui.github.io/2018/10/06/M3U8-TS-格式再谈/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们已经了解到 m3u8 其实是一个文件，是 HLS 协议实现点播 &amp;amp; 直播的，还有 TS 文件。这里还有一篇讲解 AVPlayer 的，等编辑完再更新地址。 理论 HTTP Live Streaming (HLS) sends audio and video over HTTP from an ordin">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/ts.png">
+<meta property="og:updated_time" content="2020-08-02T18:16:51.463Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="M3U8 &amp; TS 格式再谈">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们已经了解到 m3u8 其实是一个文件，是 HLS 协议实现点播 &amp;amp; 直播的，还有 TS 文件。这里还有一篇讲解 AVPlayer 的，等编辑完再更新地址。 理论 HTTP Live Streaming (HLS) sends audio and video over HTTP from an ordin">
+<meta name="twitter:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/ts.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chenqihui.github.io/2018/10/06/M3U8-TS-格式再谈/">
+
+
+
+
+
+  <title>M3U8 & TS 格式再谈 | RyuukuSpace</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RyuukuSpace</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">iOS开发</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-paper-plane"></i> <br>
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chenqihui.github.io/2018/10/06/M3U8-TS-格式再谈/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AnakinChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/RyuukuChen.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RyuukuSpace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">M3U8 & TS 格式再谈</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-06T16:54:35+08:00">
+                2018-10-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/音视频/" itemprop="url" rel="index">
+                    <span itemprop="name">音视频</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>  阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们已经了解到 m3u8 其实是一个文件，是 HLS 协议实现点播 &amp; 直播的，还有 TS 文件。这里还有一篇讲解 AVPlayer 的，等编辑完再更新地址。</p>
+<h4 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h4><blockquote>
+<p>HTTP Live Streaming (HLS) sends audio and video over HTTP from an ordinary web server for playback on iOS-based devices—including iPhone, iPad, iPod touch, and Apple TV—and on desktop computers (macOS). Using the same protocol that powers the web, HLS deploys content using ordinary web servers and content delivery networks. HLS is designed for reliability and dynamically adapts to network conditions by optimizing playback for the available speed of wired and wireless connections.</p>
+<p>HLS supports the following:</p>
+<ul>
+<li>Live broadcasts and prerecorded content (video on demand, or VOD)</li>
+<li>Multiple alternate streams at different bit rates</li>
+<li>Intelligent switching of streams in response to network bandwidth changes</li>
+<li>Media encryption and user authentication</li>
+</ul>
+</blockquote>
+<a id="more"></a>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HLS 的了解主要参考苹果文档，包括其协议、格式、部署等</p>
+<ul>
+<li><a href="https://developer.apple.com/streaming/" target="_blank" rel="noopener">HTTP Live Streaming (HLS) - Apple Developer</a></li>
+<li><p><a href="https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/StreamingMediaGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008332" target="_blank" rel="noopener">HTTP Live Streaming Overview</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/xiaojun111111/article/details/52102454" target="_blank" rel="noopener">HLS 实现点播和直播时，M3U8 文件的不同</a></p>
+</li>
+</ul>
+<h4 id="制作"><a href="#制作" class="headerlink" title="制作"></a>制作</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先了解下如何制作 m3u8，有以下几种常用的方式</p>
+<h5 id="ffmpeg"><a href="#ffmpeg" class="headerlink" title="ffmpeg"></a>ffmpeg</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 1、先用 ffmpeg 把 abc.mp4 文件转换为 abc.ts 文件：</span><br><span class="line">ffmpeg -y -i abc.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb abc.ts</span><br><span class="line"></span><br><span class="line"># 2、再用 ffmpeg 把 abc.ts 文件切片并生成 playlist.m3u8 文件，5秒一个切片：</span><br><span class="line">ffmpeg -i abc.ts -c copy -map 0 -f segment -segment_list playlist.m3u8 -segment_time 5 abc%03d.ts</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">// 1</span><br><span class="line">ffmpeg version 4.0 Copyright (c) 2000-2018 the FFmpeg developers</span><br><span class="line">  built with Apple LLVM version 9.1.0 (clang-902.0.39.1)</span><br><span class="line">  configuration: --prefix=/usr/local/Cellar/ffmpeg/4.0 --enable-shared --enable-pthreads --enable-version3 --enable-hardcoded-tables --enable-avresample --cc=clang --host-cflags= --host-ldflags= --enable-gpl --enable-libmp3lame --enable-libx264 --enable-libxvid --enable-opencl --enable-videotoolbox --disable-lzma</span><br><span class="line">  libavutil      56. 14.100 / 56. 14.100</span><br><span class="line">  libavcodec     58. 18.100 / 58. 18.100</span><br><span class="line">  libavformat    58. 12.100 / 58. 12.100</span><br><span class="line">  libavdevice    58.  3.100 / 58.  3.100</span><br><span class="line">  libavfilter     7. 16.100 /  7. 16.100</span><br><span class="line">  libavresample   4.  0.  0 /  4.  0.  0</span><br><span class="line">  libswscale      5.  1.100 /  5.  1.100</span><br><span class="line">  libswresample   3.  1.100 /  3.  1.100</span><br><span class="line">  libpostproc    55.  1.100 / 55.  1.100</span><br><span class="line">Input #0, mov,mp4,m4a,3gp,3g2,mj2, from &apos;hehe.mp4&apos;:</span><br><span class="line">  Metadata:</span><br><span class="line">    major_brand     : isom</span><br><span class="line">    minor_version   : 512</span><br><span class="line">    compatible_brands: isomiso2avc1mp41</span><br><span class="line">    encoder         : Lavf56.40.101</span><br><span class="line">  Duration: 00:04:03.53, start: 0.000000, bitrate: 837 kb/s</span><br><span class="line">    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 960x544, 768 kb/s, 25 fps, 25 tbr, 12800 tbn, 50 tbc (default)</span><br><span class="line">    Metadata:</span><br><span class="line">      handler_name    : VideoHandler</span><br><span class="line">    Stream #0:1(eng): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 64 kb/s (default)</span><br><span class="line">    Metadata:</span><br><span class="line">      handler_name    : SoundHandler</span><br><span class="line">Output #0, mpegts, to &apos;abc.ts&apos;:</span><br><span class="line">  Metadata:</span><br><span class="line">    major_brand     : isom</span><br><span class="line">    minor_version   : 512</span><br><span class="line">    compatible_brands: isomiso2avc1mp41</span><br><span class="line">    encoder         : Lavf58.12.100</span><br><span class="line">    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 960x544, q=2-31, 768 kb/s, 25 fps, 25 tbr, 90k tbn, 12800 tbc (default)</span><br><span class="line">    Metadata:</span><br><span class="line">      handler_name    : VideoHandler</span><br><span class="line">    Stream #0:1(eng): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 64 kb/s (default)</span><br><span class="line">    Metadata:</span><br><span class="line">      handler_name    : SoundHandler</span><br><span class="line">Stream mapping:</span><br><span class="line">  Stream #0:0 -&gt; #0:0 (copy)</span><br><span class="line">  Stream #0:1 -&gt; #0:1 (copy)</span><br><span class="line">Press [q] to stop, [?] for help</span><br><span class="line">frame= 6088 fps=0.0 q=-1.0 Lsize=   27544kB time=00:04:03.48 bitrate= 926.7kbits/s speed=1.65e+03x</span><br><span class="line">video:22847kB audio:1903kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 11.286891%</span><br><span class="line">    </span><br><span class="line">// 2</span><br><span class="line">ffmpeg version 4.0 Copyright (c) 2000-2018 the FFmpeg developers</span><br><span class="line">  built with Apple LLVM version 9.1.0 (clang-902.0.39.1)</span><br><span class="line">  configuration: --prefix=/usr/local/Cellar/ffmpeg/4.0 --enable-shared --enable-pthreads --enable-version3 --enable-hardcoded-tables --enable-avresample --cc=clang --host-cflags= --host-ldflags= --enable-gpl --enable-libmp3lame --enable-libx264 --enable-libxvid --enable-opencl --enable-videotoolbox --disable-lzma</span><br><span class="line">  libavutil      56. 14.100 / 56. 14.100</span><br><span class="line">  libavcodec     58. 18.100 / 58. 18.100</span><br><span class="line">  libavformat    58. 12.100 / 58. 12.100</span><br><span class="line">  libavdevice    58.  3.100 / 58.  3.100</span><br><span class="line">  libavfilter     7. 16.100 /  7. 16.100</span><br><span class="line">  libavresample   4.  0.  0 /  4.  0.  0</span><br><span class="line">  libswscale      5.  1.100 /  5.  1.100</span><br><span class="line">  libswresample   3.  1.100 /  3.  1.100</span><br><span class="line">  libpostproc    55.  1.100 / 55.  1.100</span><br><span class="line">Input #0, mpegts, from &apos;abc.ts&apos;:</span><br><span class="line">  Duration: 00:04:03.52, start: 1.480000, bitrate: 926 kb/s</span><br><span class="line">  Program 1</span><br><span class="line">    Metadata:</span><br><span class="line">      service_name    : Service01</span><br><span class="line">      service_provider: FFmpeg</span><br><span class="line">    Stream #0:0[0x100]: Video: h264 (High) ([27][0][0][0] / 0x001B), yuv420p(progressive), 960x544, 25 fps, 25 tbr, 90k tbn, 50 tbc</span><br><span class="line">    Stream #0:1[0x101](eng): Audio: aac (HE-AAC) ([15][0][0][0] / 0x000F), 44100 Hz, stereo, fltp, 63 kb/s</span><br><span class="line">[segment @ 0x7ffbae829a00] Opening &apos;abc000.ts&apos; for writing</span><br><span class="line">Output #0, segment, to &apos;abc%03d.ts&apos;:</span><br><span class="line">  Metadata:</span><br><span class="line">    encoder         : Lavf58.12.100</span><br><span class="line">    Stream #0:0: Video: h264 (High) ([27][0][0][0] / 0x001B), yuv420p(progressive), 960x544, q=2-31, 25 fps, 25 tbr, 90k tbn, 25 tbc</span><br><span class="line">    Stream #0:1(eng): Audio: aac (HE-AAC) ([15][0][0][0] / 0x000F), 44100 Hz, stereo, fltp, 63 kb/s</span><br><span class="line">Stream mapping:</span><br><span class="line">  Stream #0:0 -&gt; #0:0 (copy)</span><br><span class="line">  Stream #0:1 -&gt; #0:1 (copy)</span><br><span class="line">Press [q] to stop, [?] for help</span><br><span class="line">[segment @ 0x7ffbae829a00] Opening &apos;playlist.m3u8.tmp&apos; for writing</span><br><span class="line">[segment @ 0x7ffbae829a00] Opening &apos;abc001.ts&apos; for writing</span><br><span class="line">[segment @ 0x7ffbae829a00] Opening &apos;playlist.m3u8.tmp&apos; for writing</span><br><span class="line">[segment @ 0x7ffbae829a00] Opening &apos;abc002.ts&apos; for writing</span><br><span class="line">[segment @ 0x7ffbae829a00] Opening &apos;playlist.m3u8.tmp&apos; for writing</span><br><span class="line">[segment @ 0x7ffbae829a00] Opening &apos;abc003.ts&apos; for writing</span><br><span class="line">[segment @ 0x7ffbae829a00] Opening &apos;playlist.m3u8.tmp&apos; for writing</span><br><span class="line">frame= 6088 fps=0.0 q=-1.0 Lsize=N/A time=00:04:03.48 bitrate=N/A speed=1.35e+03x</span><br><span class="line">video:22883kB audio:1938kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown</span><br></pre></td></tr></table></figure>
+<p>参考：</p>
+<ul>
+<li><a href="https://blog.csdn.net/avsuper/article/details/72910907" target="_blank" rel="noopener">ffmpeg对mp4文件进行ts切片并生成m3u8文件</a></li>
+<li><a href="https://www.cnblogs.com/ChouDanDan/p/5566335.html" target="_blank" rel="noopener">利用ffmpeg将MP4文件切成ts和m3u8</a></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FFmpeg 切片  </p>
+<ul>
+<li><a href="http://ffmpeg.org/ffmpeg-formats.html#segment_002c-stream_005fsegment_002c-ssegment" target="_blank" rel="noopener">FFmpeg Formats Documentation</a></li>
+</ul>
+<h5 id="mediastreamsegmenter"><a href="#mediastreamsegmenter" class="headerlink" title="mediastreamsegmenter"></a>mediastreamsegmenter</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">which mediastreamsegmenter</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过如上校验是否安装 mediastreamsegmenter，如果没有输出 ‘/usr/local/bin/mediastreamsegmenter’，则可以通过 <a href="https://developer.apple.com/download/more/" target="_blank" rel="noopener">More Downloads for Apple Developers</a> 搜索 &amp; 下载 &amp; 安装（这里本人安装时候要求系统为 10.13.4 以上）</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后使用 <a href="http://www.videolan.org/vlc/" target="_blank" rel="noopener">VLC media player</a> + mediastreamsegmenter 进行切割，但是进行切割时候都出现 error，如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Sep 20 2018 11:47:37.447: audio pid set at c8</span><br><span class="line">Sep 20 2018 11:47:37.447: video pid set at 64</span><br><span class="line">Sep 20 2018 11:47:39.923: error in pid c8 (audio) - cc value should be 11 is 1</span><br><span class="line">Sep 20 2018 11:47:39.923: error in pid 64 (video) - cc value should be 1 is 2</span><br><span class="line">Sep 20 2018 11:47:39.923: error with dts last 20870876 now 65038674</span><br><span class="line">Sep 20 2018 11:47:39.924: average bit rate is  0.00 bits/sec - max file bit rate is  0.00 bits/sec</span><br><span class="line">Abort trap: 6</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;还需要后续测试，而参考文章里面有使用另一个工具 <strong>XAMPP</strong> 来推 HLS 流。</p>
+<p>参考</p>
+<ul>
+<li><a href="https://www.jianshu.com/p/7902a54c25f0" target="_blank" rel="noopener">HLS（HTTP Live Streaming）视频直播技术实战 - 简书</a></li>
+<li><a href="https://blog.csdn.net/musou_ldns/article/details/7493346" target="_blank" rel="noopener">Mac OS环境下流媒体分割工具 mediastreamsegmenter 的简单使用</a></li>
+</ul>
+<h5 id="mediafilesegmenter"><a href="#mediafilesegmenter" class="headerlink" title="mediafilesegmenter"></a>mediafilesegmenter</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同样来自工具 mediastreamsegmenter，下载参考上述 <a href="https://developer.apple.com/download/more/" target="_blank" rel="noopener">More Downloads for Apple Developers</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mediafilesegmenter -B TEST -i test.m3u8 -t 10 -f ./video  ~/Movies/test.mp4</span><br><span class="line"></span><br><span class="line">-B 切片名</span><br><span class="line">-i m3u8文件</span><br><span class="line">-t 时间间隔</span><br><span class="line">-f ts切片存放位置</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Sep 20 2018 11:59:30.144: Processing file /Users/chen/Desktop/mm/good.mp4</span><br><span class="line">Sep 20 2018 11:59:30.160: track 2 of /Users/chen/Desktop/mm/good.mp4 contains edit list that the media doesn&apos;t start at beginning; this may cause problems in lip sync</span><br><span class="line">Sep 20 2018 11:59:30.165: Finalized /Users/chen/Desktop/mm/stream/hehe/TEST0.ts</span><br><span class="line">Sep 20 2018 11:59:30.166: Wrote full file size 557984 to /Users/chen/Desktop/mm/stream/hehe/TEST0.ts</span><br><span class="line">Sep 20 2018 11:59:30.166: segment bitrate 892.77 kbits/sec is new max</span><br><span class="line">Sep 20 2018 11:59:30.170: Finalized /Users/chen/Desktop/mm/stream/hehe/TEST1.ts</span><br><span class="line">Sep 20 2018 11:59:30.172: Wrote full file size 489928 to /Users/chen/Desktop/mm/stream/hehe/TEST1.ts</span><br><span class="line">Sep 20 2018 11:59:30.172: segment does not contain sync frame</span><br><span class="line">Sep 20 2018 11:59:30.175: Finalized /Users/chen/Desktop/mm/stream/hehe/TEST2.ts</span><br><span class="line">Sep 20 2018 11:59:30.175: Wrote full file size 241768 to /Users/chen/Desktop/mm/stream/hehe/TEST2.ts</span><br><span class="line">Sep 20 2018 11:59:30.175: segment does not contain sync frame</span><br><span class="line">Sep 20 2018 11:59:30.175: average bit rate is 814.53 kbits/sec - max file bit rate is 892.77 kbits/sec</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此命令还为新增与媒体文件同名的 plist &amp; iframe_index.m3u8，plist。mediafilesegmenter 与 mediastreamsegmenter 区别主要是一个是针对文件，一个针对的是 UDP 的实时 HLS 流。</p>
+<blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Media Stream Segmenter（mediastreamsegmenter）通过UDP网络连接或 stdin 接收 MPEG-2 传输流，并将其分成一系列持续时间相同的小媒体段。然后，它会创建一个索引文件，其中包含对各个媒体段的引用。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;媒体文件分段器（mediafilesegmenter）将 MOV，MP4，M4V，M4A 或 MP3 文件分成媒体段并创建索引文件。可以使用几乎任何Web服务器基础结构部署索引文件和媒体段，以便流式传输到 iOS，macOS 和 tvOS。</p>
+</blockquote>
+<p>参考：</p>
+<ul>
+<li><a href="http://www.lnmcc.net/page21/" target="_blank" rel="noopener">SJIE · CodeIt!</a></li>
+<li><a href="http://xpp888.blog.163.com/blog/static/14730596320126211424075/" target="_blank" rel="noopener">Mac OS环境下媒体文件分割工具mediafilesegmenter的简单使用</a></li>
+</ul>
+<h5 id="GStreamer-amp-Gstreamill"><a href="#GStreamer-amp-Gstreamill" class="headerlink" title="GStreamer &amp; Gstreamill"></a>GStreamer &amp; Gstreamill</h5><blockquote>
+<p>Gstreamill 是一个支持 hls 输出的，基于 gstreamer 的实时编码器。</p>
+</blockquote>
+<h4 id="播放测试"><a href="#播放测试" class="headerlink" title="播放测试"></a>播放测试</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;把切割成功的 m3u8 &amp; ts 源文件放在 Mac 的 WebServer -&gt; Documents 目录下，并开启 Apache 后，即可使用 Safari 或者 QuickTime（使用“文件”&gt;“打开位置…”或“⌘L”打开URL）等播放器来测试播放。 </p>
+<h4 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里主要解析 m3u8 描述文件 &amp; ts 媒体文件，mp4 暂忽略</p>
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/ts.png" alt="TS"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源码 Demo <a href="https://github.com/chenqihui/QHFlvParserMan" target="_blank" rel="noopener">QHFlvParserMan</a> 是采用 Swift 实现的，内容可结合此工程进行了解。</p>
+<h5 id="M3U8-标签"><a href="#M3U8-标签" class="headerlink" title="M3U8 标签"></a>M3U8 标签</h5><p>这个在 AVPlayer 那里也有简单介绍过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// ffmpeg 输出的</span><br><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-VERSION:3</span><br><span class="line">#EXT-X-MEDIA-SEQUENCE:0</span><br><span class="line">#EXT-X-ALLOW-CACHE:YES</span><br><span class="line">#EXT-X-TARGETDURATION:13</span><br><span class="line">#EXTINF:12.933333,</span><br><span class="line">abc000.ts</span><br><span class="line">#EXT-X-ENDLIST</span><br><span class="line"></span><br><span class="line">// mediafilesegmenter</span><br><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-TARGETDURATION:5</span><br><span class="line">#EXT-X-VERSION:3</span><br><span class="line">#EXT-X-MEDIA-SEQUENCE:0</span><br><span class="line">#EXT-X-PLAYLIST-TYPE:VOD</span><br><span class="line">#EXTINF:5.00000,	</span><br><span class="line">#EXT-X-BITRATE:893</span><br><span class="line">TEST0.ts</span><br><span class="line">#EXTINF:5.00000,	</span><br><span class="line">#EXT-X-BITRATE:784</span><br><span class="line">TEST1.ts</span><br><span class="line">#EXTINF:2.67767,	</span><br><span class="line">#EXT-X-BITRATE:722</span><br><span class="line">TEST2.ts</span><br><span class="line">#EXT-X-ENDLIST</span><br></pre></td></tr></table></figure>
+<p>它们的共同字段是</p>
+<p>而在使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8</span><br></pre></td></tr></table></figure>
+<p>它的 m3u8 文件如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-STREAM-INF:PROGRAM-ID=1, BANDWIDTH=200000</span><br><span class="line">gear1/prog_index.m3u8</span><br><span class="line">#EXT-X-STREAM-INF:PROGRAM-ID=1, BANDWIDTH=311111</span><br><span class="line">gear2/prog_index.m3u8</span><br><span class="line">#EXT-X-STREAM-INF:PROGRAM-ID=1, BANDWIDTH=484444</span><br><span class="line">gear3/prog_index.m3u8</span><br><span class="line">#EXT-X-STREAM-INF:PROGRAM-ID=1, BANDWIDTH=737777</span><br><span class="line">gear4/prog_index.m3u8</span><br></pre></td></tr></table></figure>
+<p>总结：</p>
+<ul>
+<li>EXTM3U：所有 HLS 播放列表必须以此标记开头</li>
+<li>EXT-X-ENDLIST：区分是点播还是直播</li>
+<li>二级目录是 绝对路径还是相对路径</li>
+<li>二级目录是 ts 文件 还是 m3u8</li>
+<li>当二级目录是 m3u8 时，需要再次访问获取最终的 ts，而直播就是通过这种不断刷新 m3u8 来实现播放</li>
+</ul>
+<p>参考：</p>
+<ul>
+<li><a href="https://www.jianshu.com/p/2ce402a485ca" target="_blank" rel="noopener">HTTP Live Streaming (HLS) - 概念</a></li>
+<li><a href="https://blog.csdn.net/jwzhangjie/article/details/9743971" target="_blank" rel="noopener">流媒体开发之–HLS–M3U8解析(1)</a></li>
+<li><a href="https://blog.csdn.net/jwzhangjie/article/details/9744027" target="_blank" rel="noopener">流媒体开发之–HLS–M3U8解析(2): HLS草案</a></li>
+</ul>
+<h5 id="TS"><a href="#TS" class="headerlink" title="TS"></a>TS</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TS 文件的结构与 HLS 类似，一个个的分段结构。TS 是以 188字节 来分段。<br>每一段：TS层（Head + Pes层（Head + ES层）），TS层 的内容是通过 PID 值来标识的，主要内容包括：PAT表、PMT表、音频流、视频流。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因此 TS 文件大致结构图如下：</p>
+<table>
+<thead>
+<tr>
+<th>TSHead</th>
+<th style="text-align:center">PAT/PMT</th>
+<th>Stuffing Bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TSHead</td>
+<td style="text-align:center">Adaptation Field</td>
+<td>Pes1</td>
+</tr>
+<tr>
+<td>TSHead</td>
+<td style="text-align:center">\</td>
+<td>Pes2 - Pes(N-1)</td>
+</tr>
+<tr>
+<td>TSHead</td>
+<td style="text-align:center">Adaptation Field</td>
+<td>PesN</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如下参考里面有说明 TSHead、PAT、PMT、Adapt、PES、ES 等字段的内容。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此处写出本人解码时遇到的几个点</p>
+<ul>
+<li>TSHead 的 payload_unit_start_indicator 对应 PAT &amp; PMT：在前4个字节后会有一个调整字节。所以实际数据应该为去除第一个字节后的数据。即上面数据中红色部分不属于有效数据包。而对于 Adapt &amp; 其他：0x01表示含有PSI或者PES头。所以解析 PAT/PMT 时需要通过此字段来判断是否空一个字节。</li>
+<li>顺序查找，先是 PID为0 的 PAT，通过其 Programs 里面的 PID 查找 PMT，再又 PMT 里面的 Streams 来查找音视频数据。这也就是 <strong>“解析 ts 流要先找到 PAT 表，只要找到 PAT 就可以找到 PMT，然后就可以找到 音视频流 了”</strong> 的意思</li>
+<li>在 PAT/PMT 遇到 section_length 这种 length 的解析，它是指后面数据的长度，即从解析出 length 的字节之后开始计算，如果length 的 Index 是 3（index 是从 0 开始的，即 length 是第四个字节），那么整个类型的实际数据长度则为 3 + 1 + length = len。</li>
+<li>PMT 的 stream_type    ：流类型，标志是 Video 还是 Audio 还是其他数据，h.264编码 对应 0x1b，aac编码 对应 0x0f，mp3编码 对应 0x03</li>
+<li>adaption 包含 PCR：Program Clock Reference，节目时钟参考，用于恢复出与编码端一致的系统时序时钟 STC（System Time Clock）。</li>
+</ul>
+<h5 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h5><p>(暂未解析)</p>
+<p>参考：</p>
+<ul>
+<li><a href="https://blog.csdn.net/allnlei/article/details/53005350" target="_blank" rel="noopener">hls 之 m3u8、ts 流格式详解</a></li>
+<li><a href="http://www.lnmcc.net/page21/" target="_blank" rel="noopener">SJIE</a></li>
+<li><a href="http://www.cnblogs.com/doscho/p/7678579.html" target="_blank" rel="noopener">TS 数据流分析学习</a></li>
+<li><a href="https://blog.csdn.net/rongdeguoqian/article/details/18214627" target="_blank" rel="noopener">从 TS 流到 PAT 和 PMT</a></li>
+<li><a href="https://blog.csdn.net/occupy8/article/details/43115765" target="_blank" rel="noopener">ts 文件格式解析</a></li>
+<li><a href="https://blog.csdn.net/u013354805/article/details/51578457" target="_blank" rel="noopener">TS 协议解析第一部分（PAT）</a></li>
+<li><a href="https://blog.csdn.net/u013354805/article/details/51586086" target="_blank" rel="noopener">TS 协议解析第二部分（PMT）</a></li>
+<li><a href="https://blog.csdn.net/u013354805/article/details/51591229" target="_blank" rel="noopener">TS 协议解析第三部分（PES）</a></li>
+<li><a href="https://blog.csdn.net/u013354805/article/details/51683830" target="_blank" rel="noopener">TS 协议解析第四部分（adaptation field）</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Swift/" rel="tag"># Swift</a>
+          
+            <a href="/tags/MacOS/" rel="tag"># MacOS</a>
+          
+            <a href="/tags/M3U8/" rel="tag"># M3U8</a>
+          
+            <a href="/tags/TS/" rel="tag"># TS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/16/iOS-动图播放-制作合集/" rel="next" title="iOS 动图播放 & 制作合集">
+                <i class="fa fa-chevron-left"></i> iOS 动图播放 & 制作合集
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/06/iOS-表单开发-基础篇/" rel="prev" title="iOS 表单开发 基础篇">
+                iOS 表单开发 基础篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/RyuukuChen.jpeg" alt="AnakinChen">
+          <p class="site-author-name" itemprop="name">AnakinChen</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#理论"><span class="nav-number">1.</span> <span class="nav-text">理论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#制作"><span class="nav-number">2.</span> <span class="nav-text">制作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ffmpeg"><span class="nav-number">2.1.</span> <span class="nav-text">ffmpeg</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mediastreamsegmenter"><span class="nav-number">2.2.</span> <span class="nav-text">mediastreamsegmenter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mediafilesegmenter"><span class="nav-number">2.3.</span> <span class="nav-text">mediafilesegmenter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#GStreamer-amp-Gstreamill"><span class="nav-number">2.4.</span> <span class="nav-text">GStreamer &amp; Gstreamill</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#播放测试"><span class="nav-number">3.</span> <span class="nav-text">播放测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解析"><span class="nav-number">4.</span> <span class="nav-text">解析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#M3U8-标签"><span class="nav-number">4.1.</span> <span class="nav-text">M3U8 标签</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TS"><span class="nav-number">4.2.</span> <span class="nav-text">TS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ES"><span class="nav-number">4.3.</span> <span class="nav-text">ES</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AnakinChen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

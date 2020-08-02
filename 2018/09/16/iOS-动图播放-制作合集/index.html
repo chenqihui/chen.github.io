@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Gif,WebP,Svga,LivePhoto,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;今天聊到动图，它们在 App 上都很常见，如聊天的表情，直播的送礼 &amp;amp; 座驾特效，H5 上的活动图，视频的录制等等。而动图有很多种格式，常用的 帧动画、Gif、WebP、Apng、Svga。由于最近项目加入 Svga，因此顺便学习下其他动图，也把之前记录的 LivePhoto 一起总结进来，做一次复习。 &amp;">
+<meta name="keywords" content="Gif,WebP,Svga,LivePhoto">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 动图播放 &amp; 制作合集">
+<meta property="og:url" content="http://chenqihui.github.io/2018/09/16/iOS-动图播放-制作合集/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;今天聊到动图，它们在 App 上都很常见，如聊天的表情，直播的送礼 &amp;amp; 座驾特效，H5 上的活动图，视频的录制等等。而动图有很多种格式，常用的 帧动画、Gif、WebP、Apng、Svga。由于最近项目加入 Svga，因此顺便学习下其他动图，也把之前记录的 LivePhoto 一起总结进来，做一次复习。 &amp;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537249274742&di=d3c3bffb703b388fce26ace80b12b300&imgtype=0&src=http%3A%2F%2Fimg008.hc360.cn%2Fg1%2FM06%2F54%2FBA%2FwKhQL1Mhbd-EQByMAAAAANjfEiE062.jpg">
+<meta property="og:updated_time" content="2020-08-02T18:16:51.468Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 动图播放 &amp; 制作合集">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;今天聊到动图，它们在 App 上都很常见，如聊天的表情，直播的送礼 &amp;amp; 座驾特效，H5 上的活动图，视频的录制等等。而动图有很多种格式，常用的 帧动画、Gif、WebP、Apng、Svga。由于最近项目加入 Svga，因此顺便学习下其他动图，也把之前记录的 LivePhoto 一起总结进来，做一次复习。 &amp;">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537249274742&di=d3c3bffb703b388fce26ace80b12b300&imgtype=0&src=http%3A%2F%2Fimg008.hc360.cn%2Fg1%2FM06%2F54%2FBA%2FwKhQL1Mhbd-EQByMAAAAANjfEiE062.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chenqihui.github.io/2018/09/16/iOS-动图播放-制作合集/">
+
+
+
+
+
+  <title>iOS 动图播放 & 制作合集 | RyuukuSpace</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RyuukuSpace</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">iOS开发</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-paper-plane"></i> <br>
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chenqihui.github.io/2018/09/16/iOS-动图播放-制作合集/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AnakinChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/RyuukuChen.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RyuukuSpace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS 动图播放 & 制作合集</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T22:49:15+08:00">
+                2018-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/动图/" itemprop="url" rel="index">
+                    <span itemprop="name">动图</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/动图/音视频/" itemprop="url" rel="index">
+                    <span itemprop="name">音视频</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>  阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;今天聊到动图，它们在 App 上都很常见，如聊天的表情，直播的送礼 &amp; 座驾特效，H5 上的活动图，视频的录制等等。而动图有很多种格式，常用的 帧动画、Gif、WebP、Apng、Svga。由于最近项目加入 Svga，因此顺便学习下其他动图，也把之前记录的 LivePhoto 一起总结进来，做一次复习。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本篇可以说是一篇播放 &amp; 制作的合集。大家将会看到 YYImage，Svga-Player，iSparta 转换等开源库 &amp; 工具。而主要说明的动图格式是 Gif、WebP、Svga、LivePhoto。除了 LivePhoto，其它动图的的播放在 iOS 端的大概流程都是通过 ImageIO 绘制出 UImage，再通过 CADisplayer 进行逐帧播放，只是解码库不同，如 WebP 是依靠 Google 提供的库（因为编码不一样）。也正由于他们是逐帧播放的，所以可以将每帧数据解码后再重新编码成其他格式的动态。最为关键的还是编码上，从而形成各自的优势，就目前项目的动图还是比较多使用 WebP，而 Svga 目前使用上似乎更好，特别是在直播的大礼物特效上。</p>
+<a id="more"></a>
+<h4 id="使用记录"><a href="#使用记录" class="headerlink" title="使用记录"></a>使用记录</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">时间点</th>
+<th>原因</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td>App 按钮太素</td>
+<td>加入 png 来显示按钮</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td>静态图片看厌了</td>
+<td>将 pngs 连续播放</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td>多端无法共用</td>
+<td>使用 Gif</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td>有锯齿，且体积很大</td>
+<td>换成 WebP</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td>动图体积得再小</td>
+<td>换成 Svga</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="前文"><a href="#前文" class="headerlink" title="前文"></a>前文</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以先通过 YYImage 作者 ibireme 博文的前半部分来了解 图片历史后，接着阅读本章后续内容，最后再回来看后半部分的知识点。</p>
+<ul>
+<li><a href="https://blog.ibireme.com/2015/11/02/mobile_image_benchmark/" target="_blank" rel="noopener">移动端图片格式调研 | Garan no dou</a></li>
+</ul>
+<p>本篇 Demo：  </p>
+<ul>
+<li><a href="https://github.com/chenqihui/QHAnimationImageDemo" target="_blank" rel="noopener">chenqihui/QHAnimationImageDemo: 动图</a></li>
+</ul>
+<h4 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动图都是播放帧图片，即解码出来的一张张图片就是需要播放的，因此它们的关键数据就是 Image &amp; Duration，</p>
+<ul>
+<li><a href="https://www.jianshu.com/p/4dcd6e4bdbf0" target="_blank" rel="noopener">图片处理：Image I/O 学习笔记</a></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般的图片在播放过程都经历: <strong>解码 -&gt; 绘制</strong></p>
+<h5 id="YYImage"><a href="#YYImage" class="headerlink" title="YYImage"></a>YYImage</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YYImage 使用了 CADisplayLink &amp; NSOperationQueue 来进行动画的逐帧绘制。它也几乎支持列出的大部分动图格式的播放。其中除了 WebP &amp; APNG 两个，其余支持的图片格式都使用了 ImageIO 来进行解码。</p>
+<p>参考</p>
+<ul>
+<li><a href="https://github.com/ibireme/YYImage" target="_blank" rel="noopener">ibireme/YYImage</a></li>
+<li><a href="https://lision.me/yyimage/" target="_blank" rel="noopener">YYImage 设计思路，实现细节剖析</a></li>
+<li><a href="https://blog.ibireme.com/2015/11/02/ios_image_tips/" target="_blank" rel="noopener">iOS 处理图片的一些小 Tip | Garan no dou</a></li>
+</ul>
+<h5 id="GIF"><a href="#GIF" class="headerlink" title="GIF"></a>GIF</h5><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 从 gif 里解码出单张 image</span></span><br><span class="line"><span class="built_in">CGImageRef</span> imageRef = <span class="built_in">CGImageSourceCreateImageAtIndex</span>(_source, index, (<span class="built_in">CFDictionaryRef</span>)@&#123;(<span class="keyword">id</span>)kCGImageSourceShouldCache:@(<span class="literal">YES</span>)&#125;);</span><br><span class="line"><span class="built_in">UIImage</span> *image = [<span class="built_in">UIImage</span> imageWithCGImage:imageRef scale:_scale orientation:_orientation];</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;制作 Gif 的函数可以查看 <a href="https://github.com/chenqihui/QHAnimationImageDemo" target="_blank" rel="noopener">chenqihui/QHAnimationImageDemo</a></p>
+<p>参考</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/22590949" target="_blank" rel="noopener">谈谈 GIF 格式</a></li>
+<li><a href="https://juejin.im/entry/58a3ba8c61ff4b006c3c3c8a" target="_blank" rel="noopener">iOS 的 GIF 动画效果实现</a></li>
+<li><a href="https://www.jianshu.com/p/da89d102f3a0" target="_blank" rel="noopener">iOS-加载gif的四种方式</a></li>
+</ul>
+<h5 id="APNG"><a href="#APNG" class="headerlink" title="APNG"></a>APNG</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于项目并没有使用，所以 Demo 没有添加，但在 YYImage 源码里可以看到通过 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">static uint8_t *yy_png_copy_frame_data_at_index(const uint8_t *data,</span><br><span class="line">                                                const yy_png_info *info,</span><br><span class="line">                                                const uint32_t index,</span><br><span class="line">                                                uint32_t *size)</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取 bytes 之后，再有 ImageIO 转为 UIImage，也就是说上述函数是完整的 APNG 解码过程了。</p>
+<h5 id="WebP"><a href="#WebP" class="headerlink" title="WebP"></a>WebP</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">WEBP_EXTERN(int) WebPDemuxGetFrame(</span><br><span class="line">    const WebPDemuxer* dmux, int frame_number, WebPIterator* iter);</span><br><span class="line">    </span><br><span class="line">WEBP_EXTERN(VP8StatusCode) WebPDecode(const uint8_t* data, size_t data_size,</span><br><span class="line">                                      WebPDecoderConfig* config);</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过 WebP 库将数据解码出来，最后也是通过 CGImageCreate 来生成 UIImage。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用 WebP 库的方法可以参考 YYImageCoder ，或者搜索一下，如 <a href="https://github.com/seanooi/iOS-WebP/blob/master/iOS-WebP/UIImage%2BWebP.m" target="_blank" rel="noopener">iOS-WebP/UIImage+WebP.m</a> ，原理是一样的。</p>
+<p>参考：</p>
+<ul>
+<li><a href="https://developers.google.com/speed/webp/" target="_blank" rel="noopener">A new image format for the Web</a></li>
+<li><a href="https://www.jianshu.com/p/12c4171c45c7" target="_blank" rel="noopener">WebP（整理）</a></li>
+</ul>
+<h5 id="Svga"><a href="#Svga" class="headerlink" title="Svga"></a>Svga</h5><blockquote>
+<p>SVGA 是一种动画格式<br>SVGA 类似于 Dragonbones / CreateJS</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/yyued/SVGAPlayer-iOS" target="_blank" rel="noopener">yyued/SVGAPlayer-iOS</a></li>
+<li><a href="https://github.com/yyued/SVGA-Format" target="_blank" rel="noopener">yyued/SVGA-Format</a></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用来的 <strong>绘制：SVGAPlayer &amp; 解码：SVGAParser</strong></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;集成它的时候，搜索下估计都会看到这两篇</p>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI0ODQ5MTI3Nw==&amp;mid=2247484070&amp;idx=1&amp;sn=d7848af31c2c670fc19fa3152a6549c6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">直播App 中 Android 酷炫礼物动画实现方案（上篇）</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI0ODQ5MTI3Nw==&amp;mid=2247484074&amp;idx=1&amp;sn=4d4bd4147839e9cdc3b3d418da52e589&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">直播App 中 Android 酷炫礼物动画实现方案（下篇）</a></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它的制作不是序列帧，而是将动画切割一个个小图片，然后对其进行独立播放，类似游戏开发：保存各部分切图组成的纹理集和动画数据，只需要极少的原画，便可完成千变万化的动作动画组合。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下面就是 Svga 使用的对象 SVGAVideoEntity，其中 images &amp; sprites，对应的就是 图片元素 &amp; 动画数据。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">SVGAVideoEntity</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">CGSize</span> videoSize;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="keyword">int</span> FPS;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="keyword">int</span> frames;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSDictionary</span>&lt;<span class="built_in">NSString</span> *, <span class="built_in">UIImage</span> *&gt; *images;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSArray</span>&lt;SVGAVideoSpriteEntity *&gt; *sprites;</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于这样的模式，它提供了可以替换某一图片元素的 API，这也方便在动图中通过占位图片，来加入其它自定义的图片元素。相比其它动图需要多帧获取 &amp; 替换才能达到的效果，其确实更方便。</p>
+<h5 id="LivePhoto"><a href="#LivePhoto" class="headerlink" title="LivePhoto"></a>LivePhoto</h5><blockquote>
+<p>Live Photo 是由一段3秒的视频 + 一张图片构成的。<br>原生 LivePhoto 视频采集的时间区间是由 按键后1.5s + 按键前1.5s 构成的。 </p>
+<blockquote>
+<p>[-1.5s ~ 0s, 拍摄瞬间,0s ~ 1.5s]。</p>
+</blockquote>
+<p>复制代码最后合成 LivePhoto 展示的照片，取得是相机采集后 3s 片段中的中央那一帧。</p>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Demo 采用 Mov 转换 LivePhoto 的方式，这也是目前 短视频App 生成 LivePhoto 壁纸的方式。它的播放器使用的是 PHLivePhoto，同时保存在相册就可以做为手机的壁纸，详细请查看 <a href="https://github.com/chenqihui/QHAnimationImageDemo" target="_blank" rel="noopener">chenqihui/QHAnimationImageDemo</a>，里面保存相册的代码注释了。</p>
+<ul>
+<li><a href="https://github.com/genadyo/LivePhotoDemo" target="_blank" rel="noopener">genadyo/LivePhotoDemo</a></li>
+<li><a href="https://www.jianshu.com/p/83eb0ac3d9c0" target="_blank" rel="noopener">三步为你的 App 集成 LivePhoto 功能</a></li>
+</ul>
+<h5 id="纸上电影"><a href="#纸上电影" class="headerlink" title="纸上电影"></a>纸上电影</h5><div align="center"><img width="320" height="250" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537249274742&di=d3c3bffb703b388fce26ace80b12b300&imgtype=0&src=http%3A%2F%2Fimg008.hc360.cn%2Fg1%2FM06%2F54%2FBA%2FwKhQL1Mhbd-EQByMAAAAANjfEiE062.jpg"></div>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它的制作可以看看接下来的视频（杨超越喔，哈哈），只需一张图片 + 屏幕片，然后按方向拖动 屏幕片 即可出现动画。它算是模拟了屏幕的成像，跟走马灯其实是一样的，只是它采用一张原图，通过栅栏图片的遮罩显示不同的图片位置。至于在 iOS 实现，目前还在研究ing。</p>
+<ul>
+<li><a href="https://www.iqiyi.com/w_19s2cx01w9.html" target="_blank" rel="noopener">看着她，我许下一个愿 密码信成像原理，拿走拿走不客气</a></li>
+<li><a href="http://video.tudou.com/v/XMjIxMzYzMzc2NA==.html?__fr=oldtd" target="_blank" rel="noopener">新奇特玩具纸上电影院产品简介</a></li>
+</ul>
+<!--<iframe width="560" height="315" src="https://www.iqiyi.com/w_19s2cx01w9.html" frameborder="0" allowfullscreen></iframe>-->
+<p>参考：</p>
+<ul>
+<li><a href="https://baike.baidu.com/item/%E7%BA%B8%E4%B8%8A%E7%94%B5%E5%BD%B1/8408505#3" target="_blank" rel="noopener">纸上电影</a></li>
+<li><a href="https://baike.baidu.com/item/%E8%A7%86%E8%A7%89%E6%9A%82%E7%95%99/5125149?fr=aladdin" target="_blank" rel="noopener">视觉暂留</a></li>
+<li><a href="https://baike.baidu.com/tashuo/browse/content?id=08b8cb850d53c863d33764e6&amp;lemmaId=&amp;fromLemmaModule=list" target="_blank" rel="noopener">这些神奇的“视觉暂留”动画，每一幅都让人拍案叫绝！</a></li>
+</ul>
+<h4 id="转换"><a href="#转换" class="headerlink" title="转换"></a>转换</h4><h5 id="pngs-转-GIF、Apng、WebP-工具"><a href="#pngs-转-GIF、Apng、WebP-工具" class="headerlink" title="pngs 转 GIF、Apng、WebP 工具"></a>pngs 转 GIF、Apng、WebP 工具</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;转换在参考文中都十分详细，大部分测试也是有用的，因此直接查看即可。</p>
+<p>参考：</p>
+<ul>
+<li><a href="http://www.ui.cn/detail/34100.html" target="_blank" rel="noopener">GIF与APNG，解决GIF锯齿问题</a></li>
+<li><a href="https://github.com/iSparta/iSparta" target="_blank" rel="noopener">iSparta/iSparta</a></li>
+</ul>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/24077346" target="_blank" rel="noopener">GIF/MOV/Live Photo</a></li>
+<li><a href="https://github.com/NSRare/NSGIF" target="_blank" rel="noopener">NSRare/NSGIF</a></li>
+</ul>
+<h4 id="PC-制作-WebP"><a href="#PC-制作-WebP" class="headerlink" title="PC 制作 WebP"></a>PC 制作 WebP</h4><ul>
+<li><a href="https://developers.google.com/speed/webp/download" target="_blank" rel="noopener">Downloading and Installing WebP</a></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先下载 libwebp，里面提供 .a &amp; .h外，还提供 bin，这样即可新建项目使用，也可以命令使用，这里讲讲使用 bin。  </p>
+<h5 id="环境变量配置-amp-PATH"><a href="#环境变量配置-amp-PATH" class="headerlink" title="环境变量配置 &amp; PATH"></a>环境变量配置 &amp; PATH</h5><p>1、配置单用户全局变量（重启后配置失效）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// /Users/用户名(e.g.chen)/.bash_profile</span><br><span class="line">export WEBP=/Users/chen/Downloads/libwebp-1.0.0-mac-10.13/bin</span><br><span class="line">export PATH=$PATH:$WEBP</span><br><span class="line"></span><br><span class="line">// 更新配置</span><br><span class="line">source .bash_profile</span><br></pre></td></tr></table></figure>
+<p>2、全局配置（永久有效）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// /etc/profile </span><br><span class="line">（同上）</span><br><span class="line"></span><br><span class="line">// 更新配置</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+<h5 id="pngs2webp"><a href="#pngs2webp" class="headerlink" title="pngs2webp"></a>pngs2webp</h5><p>1、单张转 无动画webp，再合并成 动画webp</p>
+<ul>
+<li>cwebp</li>
+<li>webpmux</li>
+</ul>
+<p>2、看 iSparta 里面是先壮 apng，再转 webp </p>
+<ul>
+<li>1、pngs2apng</li>
+<li>2、apng2webp</li>
+</ul>
+<p>3、Google 提供了将多张图片转为 webp，并且多张图片格式可以不同</p>
+<ul>
+<li>img2webp</li>
+</ul>
+<p>参考：</p>
+<ul>
+<li><a href="https://blog.csdn.net/wyg1230/article/details/81045537" target="_blank" rel="noopener">png 序列帧转换为动态 webp –使用 google 提供工具及命令行脚本</a></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;除了以上三种常用的步骤，当然还有其他，如先 GIF，再 webP。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上的动图都有各自的优缺点，按需使用。WebP 是使用了视频的 VP8 编码格式。而 Svga 采用的方式在 体积 &amp; 解码 上从理论与实际使用看都更好，越大的图会越明显。Svga 不仅对文件进行 protobuf % zlib 的压缩, 关键还在 PC 工具上，将 设计师 的动画原型转出 Svga 需要的 Bitmap &amp; Frame, 这种类似游戏的动画模式资源，可以说很 cool 哈。当然看完其实也发现，除了 Svga，其他格式是可以在 iOS 端进行相互转换，这也是常常在客户端看到的 录制 Gif、截屏、录屏、制作 LivePhoto 壁纸、使用 WebP 也可以在客户端制作等等。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gif/" rel="tag"># Gif</a>
+          
+            <a href="/tags/WebP/" rel="tag"># WebP</a>
+          
+            <a href="/tags/Svga/" rel="tag"># Svga</a>
+          
+            <a href="/tags/LivePhoto/" rel="tag"># LivePhoto</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/05/iOS-网速监控-学习篇/" rel="next" title="iOS 网速监控 学习篇">
+                <i class="fa fa-chevron-left"></i> iOS 网速监控 学习篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/06/M3U8-TS-格式再谈/" rel="prev" title="M3U8 & TS 格式再谈">
+                M3U8 & TS 格式再谈 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/RyuukuChen.jpeg" alt="AnakinChen">
+          <p class="site-author-name" itemprop="name">AnakinChen</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用记录"><span class="nav-number">1.</span> <span class="nav-text">使用记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前文"><span class="nav-number">2.</span> <span class="nav-text">前文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#正文"><span class="nav-number">3.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#YYImage"><span class="nav-number">3.1.</span> <span class="nav-text">YYImage</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#GIF"><span class="nav-number">3.2.</span> <span class="nav-text">GIF</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#APNG"><span class="nav-number">3.3.</span> <span class="nav-text">APNG</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#WebP"><span class="nav-number">3.4.</span> <span class="nav-text">WebP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Svga"><span class="nav-number">3.5.</span> <span class="nav-text">Svga</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LivePhoto"><span class="nav-number">3.6.</span> <span class="nav-text">LivePhoto</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#纸上电影"><span class="nav-number">3.7.</span> <span class="nav-text">纸上电影</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转换"><span class="nav-number">4.</span> <span class="nav-text">转换</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#pngs-转-GIF、Apng、WebP-工具"><span class="nav-number">4.1.</span> <span class="nav-text">pngs 转 GIF、Apng、WebP 工具</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PC-制作-WebP"><span class="nav-number">5.</span> <span class="nav-text">PC 制作 WebP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#环境变量配置-amp-PATH"><span class="nav-number">5.1.</span> <span class="nav-text">环境变量配置 &amp; PATH</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pngs2webp"><span class="nav-number">5.2.</span> <span class="nav-text">pngs2webp</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AnakinChen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
