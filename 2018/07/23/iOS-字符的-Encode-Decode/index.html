@@ -1,38 +1,397 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
 
+  
+  <title>iOS 字符的 Encode &amp; Decode | RyuukuSpace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本次的话题应该算是老话题。在开发用户系统，用户昵称修改，聊天等功能的时候，会遇到用户输入 Emoji，特殊字符。甚至直接输入 Unicode 编码的时候。如果客户端提交给服务端，再从服务端获取，直接显示可能会出现乱码。甚至有时是服务端进行编码保存，然后给客户端，并没有协商谁来负责解码。这都只是一方面，因为特殊字符的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 字符的 Encode &amp; Decode">
+<meta property="og:url" content="http://chenqihui.github.io/2018/07/23/iOS-%E5%AD%97%E7%AC%A6%E7%9A%84-Encode-Decode/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本次的话题应该算是老话题。在开发用户系统，用户昵称修改，聊天等功能的时候，会遇到用户输入 Emoji，特殊字符。甚至直接输入 Unicode 编码的时候。如果客户端提交给服务端，再从服务端获取，直接显示可能会出现乱码。甚至有时是服务端进行编码保存，然后给客户端，并没有协商谁来负责解码。这都只是一方面，因为特殊字符的">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-07-23T15:08:53.000Z">
+<meta property="article:modified_time" content="2020-08-02T18:16:51.469Z">
+<meta property="article:author" content="AnakinChen">
+<meta property="article:tag" content="String">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="RyuukuSpace" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<meta name="generator" content="Hexo 5.0.0"></head>
 
-{% block page_class %}page-post-detail{% endblock %}
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RyuukuSpace</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://chenqihui.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-iOS-字符的-Encode-Decode" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/23/iOS-%E5%AD%97%E7%AC%A6%E7%9A%84-Encode-Decode/" class="article-date">
+  <time datetime="2018-07-23T15:08:53.000Z" itemprop="datePublished">2018-07-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
 
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS 字符的 Encode &amp; Decode
+    </h1>
+  
 
-{% block content %}
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本次的话题应该算是老话题。在开发用户系统，用户昵称修改，聊天等功能的时候，会遇到用户输入 Emoji，特殊字符。甚至直接输入 Unicode 编码的时候。如果客户端提交给服务端，再从服务端获取，直接显示可能会出现乱码。甚至有时是服务端进行编码保存，然后给客户端，并没有协商谁来负责解码。这都只是一方面，因为特殊字符的存在还会影响数据上报。当服务端拿到这种特殊数据，会无法解析，导致请求失败等等。所以需要对字符进行 Encode &amp; Decode。</p>
+<a id="more"></a>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<h4 id="换行"><a href="#换行" class="headerlink" title="换行"></a>换行</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;”\r\n” 这是个换行符，也是比较常见出现问题的符号。如上几期的心愿飞屏，用户填写心愿时是可以输入换行，无论在客户端还是H5，然后当飞屏获取的心愿包含这个换行符的时候，就会出现异常，尤其需要通过计算文本的宽高来设置飞屏的 frame，造成样式变形，文本显示不全。因此需要将 “\r\n” 替换成空字符串，如下两种实现：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1、直接替换</span></span><br><span class="line"><span class="keyword">let</span> s1 = <span class="string">&quot;\r\n&quot;</span></span><br><span class="line"><span class="keyword">let</span> s2 = s1.replacingOccurrences(of: <span class="string">&quot;\r\n&quot;</span>, with: <span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2、使用正则表达式替换</span></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">String</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="built_in">count</span>: <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> string_NS = <span class="keyword">self</span> <span class="keyword">as</span> <span class="type">NSString</span></span><br><span class="line">        <span class="keyword">return</span> string_NS.length</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">pregReplace</span><span class="params">(pattern: String, with: String,</span></span></span><br><span class="line"><span class="function"><span class="params">                     options: NSRegularExpression.Options = [])</span></span> -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> regex = <span class="keyword">try</span>! <span class="type">NSRegularExpression</span>(pattern: pattern, options: options)</span><br><span class="line">        <span class="keyword">return</span> regex.stringByReplacingMatches(<span class="keyword">in</span>: <span class="keyword">self</span>, options: [],</span><br><span class="line">                                              range: <span class="type">NSMakeRange</span>(<span class="number">0</span>, <span class="keyword">self</span>.<span class="built_in">count</span>),</span><br><span class="line">                                              withTemplate: with)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> s3 = <span class="string">&quot;\n\r\nhellp\n&quot;</span></span><br><span class="line"><span class="keyword">let</span> s4 = str1.pregReplace(pattern: <span class="string">&quot;\r|\n&quot;</span>, with: <span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<h4 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h4><blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;百分号编码（英语：Percent-encoding）, 也称作URL编码（英语：URL encoding）, 是特定上下文的统一资源定位符 (URL)的编码机制. 实际上也适用于统一资源标志符（URI）的编码。也用于为”application/x-www-form-urlencoded” MIME准备数据, 因为它用于通过HTTP的请求操作(request)提交HTML表单数据。出自《维基百科，自由的百科全书》</p>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正如维基百科里面描述的，URLEncode 是把传送中的 String 或者 请求的入参 String 里面的中文和特殊字符进行指定编码（UTF-8、GBK等，中文在不同编码下的结果不同）。因为是这种字符会破坏 URL 的结构，导致服务端和浏览器无法正常识别。因此通过 URLEncode 处理后使其能够正常传输，其作用就是使此 url 合法化。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">String</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">urlEncoded</span><span class="params">()</span></span> -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> charactersToEscape = <span class="string">&quot;?!@#$^&amp;%*+,:;=&#x27;\&quot;`&lt;&gt;()[]&#123;&#125;/\\| &quot;</span></span><br><span class="line">        <span class="keyword">let</span> allowedCharacters = <span class="type">CharacterSet</span>(charactersIn: charactersToEscape).inverted</span><br><span class="line">        <span class="keyword">let</span> encodeUrlString = <span class="keyword">self</span>.addingPercentEncoding(withAllowedCharacters: allowedCharacters)</span><br><span class="line"><span class="comment">//        let encodeUrlString = self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)</span></span><br><span class="line">        <span class="keyword">return</span> encodeUrlString ?? <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">urlDecoded</span><span class="params">()</span></span> -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.removingPercentEncoding ?? <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;除了自定义需要编码的字符，也可以使用苹果提供的 NSCharacterSet 集合，如下：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">URLHostAllowedCharacterSet      <span class="string">&quot;#%/&lt;&gt;?@\^`&#123;|&#125;</span></span><br><span class="line"><span class="string">URLFragmentAllowedCharacterSet  &quot;</span>#%&lt;&gt;[\]^`&#123;|&#125;</span><br><span class="line">URLPasswordAllowedCharacterSet  <span class="string">&quot;#%/:&lt;&gt;?@[\]^`&#123;|&#125;</span></span><br><span class="line"><span class="string">URLPathAllowedCharacterSet      &quot;</span>#%;&lt;&gt;?[\]^`&#123;|&#125;</span><br><span class="line">URLQueryAllowedCharacterSet     <span class="string">&quot;#%&lt;&gt;[\]^`&#123;|&#125;</span></span><br><span class="line"><span class="string">URLUserAllowedCharacterSet      &quot;</span>#%/:&lt;&gt;?@[\]^`</span><br></pre></td></tr></table></figure>
+
+<p><strong>补充：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前 OC 常使用的 NSUTF8StringEncoding 对应的 NSCharacterSet 是 URLQueryAllowedCharacterSet</strong></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *filePath = [<span class="string">@&quot;http://localhost/resource/iOS开发手册.pdf&quot;</span> stringByAddingPercentEscapesUsingEncoding:<span class="built_in">NSUTF8StringEncoding</span>];</span><br><span class="line"></span><br><span class="line">filePath = [<span class="string">@&quot;http://localhost/resource/iOS开发手册.pdf&quot;</span> stringByAddingPercentEncodingWithAllowedCharacters:[<span class="built_in">NSCharacterSet</span> URLQueryAllowedCharacterSet]];</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保留字符的百分号编码如下:</p>
+<table>
+<thead>
+<tr>
+<th>!</th>
+<th>#</th>
+<th>$</th>
+<th>&amp;</th>
+<th>‘</th>
+<th>(</th>
+<th>)</th>
+<th>*</th>
+<th>+</th>
+<th>,</th>
+<th>/</th>
+<th>:</th>
+<th>;</th>
+<th>=</th>
+<th>?</th>
+<th>@</th>
+<th>[</th>
+<th>]</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%21</td>
+<td>%23</td>
+<td>%24</td>
+<td>%26</td>
+<td>%27</td>
+<td>%28</td>
+<td>%29</td>
+<td>%2A</td>
+<td>%2B</td>
+<td>%2C</td>
+<td>%2F</td>
+<td>%3A</td>
+<td>%3B</td>
+<td>%3D</td>
+<td>%3F</td>
+<td>%40</td>
+<td>%5B</td>
+<td>%5D</td>
+</tr>
+</tbody></table>
+<h4 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HTML 字符实体，它是是以 “&amp;” 开头和 “;”结尾的字符。它会出现在服务端传给客户端数据时或者是打印 HTML 网页的文本时，特别是服务端为了 防XSS攻击 时，就一定会 encode，如果它传回来没有 decode，那客户端就会出现乱码。此时就需要使用 UTF8编码 将 HTML 实体中的字符串转换为正确的字符表示形式。例如: “&hellip;” 所代表的省略实体被转换为 “…” 这个省略号。</p>
+<p>实现方式：  </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般使用字典记录下对应的字符与实体名称，然后通过该字典进行匹配来转换，从而实现 encode &amp; decode。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/RobinChao/DTCoreText-Demo/blob/0d6b09fde1d305cef1bf17e2f6872fe755d8a9d6/Test/Pods/DTCoreText/Core/Source/NSString%2BHTML.m">DTCoreText-Demo/NSString+HTML.m</a></p>
+<p>字符对应的实体名称参考：《<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/tags/html_ref_entities.html">HTML ISO-8859-1 参考手册</a>》</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过如下转换的 NSAttributedString ，获取 String 值也可以实现 decode。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字符串转富文本</span></span><br><span class="line">+ (<span class="built_in">NSString</span> *)strToAttriWithStr:(<span class="built_in">NSString</span> *)htmlStr&#123;</span><br><span class="line">   <span class="built_in">NSAttributedString</span> *attr = [[<span class="built_in">NSAttributedString</span> alloc] </span><br><span class="line">                               initWithData:[htmlStr </span><br><span class="line">                               dataUsingEncoding:<span class="built_in">NSUnicodeStringEncoding</span>] </span><br><span class="line">                               options:@&#123;<span class="built_in">NSDocumentTypeDocumentAttribute</span>:<span class="built_in">NSHTMLTextDocumentType</span>&#125; </span><br><span class="line">                               documentAttributes:<span class="literal">nil</span> </span><br><span class="line">                               error:<span class="literal">nil</span>];</span><br><span class="line">   <span class="keyword">return</span> attr.string;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Emoji"><a href="#Emoji" class="headerlink" title="Emoji"></a>Emoji</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Emoji 的需求是很常见，很多如名称，信息填写都是不支持 Emoji 的，因为有时传输 Emoji 时，服务端保存的是 Unicode 编码，再传回其他客户端可能出现乱码（即直接显示 Unicode 了）。这里一般限制会在客户端，即检查填入的信息是否包含字符。在 iOS 里，标准的 Emoji 经过传输是可以一致的，即不会因为传输时转码造成错误。而其他 iOS 自定义或者输入法新增的 Emoji 就很难保证。所以有些限制还是需要的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如下是标准 Emoji 的 Unicode 区间，即将字符转换为十六进制的 Unicode 编码，在如下区间就表示该字符是 Emoji。</p>
+<p>《<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000007594620">Emoji 的编码以及常见问题处理</a>》</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;U+1F300&gt; - &lt;U+1F5FF&gt;      # symbols &amp; pictographs</span><br><span class="line">&lt;U+1F600&gt; - &lt;U+1F64F&gt;      # emoticons</span><br><span class="line">&lt;U+1F680&gt; - &lt;U+1F6FF&gt;      # transport &amp; map symbols</span><br><span class="line">&lt;U+2600&gt;  - &lt;U+2B55&gt;       # other</span><br></pre></td></tr></table></figure>
+
+<p>《<a target="_blank" rel="noopener" href="https://blog.csdn.net/kebing1011/article/details/46868197">过滤 NSString 中的 Emoji</a>》里的实现：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)isNotEmoji:(<span class="built_in">UInt64</span>) codePoint &#123;</span><br><span class="line">    <span class="keyword">return</span> (codePoint == <span class="number">0x0</span>)</span><br><span class="line">    || (codePoint == <span class="number">0x9</span>)</span><br><span class="line">    || (codePoint == <span class="number">0xA</span>)</span><br><span class="line">    || (codePoint == <span class="number">0xD</span>)</span><br><span class="line">    || ((codePoint &gt;= <span class="number">0x20</span>) &amp;&amp; (codePoint &lt;= <span class="number">0xD7FF</span>))</span><br><span class="line">    || ((codePoint &gt;= <span class="number">0xFF00</span>) &amp;&amp; (codePoint &lt;=</span><br><span class="line">                                  <span class="number">0xFFFF</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说到这里，如果回看上述提到 URL、 HTML、 Emoji，其字符对应的编码都是定义在字典里面。Unicode 就是它们的通用表，也就是说它们就是整个 Unicode 表的其中一块。它们的 encode &amp; decode 其实也都基于对应的字典来进行，不同之处在于使用的字典是系统提供还是需要额外提供。</p>
+<p>需要简单介绍下常用的字符编码：  </p>
+<ul>
+<li>ASCII 定义了常用 0 - 127 （0x007F） 号字符，128 - 255（0x00FF） 号字符 被不同国家自定义。  </li>
+<li>Unicode 定义了 21 位（从 U+0000 到 U+10FFFF），提供了 1,114,112 个码点，每个码点对应一个字符，并构成编码空间。而编码空间被分成 17 个平面（plane）（0~16号平面），每个平面有 65,536 个字符。其中，0 号平面叫做「基本多文种平面」（Basic Multilingual Plane, BMP）。</li>
+<li>UTF-8、UTF-16、UTF-32 就是基于 Unicode 的编码方式。</li>
+</ul>
+<h5 id="UTF-8"><a href="#UTF-8" class="headerlink" title="UTF-8"></a>UTF-8</h5><p>编码规则如下：  </p>
+<table>
+<thead>
+<tr>
+<th>Unicode 十六进制码点范围</th>
+<th>UTF-8 二进制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0000 0000 - 0000 007F</td>
+<td>0xxxxxxx</td>
+</tr>
+<tr>
+<td>0000 0080 - 0000 07FF</td>
+<td>110xxxxx 10xxxxxx</td>
+</tr>
+<tr>
+<td>0000 0800 - 0000 FFFF</td>
+<td>1110xxxx 10xxxxxx 10xxxxxx</td>
+</tr>
+<tr>
+<td>0001 0000 - 0010 FFFF</td>
+<td>11110xxx 10xxxxxx 10xxxxxx 10xxxxxx</td>
+</tr>
+</tbody></table>
+<h5 id="UTF-16-以及「代理对」（Surrogate-Pairs）"><a href="#UTF-16-以及「代理对」（Surrogate-Pairs）" class="headerlink" title="UTF-16 以及「代理对」（Surrogate Pairs）"></a>UTF-16 以及「代理对」（Surrogate Pairs）</h5><p>编码规则如下：</p>
+<table>
+<thead>
+<tr>
+<th>UTF-16(二进制)</th>
+<th>编码点（二进制）</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>xxxxxxxxxxxxxxxx</td>
+<td>xxxxxxxxxxxxxxxx</td>
+<td>U+0000 –- U+FFFF</td>
+</tr>
+<tr>
+<td>110110xxxxxxxxxx 110111yyyyyyyyyy</td>
+<td>xxxxxxxxxxyyyyyyyyyy + 0x10000</td>
+<td>U+10000 –- U+10FFFF</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是，通常人们谈到 UTF-16是因为它涉及到了一个在编码点术语中被称作“代理（surrogate）”的东西。所有在范围 U+D800-U+DFFF（或在其他范围） 中的编码点，这些和上表中二进制前缀 110110 和 110111 匹配的编码点——是 UTF-16 中的保留区域，它们自身不表示任何有效的字符。它们仅用于上面 2 个字的编码模式中，被称作“代理对（surrogate pair）”，代理编码点在任何其他情况下都是非法的！它们不能出现在 UTF-8 和 UTF-32 中。</p>
+</blockquote>
+<p>参考文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.whezh.com/encoded/">彻底弄懂 Unicode 编码</a></li>
+<li><a target="_blank" rel="noopener" href="https://objccn.io/issue-9-1/">ObjC 中国 - NSString 与 Unicode</a>  </li>
+<li><a target="_blank" rel="noopener" href="http://blog.jobbole.com/111261/">写给程序员的 Unicode 入门介绍</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.huxiu.com/article/163386.html">年轻人，Emoji是这样控制了你的-虎嗅网</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/hherima/article/details/38961575">iPhone emoji 问题牵出的 Unicode 代理区的思考</a></li>
+</ul>
+<h4 id="Length"><a href="#Length" class="headerlink" title="Length"></a>Length</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Unicode 编码中：一个中文字符=2个 Unicode，一个英文字符=1个 Unicode。所以可以采用 Unicode 的个数来计算字符串长度，如下两种方法：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法一、</span></span><br><span class="line"><span class="built_in">NSUInteger</span> contentLength = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">char</span>* p = (<span class="keyword">char</span>*)[contentString cStringUsingEncoding:<span class="built_in">NSUnicodeStringEncoding</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; [contentString lengthOfBytesUsingEncoding:<span class="built_in">NSUnicodeStringEncoding</span>]; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (*p) &#123;</span><br><span class="line">        p++;</span><br><span class="line">        contentLength++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        p++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@&quot;%ld&quot;</span>, contentLength);</span><br><span class="line"><span class="comment">// 方法二、</span></span><br><span class="line"><span class="built_in">NSStringEncoding</span> enc = <span class="built_in">CFStringConvertEncodingToNSStringEncoding</span>(kCFStringEncodingGB_18030_2000);</span><br><span class="line"><span class="built_in">NSData</span> *data = [contentString dataUsingEncoding:enc];</span><br><span class="line"><span class="built_in">NSUInteger</span> contentLength2 = [data length];</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@&quot;%ld&quot;</span>, contentLength2);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c7bbb1abeb76">iOS 中英文字符串的字数</a></li>
+<li><a target="_blank" rel="noopener" href="http://mobile.51cto.com/iphone-283494.htm">深度解析IOS开发中编码转换方法</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/ljhdo/p/4546081.html">字符串的长度，是字符数量，还是字节数量？</a></li>
+</ul>
+<h4 id="数字"><a href="#数字" class="headerlink" title="数字"></a>数字</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将字符串转换数字：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">StringToInt</span>(<span class="title">_</span> <span class="title">str</span>: <span class="title">String</span>) -&gt; <span class="title">Int</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> string = str</span><br><span class="line">    <span class="keyword">var</span> cgInt: <span class="type">Int</span> = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> doubleValue = <span class="type">Double</span>(string) &#123;</span><br><span class="line">        cgInt = <span class="type">Int</span>(doubleValue)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cgInt</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/07/23/iOS-%E5%AD%97%E7%AC%A6%E7%9A%84-Encode-Decode/" data-id="ckddxq2p2000agcugarkwephf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/07/MP4-%E6%A0%BC%E5%BC%8F%E4%BA%86%E8%A7%A3%E4%B8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          MP4 格式了解下
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/08/CocoaPods-%E7%9A%84%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CocoaPods 的实践笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/">Xcode</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/">动图</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul>
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FLV/" rel="tag">FLV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Framework/" rel="tag">Framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/" rel="tag">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gif/" rel="tag">Gif</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LivePhoto/" rel="tag">LivePhoto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/M3U8/" rel="tag">M3U8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MP4/" rel="tag">MP4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/" rel="tag">Objective-C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PDF/" rel="tag">PDF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Svga/" rel="tag">Svga</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-UDP-IP/" rel="tag">TCP / UDP / IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TS/" rel="tag">TS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/" rel="tag">UIButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIImage/" rel="tag">UIImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextField/" rel="tag">UITextField</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextView/" rel="tag">UITextView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/" rel="tag">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebP/" rel="tag">WebP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebSocket/" rel="tag">WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation/" rel="tag">animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/configure/" rel="tag">configure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layer/" rel="tag">layer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mask/" rel="tag">mask</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" rel="tag">二值化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" rel="tag">动态库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" rel="tag">版本控制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" rel="tag">组合特效</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E9%80%9F/" rel="tag">网速</a></li></ul>
+    </div>
+  </div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/FLV/" style="font-size: 10px;">FLV</a> <a href="/tags/Framework/" style="font-size: 10px;">Framework</a> <a href="/tags/GCD/" style="font-size: 12px;">GCD</a> <a href="/tags/Gif/" style="font-size: 10px;">Gif</a> <a href="/tags/Git/" style="font-size: 12px;">Git</a> <a href="/tags/Github/" style="font-size: 12px;">Github</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/LivePhoto/" style="font-size: 10px;">LivePhoto</a> <a href="/tags/M3U8/" style="font-size: 10px;">M3U8</a> <a href="/tags/MP4/" style="font-size: 10px;">MP4</a> <a href="/tags/MacOS/" style="font-size: 16px;">MacOS</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/PDF/" style="font-size: 10px;">PDF</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/Svga/" style="font-size: 10px;">Svga</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/TCP-UDP-IP/" style="font-size: 10px;">TCP / UDP / IP</a> <a href="/tags/TS/" style="font-size: 10px;">TS</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIImage/" style="font-size: 10px;">UIImage</a> <a href="/tags/UITextField/" style="font-size: 10px;">UITextField</a> <a href="/tags/UITextView/" style="font-size: 10px;">UITextView</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/WebP/" style="font-size: 10px;">WebP</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/animation/" style="font-size: 10px;">animation</a> <a href="/tags/configure/" style="font-size: 10px;">configure</a> <a href="/tags/layer/" style="font-size: 18px;">layer</a> <a href="/tags/mask/" style="font-size: 10px;">mask</a> <a href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" style="font-size: 10px;">二值化</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" style="font-size: 10px;">动态库</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 14px;">动画</a> <a href="/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12px;">数据结构</a> <a href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" style="font-size: 10px;">版本控制</a> <a href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" style="font-size: 10px;">组合特效</a> <a href="/tags/%E7%BD%91%E9%80%9F/" style="font-size: 10px;">网速</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/">iOS 动态库 应用篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/30/Git-%E8%BE%85%E5%AF%BC/">Git 辅导</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%99%BA%E8%83%BD%E5%BC%B9%E5%B9%95-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS 弹幕系统之智能弹幕 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/04/iOS-Socket-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS Socket 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/16/iOS-%E7%BB%84%E5%90%88%E7%A4%BC%E7%89%A9%E7%89%B9%E6%95%88/">iOS 组合礼物特效</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AnakinChen<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

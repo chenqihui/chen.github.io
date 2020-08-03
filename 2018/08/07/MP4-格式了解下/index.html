@@ -1,38 +1,355 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
 
+  
+  <title>MP4 格式了解下 | RyuukuSpace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;继 QHFlvParserMan 解析 FLV 之后，本次增加了对 MP4 视频格式的解析支持。而通过上一篇 《FLV 格式一谈》入门了音视频的知识后。可以通过对 MP4 了解，来更进一步学习音视频知识。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;MP4 多用于点播，它也是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MP4 格式了解下">
+<meta property="og:url" content="http://chenqihui.github.io/2018/08/07/MP4-%E6%A0%BC%E5%BC%8F%E4%BA%86%E8%A7%A3%E4%B8%8B/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;继 QHFlvParserMan 解析 FLV 之后，本次增加了对 MP4 视频格式的解析支持。而通过上一篇 《FLV 格式一谈》入门了音视频的知识后。可以通过对 MP4 了解，来更进一步学习音视频知识。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;MP4 多用于点播，它也是">
+<meta property="og:locale">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHMP4ParserMan.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/mp4-structure.gif">
+<meta property="article:published_time" content="2018-08-06T17:32:02.000Z">
+<meta property="article:modified_time" content="2020-08-02T18:16:51.464Z">
+<meta property="article:author" content="AnakinChen">
+<meta property="article:tag" content="Swift">
+<meta property="article:tag" content="MacOS">
+<meta property="article:tag" content="MP4">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHMP4ParserMan.png">
+  
+    <link rel="alternate" href="/atom.xml" title="RyuukuSpace" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<meta name="generator" content="Hexo 5.0.0"></head>
 
-{% block page_class %}page-post-detail{% endblock %}
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RyuukuSpace</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://chenqihui.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-MP4-格式了解下" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/07/MP4-%E6%A0%BC%E5%BC%8F%E4%BA%86%E8%A7%A3%E4%B8%8B/" class="article-date">
+  <time datetime="2018-08-06T17:32:02.000Z" itemprop="datePublished">2018-08-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a>
+  </div>
 
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MP4 格式了解下
+    </h1>
+  
 
-{% block content %}
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;继 <a target="_blank" rel="noopener" href="https://github.com/chenqihui/QHFlvParserMan">QHFlvParserMan</a> 解析 FLV 之后，本次增加了对 MP4 视频格式的解析支持。而通过上一篇 《<a href="http://chenqihui.github.io/2018/06/20/FLV-%E6%A0%BC%E5%BC%8F%E4%B8%80%E8%B0%88/">FLV 格式一谈</a>》入门了音视频的知识后。可以通过对 MP4 了解，来更进一步学习音视频知识。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MP4 多用于点播，它也是现在用的比较多的视频封装格式，它为了播放流式媒体的高质量视频而专门设计的，以求使用最少的数据获得最佳的图像质量。但是它的文件格式复杂，索引慢，时长较长的 MP4 视频在线播放时加载较慢。</p>
+<a id="more"></a>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MP4 是遵循 MPEG-4（ISO 14496-14）的官方容器格式定义的广义文件扩展名。它可以流媒体化并支持众多多媒体的内容（多音轨 (multiple audio)、视频流 (video)、字幕 (subtitlestreams)、图片(pictures)、可变桢率 (variable-framerates)、码率(bitrates)、采样率(samplerates)等）和高级内容 (advanced content)（官方称之为 “Richmedia” (超媒体) 或 “BIFS” (Binary Format for Scenes/二进制格式场景），类似 2D 和 3D 图形，动画、用户界面、类DVD 菜单，上述这些 AVI 搞不定的东西。</p>
+<h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它解析了 MP4 文件的数据类型，各个类型包的大小、时间戳和简单信息，还有需要重点了解的 boxes 及 各个box 的内容。</p>
+<!-- 截图 -->
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHMP4ParserMan.png"></p>
+<p>文章和工具的实现主要参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://www.samirchen.com/video-playback-format/">点播视频格式的选择 | SamirChen</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.52rd.com/Blog/wqyuwss/559/">leslie - wqyuwss的专栏</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ranson7zop/p/7889272.html">mp4文件格式解析 - nigaopeng</a></li>
+</ul>
+<h4 id="视频一谈-amp-MP4-注意问题"><a href="#视频一谈-amp-MP4-注意问题" class="headerlink" title="视频一谈 &amp; MP4 注意问题"></a>视频一谈 &amp; MP4 注意问题</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先，了解到视频主要是 metadata 信息 + 音视频的 data，metadata 记录了视频的图像尺寸、编码格式、帧率、码率等信息。FLV 的 metadata 是保存在第一个视频和音频 tag 里。那 MP4 的 metadata 存放在 meta，它可以出现在视频的开头或者结尾，如果在结尾就会导致播放器只有下载完整个文件后才能成功解析并播放这个视频。又来介绍下 FFmpeg 了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i bad.mp4 -movflags faststart good.mp4</span><br></pre></td></tr></table></figure>
+<p>将其重新编码，将 metadata 数据块转移到文件头部，保证播放器在线请求时能较快播放。</p>
+<blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此外，需要注意的是，在通过网络请求 MP4 视频文件进行边下载边播放时，由于接收到的每帧音视频数据是需要根据时间戳来决定何时送入解码器解码，以及何时显示，如果时间没到只能等待。尤其是当视频编码存在 B 帧时，解码时间戳 DTS 与显示时间戳顺序 PTS 通常不一致，这时候就会出现已经下载好的一帧数据可能还不能立即解码和显示，需要等待其依赖的数据下载完成和解码完成。这时在播放的过程中就可能因为网络抖动而出现播放卡顿。</p>
+</blockquote>
+<h4 id="MP4-文件结构和-Box-描述"><a href="#MP4-文件结构和-Box-描述" class="headerlink" title="MP4 文件结构和 Box 描述"></a>MP4 文件结构和 Box 描述</h4><h5 id="基本构成"><a href="#基本构成" class="headerlink" title="基本构成"></a>基本构成</h5><table>
+<thead>
+<tr>
+<th></th>
+<th>构成</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MP4</td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td>Box</td>
+<td>Header + Data</td>
+</tr>
+<tr>
+<td>Header</td>
+<td>Size(4bytes) + Type(4bytes) <br/> + [ (if Size == 0 ? version(8bits) + flags(24bits) : 无) ]</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>Container Boxes 或者 <br/> Box Size(4bytes) + Type(4bytes) + Version(1bytes) + Flay(3bytes) <br/> + [ EntryCount(4bytes) + EntryList(Nbytes) ]</td>
+</tr>
+</tbody></table>
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/mp4-structure.gif"></p>
+<h5 id="Box"><a href="#Box" class="headerlink" title="Box"></a>Box</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于 MP4 文件的 Box 类型非常多，<strong>《<a target="_blank" rel="noopener" href="http://mp4ra.org/#/atoms">The ‘MP4’ Registration Authority</a>》</strong> 列出了当前注册过的一些 Box 类型，这么多的 Box 类型要完全支持还是很复杂的。而 Demo 解析的 box 可以查看  <a target="_blank" rel="noopener" href="https://github.com/chenqihui/QHFlvParserMan">QHFlvParserMan 里 QHMP4 的 类文件</a> 的注释。</p>
+<p>1、trak：Track Box，判断是两种类型的 trak：media track 和 hint track 哪一种<br>答：trak 里面的 mdia -&gt; hdlr：Handler Reference Box，包含了表明该轨道类型的信息：Video Track、Audio Track 或者 Hint Track。</p>
+<!--![](https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/mp4-structure-2.jpg)-->
+
+<h4 id="分析-MP4-文件信息"><a href="#分析-MP4-文件信息" class="headerlink" title="分析 MP4 文件信息"></a>分析 MP4 文件信息</h4><h5 id="1、计算电影长度"><a href="#1、计算电影长度" class="headerlink" title="1、计算电影长度"></a>1、计算电影长度</h5><p>time scale 相当于定义了标准的1秒在这部电影里面的刻度是多少。<br>方法1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从 mvhd - movie header atom 中找到 time scale 和 duration ，duration 除以time scale 即是 整部MP4 的长度。<br>方法2<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个 trak -&gt; mdia -&gt; mdhd 里也会有 time scale 和 duration，通过其计算出 每个 track 的长度。<br>Demo: 只有一个 video track 和 audio track，所以它们分别的长度都等于总长度。<br>方法3<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;整部电影的duration = 每个帧的 duration 之和（从stts - Time-to-sample atoms中得出，即 sampleCount 乘以 sampleDuration），再除以 time scale（方法2 mdhd 读到的）</p>
+<h5 id="2、计算电影图像宽度和高度"><a href="#2、计算电影图像宽度和高度" class="headerlink" title="2、计算电影图像宽度和高度"></a>2、计算电影图像宽度和高度</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从tkhd – track header atom中找到宽度和高度即是（width &amp; height）</p>
+<h5 id="3、计算电影声音采样频率"><a href="#3、计算电影声音采样频率" class="headerlink" title="3、计算电影声音采样频率"></a>3、计算电影声音采样频率</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从tkhd – track header atom中找出audio track的time scale即是声音的采样频率。</p>
+<h5 id="4、计算视频帧率"><a href="#4、计算视频帧率" class="headerlink" title="4、计算视频帧率"></a>4、计算视频帧率</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先计算出整部电影的duration，和帧的数目然后<br>帧率 = 帧的数目 / 整部电影的duration<br>Demo: 192 / 12.8 = 15</p>
+<h5 id="5、计算电影的比特率"><a href="#5、计算电影的比特率" class="headerlink" title="5、计算电影的比特率"></a>5、计算电影的比特率</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;整部电影的尺寸除以长度，即是比特率（码率 kbps）<br>Demo: stsz<br>视频：1044840<em>8/12.8/1000=653.025kbit/s<br>音频：208772</em>8/12.8/1000=130.4825kbit/s    </p>
+<h5 id="6、查找sample"><a href="#6、查找sample" class="headerlink" title="6、查找sample"></a>6、查找sample</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当播放一部电影或者一个track的时候，对应的media handler必须能够正确的解析数据流，对一定的时间获取对应的媒体数据。如果是视频媒体， media handler可能会解析多个atom，才能找到给定时间的sample的大小和位置。</p>
+<p>具体步骤如下：</p>
+<ol>
+<li>确定时间 t，相对于媒体时间坐标系统 t 乘以 time scale（from mdhd）</li>
+<li>检查 stts（time-to-sample atom）来确定给定时间的 sample序号  </li>
+<li>检查 stsc（sample-to-chunk atom）来发现对应该 sample 的 chunk<br> （在 stsc 的 entrylist 里面：用下一个 entry 的 firstChunk 减去本次的 firstChunk，就得到了这组 chunk 的个数。最后一个 entry 结构体则表明从该firstChunk 到最后一个 chunk，每个 chunk 都有 samplsPerChunk 个 sample。<br> 即：firstChunk(N+1) - firstChunk(N) = chunkCount）</li>
+<li>从 stco（chunk offset atom）中提取该 chunk 的偏移量  </li>
+<li>利用 stsz（sample size atom）找到 sample 在 chunk 内的偏移量和 sample 的大小</li>
+</ol>
+<p>Demo：如果要找第1秒的视频数据，过程如下：</p>
+<ol>
+<li>第1秒的视频数据相对于此视频（timescale = 15360）的时间为 15360</li>
+<li>检查 stts（entryInfo = [[“sampleCount”: 192, “sampleDuration”: 1024]]），得出这里 sample 的 duration 都是 1024，从而得出需要寻找第15360/1024 = 15 + 1 = 16个sample</li>
+<li>检查 stsc（entryInfo = [[“firstChunk”: 1, “samplesPerChunk”: 2, “sampleDescriptionID”: 1], [“firstChunk”: 2, “samplesPerChunk”: 1, “sampleDescriptionID”: 1]]），为 2 列，则，第二个firstChunk减第一个 = 1，说明第一列是 1个chunk，包含 2个sample，然后通过 stco（entryCount = 191）知道 chunk 的总数是 191，也就是说 第二列 190 个chunk，各包含 1个sample，而 总smaple为192 也等于 stts（”sampleCount”: 192）。这样就得出在 第15（16个sample -&gt; 2 + 14 sample -&gt; 1 + 14 chunk -&gt; 15 chunk）个chunk。</li>
+<li>检查 stco（chunkOffset）找到 第15个chunk 的偏移量是 136470</li>
+<li>由于 第16个sample 是 第15个trunk 的 第一个sample，所以不用检查 sample size atom，chunk 的偏移量即是该 sample 的偏移量 136470。如果是这个 chunk 的第二个 sample，则从 sample size atom 中找到该 chunk 的前一个 sample 的大小，然后加上偏移量即可得到实际位置。</li>
+<li>得到位置后，即可取出相应数据进行解码，播放</li>
+</ol>
+<h5 id="7、查找关键帧"><a href="#7、查找关键帧" class="headerlink" title="7、查找关键帧"></a>7、查找关键帧</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查找过程与查找sample的过程非常类似，只是需要利用sync sample atom来确定key frame的sample序号  </p>
+<ol>
+<li>确定给定时间的sample序号 </li>
+<li>检查sync sample atom来发现这个sample序号之后的key frame</li>
+<li>检查sample-to-chunk atom来发现对应该sample的chunk</li>
+<li>从chunk offset atom中提取该trunk的偏移量</li>
+<li>利用sample size atom找到sample在trunk内的偏移量和sample的大小  </li>
+</ol>
+<h5 id="8、Seeking"><a href="#8、Seeking" class="headerlink" title="8、Seeking"></a>8、Seeking</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么我们如果对 MP4 文件做 Seek 操作呢？步骤如下：</p>
+<ol>
+<li>根据 mvhd(Movie Header Box) 中的 timescale 确定给定时间 t 在媒体时间坐标系统中的位置 p，即 t * timescale。</li>
+<li>根据 stts(Decoding Time to Sample Box) 查询指定 track 在时间坐标 p 之前的第一个 sample number。</li>
+<li>根据 stss(Sync Sample Box) 查询 sample number 前的第一个关键帧 sync sample。</li>
+<li>根据 stsc(Sample To Chunk Box) 查询对应 sync sample 的 chunk。</li>
+<li>根据 stco(Chunk Offset Box) 查询该 chunk 的在文件中的偏移量。</li>
+<li>根据 stsc(Sample To Chunk Box) 和 stsz(Sample Size Boxes) 的信息计算出该 chunk 中需要读取的 sample 数据，即完成 seek。</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;补充：<a target="_blank" rel="noopener" href="http://www.52rd.com/Blog/Detail_RD.Blog_wqyuwss_7936.html">Random access</a> </p>
+<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MP4文件、MOV文件和3GP文件，这三种媒体文件格式采用了相同的封装格式。<a target="_blank" rel="noopener" href="https://my.oschina.net/alphajay/blog/4276">Mp4编码全介绍 - AlphaJay</a></p>
+<h5 id="MOV"><a href="#MOV" class="headerlink" title="MOV"></a>MOV</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**苹果官方内容：<a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFChap1/qtff1.html">Overview of QTFF</a>**。它是1998年由苹果公司开发的一款视频格式，人们通常定义它为QuickTime播放器格式。它采用MPEG 4解码器进行压缩并兼容不同的轨道以便于储存电影和其他视频文件。它每一条轨道通常都要和至少一个或多个不同的编解码器进行编码。与其他视频格式相比，MOV毕竟是一种有损压缩文件，它之所以被广泛使用，主要还是因为它出色的兼容性能。它不仅可以与Macintosh平台兼容，也可以在Windows PC上运行的非常顺畅的。甚至是一些DVCPRO（一种高清的DV格式）文件也可以播放MOV视频。</p>
+<h4 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h4><ul>
+<li><a target="_blank" rel="noopener" href="http://www.samirchen.com/video-playback-format/">点播视频格式的选择 | SamirChen</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.52rd.com/Blog/wqyuwss/559/">leslie - wqyuwss的专栏</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ranson7zop/p/7889272.html">mp4文件格式解析 - nigaopeng</a></li>
+<li><a target="_blank" rel="noopener" href="http://zzqhost.github.io/hostwiki/%E5%A4%9A%E5%AA%92%E4%BD%93%E7%9B%B8%E5%85%B3_MP4%E5%AE%B9%E5%99%A8%E6%A0%BC%E5%BC%8F.html#toc_1.1">MP4容器格式</a></li>
+<li><a target="_blank" rel="noopener" href="https://my.oschina.net/alphajay/blog/4276">Mp4编码全介绍 - AlphaJay</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/luansxx/article/details/7721282">播放器适配经验总结——IOS</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/pirateleo/article/details/7590056/">MP4文件格式详解——元数据moov（一）mvhd box</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/koozxcv/article/details/50502034">MP4解析</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/tung214/article/details/30492895">stagefright之MPEG4Extractor（二）(stts,stsc,stco)</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/08/07/MP4-%E6%A0%BC%E5%BC%8F%E4%BA%86%E8%A7%A3%E4%B8%8B/" data-id="ckddxq2oy0004gcug0rfwc6eo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MP4/" rel="tag">MP4</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/16/PDF-%E9%A2%84%E8%A7%88-%E8%A7%A3%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          PDF 预览 &amp; 解析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/23/iOS-%E5%AD%97%E7%AC%A6%E7%9A%84-Encode-Decode/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">iOS 字符的 Encode &amp; Decode</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/">Xcode</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/">动图</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul>
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FLV/" rel="tag">FLV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Framework/" rel="tag">Framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/" rel="tag">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gif/" rel="tag">Gif</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LivePhoto/" rel="tag">LivePhoto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/M3U8/" rel="tag">M3U8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MP4/" rel="tag">MP4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/" rel="tag">Objective-C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PDF/" rel="tag">PDF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Svga/" rel="tag">Svga</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-UDP-IP/" rel="tag">TCP / UDP / IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TS/" rel="tag">TS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/" rel="tag">UIButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIImage/" rel="tag">UIImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextField/" rel="tag">UITextField</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextView/" rel="tag">UITextView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/" rel="tag">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebP/" rel="tag">WebP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebSocket/" rel="tag">WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation/" rel="tag">animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/configure/" rel="tag">configure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layer/" rel="tag">layer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mask/" rel="tag">mask</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" rel="tag">二值化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" rel="tag">动态库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" rel="tag">版本控制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" rel="tag">组合特效</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E9%80%9F/" rel="tag">网速</a></li></ul>
+    </div>
+  </div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/FLV/" style="font-size: 10px;">FLV</a> <a href="/tags/Framework/" style="font-size: 10px;">Framework</a> <a href="/tags/GCD/" style="font-size: 12px;">GCD</a> <a href="/tags/Gif/" style="font-size: 10px;">Gif</a> <a href="/tags/Git/" style="font-size: 12px;">Git</a> <a href="/tags/Github/" style="font-size: 12px;">Github</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/LivePhoto/" style="font-size: 10px;">LivePhoto</a> <a href="/tags/M3U8/" style="font-size: 10px;">M3U8</a> <a href="/tags/MP4/" style="font-size: 10px;">MP4</a> <a href="/tags/MacOS/" style="font-size: 16px;">MacOS</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/PDF/" style="font-size: 10px;">PDF</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/Svga/" style="font-size: 10px;">Svga</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/TCP-UDP-IP/" style="font-size: 10px;">TCP / UDP / IP</a> <a href="/tags/TS/" style="font-size: 10px;">TS</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIImage/" style="font-size: 10px;">UIImage</a> <a href="/tags/UITextField/" style="font-size: 10px;">UITextField</a> <a href="/tags/UITextView/" style="font-size: 10px;">UITextView</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/WebP/" style="font-size: 10px;">WebP</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/animation/" style="font-size: 10px;">animation</a> <a href="/tags/configure/" style="font-size: 10px;">configure</a> <a href="/tags/layer/" style="font-size: 18px;">layer</a> <a href="/tags/mask/" style="font-size: 10px;">mask</a> <a href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" style="font-size: 10px;">二值化</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" style="font-size: 10px;">动态库</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 14px;">动画</a> <a href="/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12px;">数据结构</a> <a href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" style="font-size: 10px;">版本控制</a> <a href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" style="font-size: 10px;">组合特效</a> <a href="/tags/%E7%BD%91%E9%80%9F/" style="font-size: 10px;">网速</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/">iOS 动态库 应用篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/30/Git-%E8%BE%85%E5%AF%BC/">Git 辅导</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%99%BA%E8%83%BD%E5%BC%B9%E5%B9%95-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS 弹幕系统之智能弹幕 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/04/iOS-Socket-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS Socket 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/16/iOS-%E7%BB%84%E5%90%88%E7%A4%BC%E7%89%A9%E7%89%B9%E6%95%88/">iOS 组合礼物特效</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AnakinChen<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

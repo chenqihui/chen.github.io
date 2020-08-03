@@ -1,38 +1,382 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
 
+  
+  <title>PDF 预览 &amp; 解析 | RyuukuSpace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;简单讲就是它独立包含文档所有信息，如文本、字体、图形等等。并且当看到下面解析工具解析看到结构，每一页也都具有完整信息，这样就可以分开处理显示。可以通过 可移植文档格式 - 维基百科，自由的百科全书 &amp; pdf_百度百科 来了解更多 PDF 信息。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PDF 预览 &amp; 解析">
+<meta property="og:url" content="http://chenqihui.github.io/2018/08/16/PDF-%E9%A2%84%E8%A7%88-%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;简单讲就是它独立包含文档所有信息，如文本、字体、图形等等。并且当看到下面解析工具解析看到结构，每一页也都具有完整信息，这样就可以分开处理显示。可以通过 可移植文档格式 - 维基百科，自由的百科全书 &amp; pdf_百度百科 来了解更多 PDF 信息。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-08-16T10:08:53.000Z">
+<meta property="article:modified_time" content="2020-08-02T18:16:51.465Z">
+<meta property="article:author" content="AnakinChen">
+<meta property="article:tag" content="Swift">
+<meta property="article:tag" content="MacOS">
+<meta property="article:tag" content="PDF">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="RyuukuSpace" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<meta name="generator" content="Hexo 5.0.0"></head>
 
-{% block page_class %}page-post-detail{% endblock %}
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RyuukuSpace</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://chenqihui.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-PDF-预览-解析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/16/PDF-%E9%A2%84%E8%A7%88-%E8%A7%A3%E6%9E%90/" class="article-date">
+  <time datetime="2018-08-16T10:08:53.000Z" itemprop="datePublished">2018-08-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
+  </div>
 
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      PDF 预览 &amp; 解析
+    </h1>
+  
 
-{% block content %}
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单讲就是它独立包含文档所有信息，如文本、字体、图形等等。并且当看到下面解析工具解析看到结构，每一页也都具有完整信息，这样就可以分开处理显示。可以通过 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8F%AF%E7%A7%BB%E6%A4%8D%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F">可移植文档格式 - 维基百科，自由的百科全书</a> &amp; <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/pdf/317608?fr=aladdin">pdf_百度百科</a> 来了解更多 PDF 信息。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回到需求，产品上看可能 APP 只要能看，并在看到第几页的时候显示相应的提示或者其他动作。而对于开发者，如果使用自定义的话，会疑问如何显示？是列表呢、还是翻页，加载效果？加载方式？在线还是本地等等。并且自定义显示的效率如何？是否占内存，占CPU。是否需要编辑？再深入就是研究 PDF 结构。然后发现想多了，还是老老实实先实现产品需求。</p>
+<a id="more"></a>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><p>1、<a target="_blank" rel="noopener" href="https://github.com/chenqihui/QHPDFDemo">QHPDFDemo</a>：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iOS 实现预览 PDF。主要使用 自定义绘制 PDFView。用 UIScrollView 或者UIPageViewController 两种容器来显示 PDF。UIScrollView 是模仿 UIWebView 的样式，而 UIPageViewController 拥有翻页功能，并可以设置不同翻页的效果。具体实现可以查看源码。</p>
+<p>2、<a target="_blank" rel="noopener" href="https://github.com/chenqihui/PDF-Voyeur">PDF-Voyeur</a>   </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mac 解析 PDF 结构，参考《<a target="_blank" rel="noopener" href="http://phaibin.tk/2012/01/06/ti-qu-pdfmu-lu-de-fang-fa">提取pdf目录的方法</a>》里面的一个 Github 项目，看注释应该是苹果官方的 Example，但是苹果官方已经查找不到对应的项目，所以 fork 下来修改并运行起来，只是几个 API 修改。其主要使用苹果提供的 C库 API 获取 PDF 信息。而 PDF 的结构需要阅读 Adobe 制定的标准《<a target="_blank" rel="noopener" href="https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF32000_2008</a>》</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>*就不截图了，以上工具可跑 Demo 看哈</strong></p>
+<h4 id="QHPDFDemo-的开发之路"><a href="#QHPDFDemo-的开发之路" class="headerlink" title="QHPDFDemo 的开发之路"></a>QHPDFDemo 的开发之路</h4><table>
+<thead>
+<tr>
+<th>记录</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1、首先想到的是通过 UIScrollView 来绘制整个 PDF，UIScrollView 自带 捏合 功能，做完感觉完美了。</td>
+</tr>
+<tr>
+<td>2、开开心心开发 page 模式，即用 UIPageViewController 来实现，添加 enum 来实现控制。做到这里真的还蛮顺利的。page 模式不是需要重点就没有再添加 捏合 功能，后续需要再开发。</td>
+</tr>
+<tr>
+<td>3、接着实现 UIWebView 的显示 PDF，看下面就发现，本以为可以作为在线预览的模式，可是由于单 PDF，不清楚 size 大小，因此需要缓存才能拿到。略坑，但是如果服务端在接口范围依然能在线预览。由于样式固定也就先到这里。</td>
+</tr>
+<tr>
+<td>4、依然很顺利。但是想到用的 PDF 只有 10 页，改成 几百页 的时候，Scroll 模式由于全绘制，直接卡住，并且还报了 size [问题](#问题 2)，还有 page 模式也在快速翻页出现警告[问题](#问题 1)，page 的添加动画完成控制解决，还算 OK。</td>
+</tr>
+<tr>
+<td>5、而 scroll 模式的问题，想着进行局部绘制，并动态修改 父view 的 frame，不在一开始就设置最大（因为 contentSize 达到 pdfHeight * pdfCount，几百页时候达到 几十万 px），局部绘制的时候由于惯性思维，一直想着在同一个 父View 上绘制（只需设置好 y），但是发现 CGContext 下绘制效果不好，控制不好局部刷白绘制及 CTM，总影响到前面已经绘制的。</td>
+</tr>
+<tr>
+<td>6、傻了傻了，既然是这种，为什么不在 父view 上添加 子View 再绘制，这样坐标也可以忽略。没错，这样就简单多了，再想想，这不就是 UICollectionView 了，用系统的回收机制效率还更好。新增 Collection 模式，开发完成后，嗯，简单。问题又来了，缩放问题咋整？</td>
+</tr>
+<tr>
+<td>7、UICollectionView &amp; UITableView 本身是 UIScrollView 的子类，但是其 ZoomScale 没法用。只有在整个添加 UIScrollView 或者在 Cell 添加 UIScrollView。无论哪种都有瑕疵。整个添加 UIScrollView，当其放大状态，UIScrollView 就会拦截手势，滚动区域就成了 UIScrollView 的 ContentSize，无法回到 UICollectionView。而通过在 zoomEnd 回调来设置 ContenSize.height = 0，可以回到 UICollectionView 的滚动，只是这样修改放大时的显示固定了（即不是捏合位置，会有抖动，体验不好）</td>
+</tr>
+<tr>
+<td>8、而 子view 添加 UIScrollView ，这部分还没实现，不过这部分 Demo 比较多，苹果官方也给出了（地址找不到了，尴尬），类似这篇 <a target="_blank" rel="noopener" href="https://www.itstrike.cn/Question/f497e47b-bd8f-4b64-9d15-36d8e0869642.html">添加夹点缩放到 UICollectionView</a> 通过实行 cell 的捏合控制 layout 的 itemSize，可是大部分在 手势end 时候都还原了，而没有还原的 <a target="_blank" rel="noopener" href="https://github.com/Alua-Kinzhebayeva/iOS-PDF-Reader">Alua-Kinzhebayeva/iOS-PDF-Reader: PDF Reader for iOS written in Swift</a> 这种，只能一页页放大。</td>
+</tr>
+<tr>
+<td>9、还是没达到需求，最终回到 scroll 模式，然后实行类似 UICollectionView 的页面加载，Demo 里面是加载固定区域，区域外的 子view 会回收，测试过如果 Demo 里的 pdf 加载到 100 页是内存爆了，直接杀进程了。具体实现可以查看代码</td>
+</tr>
+<tr>
+<td>10、优化空间：加载的渐进式显示，快速滑动判断来控制添加 PDF page，绘制的优化（目前实现的 CGContext 绘制 PDF），等等。总之，坑还是蛮多的。功能还可以添加编辑。</td>
+</tr>
+<tr>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<p>PDF文档预览的几种方式，内容可以参考：</p>
+<ul>
+<li>QLPreviewController</li>
+<li>UIDocumentInteractionController</li>
+<li>UIWebView</li>
+<li>CGContexDrawPDFPage</li>
+</ul>
+<h4 id="QLPreviewController-amp-UIDocumentInteractionController"><a href="#QLPreviewController-amp-UIDocumentInteractionController" class="headerlink" title="QLPreviewController &amp; UIDocumentInteractionController"></a>QLPreviewController &amp; UIDocumentInteractionController</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它们俩都是苹果封装好的文件预览控制器，可以预览多种文件格式，如PDF、doc、jpg、key等等。并且提供了系统分享功能，及 当前页码/总页码 的显示。差别是 QL 是一个 UIViewController。而 UIDocumentInteractionController 本身并不是一个控制器类，它直接继承 NSObject，所以就不能直接 push 或者模态跳转了，所以需要使用它类方法提供的模态跳转函数。QL 能支持多文件预览（即提供 DataSource 切换预览文件的 URL）和横滑切换，而 UIDocumentInteractionController 就不支持，只能一次显示一个。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><em>而它们的缺点都是只能预览本地文件。</em></strong></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它们的使用可参考：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ad9544915877">QLPreviewController 文件快速浏览</a>  </p>
+<h4 id="UIWebView"><a href="#UIWebView" class="headerlink" title="UIWebView"></a>UIWebView</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它不仅能预览多种文件，还支持在线与本地两种。可以说 UIWebView 真的很强大。如果使用 UIWebView 预览 PDF，会发现没有总页码，也不知当前页码是多少，因此需要而外的解析 PDFDocument。</p>
+<h5 id="1、获取-PDF-的信息（如总页数）"><a href="#1、获取-PDF-的信息（如总页数）" class="headerlink" title="1、获取 PDF 的信息（如总页数）"></a>1、获取 PDF 的信息（如总页数）</h5><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> document = <span class="type">CGPDFDocument</span>(url <span class="keyword">as</span> <span class="type">CFURL</span>) &#123;</span><br><span class="line">    <span class="built_in">count</span> = document.numberOfPages</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<h5 id="2、计算当前页码："><a href="#2、计算当前页码：" class="headerlink" title="2、计算当前页码："></a>2、计算当前页码：</h5><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MARK: - UIWebViewDelegate</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 1、用 UIScrollView 的 contentSize.height 除以 总页码，算出每页的 height</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">webViewDidFinishLoad</span><span class="params">(<span class="number">_</span> webView: UIWebView)</span></span> &#123;</span><br><span class="line">    pdfPageHeight = webView.scrollView.contentSize.height / <span class="type">CGFloat</span>(<span class="built_in">count</span>)</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">// MARK: - UIScrollViewDelegate</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">// 2、监听 UIScrollView 的滑动事件获取滑动偏移值 contentOffset.y 来计算当前的页码</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">scrollViewDidScroll</span><span class="params">(<span class="number">_</span> scrollView: UIScrollView)</span></span> &#123;</span><br><span class="line">    <span class="keyword">guard</span> pdfPageHeight &gt; <span class="number">0</span> <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> y = scrollView.contentOffset.y</span><br><span class="line">    <span class="comment">//        // 以页面 bottom 到达屏幕底部为翻页</span></span><br><span class="line">    <span class="comment">//        let currentIndex = ((y + self.frame.size.height) / scrollView.zoomScale) / pdfPageHeight</span></span><br><span class="line">    <span class="comment">// 以页面 top 到达屏幕顶部为翻页</span></span><br><span class="line">    <span class="keyword">let</span> currentIndex = <span class="type">Int</span>((y / scrollView.zoomScale) / pdfPageHeight) + <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    dataSource?.showInPDFPage(view: <span class="keyword">self</span>, index: currentIndex)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3、注意"><a href="#3、注意" class="headerlink" title="3、注意"></a>3、注意</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;很明显，如果想通过 PDF 结构得到总页码来计算页码的话，需要整个 PDF 的数据，也就是变相的为实现此功能，等同于读本地 PDF 一样。除非获取 PDF 的时候，服务端额外提供 PDF 的页码。</p>
+<h4 id="QHPDFView-CGPDFDocument"><a href="#QHPDFView-CGPDFDocument" class="headerlink" title="QHPDFView + CGPDFDocument"></a>QHPDFView + CGPDFDocument</h4><p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Franzeyang/PDFBrowse">Franzeyang/PDFBrowse</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/yiyaaixuexi/article/details/7645725">iOS开发笔记——PDF的显示和浏览</a></li>
+</ul>
+<p>CATiledLayer</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ee0628629f92">ios 超大图显示：CATiledLayer的使用，关于tileSize的用法 - 简书</a></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它除了将图层再次分割成独立更新的小块（类似于矩形自动更新的概念），还有一个有趣的特性：在多个线程中为每个小块同时调用 -drawLayer:inContext: 方法。这就避免了阻塞用户交互而且能够利用多核心新片来更快地绘制。只有一个小块的 CATiledLayer 是实现异步更新图片视图的简单方法。</p>
+<h5 id="问题-1"><a href="#问题-1" class="headerlink" title="问题 1"></a>问题 1</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UIPageViewController 在快速翻页的时候，当动作没有完成时就翻另一页，控制台会提示：</p>
+<blockquote>
+<p>‘Unbalanced calls to begin/end appearance transitions for </p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/13248282/uipageviewcontroller-transition-unbalanced-calls-to-begin-end-appearance-transi">ios - UIPageViewController transition ‘Unbalanced calls to begin/end appearance transitions for ‘ - Stack Overflow</a>  </li>
+</ul>
+<p>解决：使用的是 pageIsAnimating 第一个解答的方案，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 标识翻页动画是否正在进行中</span></span><br><span class="line"><span class="keyword">var</span> pageIsAnimating: <span class="type">Bool</span> = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// MARK - UIPageViewControllerDelegate</span></span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">pageViewController</span><span class="params">(<span class="number">_</span> pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController])</span></span> &#123;</span><br><span class="line">    pageIsAnimating = <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">pageViewController</span><span class="params">(<span class="number">_</span> pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> finished == <span class="literal">true</span>, completed == <span class="literal">true</span> &#123;</span><br><span class="line">        pageIsAnimating = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">p_goPage</span><span class="params">(currentViewController: QHPageViewController, incrementIndex: Int)</span></span> -&gt; <span class="type">QHPageViewController?</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> pageIsAnimating == <span class="literal">true</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> vc</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// MARK - UIPageViewControllerDataSource</span></span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">pageViewController</span><span class="params">(<span class="number">_</span> pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController)</span></span> -&gt; <span class="type">UIViewController?</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> p_goPage(currentViewController: viewController <span class="keyword">as</span>! <span class="type">QHPageViewController</span>, incrementIndex: -<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">pageViewController</span><span class="params">(<span class="number">_</span> pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController)</span></span> -&gt; <span class="type">UIViewController?</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> p_goPage(currentViewController: viewController <span class="keyword">as</span>! <span class="type">QHPageViewController</span>, incrementIndex: <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="问题-2"><a href="#问题-2" class="headerlink" title="问题 2"></a>问题 2</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UIScrollView 在初始高度时候，由于 PDF 的页码过多，所以计算出的高度也很大，而此时 PDFView 高度设置就会被警告</p>
+<blockquote>
+<p>-[&lt;CALayer: 0x1d0227980&gt; display]: Ignoring bogus layer size (375.000000, 408748.235294), contentsScale 3.000000, backing store size (1125.000000, 1226244.705882)</p>
+</blockquote>
+<p>并且不显示该 UIView 图层，因此需要根据滑动来动态设置高度，并增加滚动绘制 PDF，类似分页的效果。还在实现中。</p>
+<p>解决：应该是由于子页面的警告，这部分现在没解决，不过目前测试没遇到，得再测试测试。</p>
+<h5 id="问题-3"><a href="#问题-3" class="headerlink" title="问题 3"></a>问题 3</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UIScrollView 滑动加载 PDF 时候，猜测使用的 PDF 是黑白，即使页码多，但在绘制消耗相比彩色的 PDF 要小。通过使用 彩色PDF 的时候，发现滑动卡顿现象十分严重</p>
+<p>解决：<br>方案1、UIScrollView 停止滑动的时候才计算并加载相应的 PDF 页。<br>方案2、CATiledLayer，使用苹果提供的绘制此 layer</p>
+<p>结果：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最终使用方案2，效果很好。测试最后只发现第一次运行加载会有线程警告，从分析上看 CATiledLayer 确实是切割多块，并在另一个线程绘制，Xcode 可能不认识 CATiledLayer，只是按正常逻辑绘制不在主线程就不合理，但这正是 CATiledLayer 的特点，所以警告在这里应该是可以忽略。</p>
+<h4 id="PDFKit"><a href="#PDFKit" class="headerlink" title="PDFKit"></a>PDFKit</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它是苹果在 WWDC2017 发布的新 Kit，所以只支持 iOS11+。与 C语言 获取 PDF，提供的了简便的 API，相应的 API 大纲参考 《<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/pdfkit?language=objc">PDFKit | Apple Developer Documentation</a>》</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其 PDFView + PDFDocument 就相当前一节开发的 [QHPDFView + CGPDFDocument](#QHPDFView + CGPDFDocument)。但 PDFKit 还提供了 PDFThumbnailView、及强大的 PDF 编辑（划线、涂鸦、水印等），还有增加 Page 等，并且 PDFDocument 可以获取更多的 PDF 信息（目录结构、页数、页码等）。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加水印，可参考：《<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/pdfkit/custom_graphics?language=objc">Custom Graphics | Apple Developer Documentation</a>》</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;觉得苹果是发现前面提供封装好的 [QLPreviewController &amp; UIDocumentInteractionController](#QLPreviewController &amp; UIDocumentInteractionController) 使用率不高，自定义低，因此发布 PDFKit 让开发者可以组合使用，自由选择，且降低 PDF 常用信息解析的复杂度。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果 App 针对 iOS11+，完全可以使用它开发 PDF 阅读器。</p>
+<h4 id="PDF-解析"><a href="#PDF-解析" class="headerlink" title="PDF 解析"></a>PDF 解析</h4><p>PDF 的读取对象就是 PDFDocument，从中可以读取 PDF 所有数据。</p>
+<ul>
+<li>CGPDFDocumentRef</li>
+<li>CGPDFDocument</li>
+<li>PDFDocument</li>
+</ul>
+<h5 id="CGPDFDocumentRef"><a href="#CGPDFDocumentRef" class="headerlink" title="CGPDFDocumentRef"></a>CGPDFDocumentRef</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在《<a target="_blank" rel="noopener" href="http://phaibin.tk/2012/01/06/ti-qu-pdfmu-lu-de-fang-fa">提取pdf目录的方法</a>》的 Demo 里面就有如下代码，是使用 C语言 来获取 PDF 对象的信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">static const void *</span><br><span class="line">getCFDataBytePointer(void *info)</span><br><span class="line">&#123;</span><br><span class="line">    CFDataRef data;</span><br><span class="line">    </span><br><span class="line">    data &#x3D; info;</span><br><span class="line">    return CFDataGetBytePtr(data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static void</span><br><span class="line">releaseCFData(void *info)</span><br><span class="line">&#123;</span><br><span class="line">    CFDataRef data;</span><br><span class="line">    </span><br><span class="line">    data &#x3D; info;</span><br><span class="line">    CFRelease(data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;* Create a direct-access data provider using &#96;data&#39;, a CFDataRef. *&#x2F;</span><br><span class="line"></span><br><span class="line">static CGDataProviderRef</span><br><span class="line">dataProviderWithCFData(CFDataRef data)</span><br><span class="line">&#123;</span><br><span class="line">    void *info;</span><br><span class="line">    size_t size;</span><br><span class="line">    static const CGDataProviderDirectCallbacks callbacks &#x3D; &#123;</span><br><span class="line">        0,</span><br><span class="line">        &amp;getCFDataBytePointer, NULL, NULL, &amp;releaseCFData</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    if (data &#x3D;&#x3D; NULL)</span><br><span class="line">        return NULL;</span><br><span class="line">    </span><br><span class="line">    size &#x3D; CFDataGetLength(data);</span><br><span class="line">    info &#x3D; (void *)CFRetain(data);</span><br><span class="line">    return CGDataProviderCreateDirect (info, size, &amp;callbacks);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (BOOL)loadDataRepresentation:(NSData *)data ofType:(NSString *)type</span><br><span class="line">&#123;</span><br><span class="line">    CGDataProviderRef provider;</span><br><span class="line">    </span><br><span class="line">    if ([type isEqualToString:@&quot;PDFType&quot;]) &#123;</span><br><span class="line">        provider &#x3D; dataProviderWithCFData((__bridge CFDataRef)data);</span><br><span class="line">        if (data &#x3D;&#x3D; NULL)</span><br><span class="line">            return NO;</span><br><span class="line">        document &#x3D; CGPDFDocumentCreateWithProvider(provider);</span><br><span class="line">        if (document &#x3D;&#x3D; NULL) &#123;</span><br><span class="line">            CGDataProviderRelease(provider);</span><br><span class="line">            return NO;</span><br><span class="line">        &#125;</span><br><span class="line">        CGDataProviderRelease(provider);</span><br><span class="line">        return YES;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return NO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="CGPDFDocument"><a href="#CGPDFDocument" class="headerlink" title="CGPDFDocument"></a>CGPDFDocument</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其实 CGPDFDocumentRef 就是 CGPDFDocument，因此上述直接使用 CGPDFDocument 来获取将更加简便，代码如下</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> docu = document &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> page = docu.page(at: <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> rect = page.getBoxRect(.cropBox)</span><br><span class="line">        <span class="keyword">let</span> <span class="built_in">count</span> = docu.numberOfPages</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="PDFDocument"><a href="#PDFDocument" class="headerlink" title="PDFDocument"></a>PDFDocument</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;它是前面介绍的 PDFKit 里面提供的对象，拥有对 PDF 更丰富的读取、操作的 API。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> path = <span class="type">Bundle</span>.main.path(forResource: <span class="string">&quot;mp4&quot;</span>, ofType: <span class="string">&quot;pdf&quot;</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> url = <span class="type">URL</span>(fileURLWithPath: path)</span><br><span class="line">pdfDocument = <span class="type">PDFDocument</span>(url: url)</span><br><span class="line"><span class="keyword">let</span> <span class="built_in">count</span> = pdfDocument.pageCount</span><br><span class="line">pdfDocument.delegate = <span class="keyword">self</span></span><br><span class="line">    </span><br><span class="line">pdfView.document = pdfDocument</span><br><span class="line">pdfView.displayMode = .singlePage</span><br><span class="line">pdfView.autoScales = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="PDF-的结构"><a href="#PDF-的结构" class="headerlink" title="PDF 的结构"></a>PDF 的结构</h4><p>通过前面的工具可以查询 PDF 的 Metadata、Outlines（目录）等等大部分信息。</p>
+<p>其二进制信息读取还是得参考 《<a target="_blank" rel="noopener" href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">Adobe 的 PDF32000_2008.pdf</a>》</p>
+<h4 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h4><p>1、 <a target="_blank" rel="noopener" href="https://www.jianshu.com/u/0c84bae43ced">歪樣 - 简书</a> 的如下文章中，能了解到 PDF 的具体操作。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/95168c23fb39">iOS PDF文件预览的几种方法</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b6fb4d662969">iOS PDF文件格式转换</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/978d38533c5c">iOS 从其他App获取文件</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/888371cdb1b7">iOS PDF文档批注与修改</a></li>
+</ul>
+<p>2、PDFKit</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/cairo123/article/details/78615901">使用PDFKit写一个基本的PDF阅读器</a></li>
+<li><a target="_blank" rel="noopener" href="https://my.oschina.net/u/3691429/blog/1540042">iOS11 PDFKit 使用例程 - tzshlyt的个人空间</a></li>
+</ul>
+<p>3、结构</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://phaibin.tk/2012/01/06/ti-qu-pdfmu-lu-de-fang-fa">提取pdf目录的方法</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/adolphfend/article/details/24729025">一个简单PDF文件的结构分析</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/08/16/PDF-%E9%A2%84%E8%A7%88-%E8%A7%A3%E6%9E%90/" data-id="ckddxq2pq000ngcugfk3b4hw3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PDF/" rel="tag">PDF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/20/%E4%BC%A0%E8%AF%B4%E4%B8%AD%E7%9A%84%E7%88%B1%E5%9B%A0%E6%96%AF%E5%9D%A6%E6%8F%90%E5%87%BA%E7%9A%84%E6%80%9D%E8%80%83%E9%A2%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          传说中的爱因斯坦提出的思考题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/08/07/MP4-%E6%A0%BC%E5%BC%8F%E4%BA%86%E8%A7%A3%E4%B8%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MP4 格式了解下</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/">Xcode</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/">动图</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul>
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FLV/" rel="tag">FLV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Framework/" rel="tag">Framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/" rel="tag">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gif/" rel="tag">Gif</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LivePhoto/" rel="tag">LivePhoto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/M3U8/" rel="tag">M3U8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MP4/" rel="tag">MP4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/" rel="tag">Objective-C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PDF/" rel="tag">PDF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Svga/" rel="tag">Svga</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-UDP-IP/" rel="tag">TCP / UDP / IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TS/" rel="tag">TS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/" rel="tag">UIButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIImage/" rel="tag">UIImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextField/" rel="tag">UITextField</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextView/" rel="tag">UITextView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/" rel="tag">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebP/" rel="tag">WebP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebSocket/" rel="tag">WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation/" rel="tag">animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/configure/" rel="tag">configure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layer/" rel="tag">layer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mask/" rel="tag">mask</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" rel="tag">二值化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" rel="tag">动态库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" rel="tag">版本控制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" rel="tag">组合特效</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E9%80%9F/" rel="tag">网速</a></li></ul>
+    </div>
+  </div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/FLV/" style="font-size: 10px;">FLV</a> <a href="/tags/Framework/" style="font-size: 10px;">Framework</a> <a href="/tags/GCD/" style="font-size: 12px;">GCD</a> <a href="/tags/Gif/" style="font-size: 10px;">Gif</a> <a href="/tags/Git/" style="font-size: 12px;">Git</a> <a href="/tags/Github/" style="font-size: 12px;">Github</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/LivePhoto/" style="font-size: 10px;">LivePhoto</a> <a href="/tags/M3U8/" style="font-size: 10px;">M3U8</a> <a href="/tags/MP4/" style="font-size: 10px;">MP4</a> <a href="/tags/MacOS/" style="font-size: 16px;">MacOS</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/PDF/" style="font-size: 10px;">PDF</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/Svga/" style="font-size: 10px;">Svga</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/TCP-UDP-IP/" style="font-size: 10px;">TCP / UDP / IP</a> <a href="/tags/TS/" style="font-size: 10px;">TS</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIImage/" style="font-size: 10px;">UIImage</a> <a href="/tags/UITextField/" style="font-size: 10px;">UITextField</a> <a href="/tags/UITextView/" style="font-size: 10px;">UITextView</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/WebP/" style="font-size: 10px;">WebP</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/animation/" style="font-size: 10px;">animation</a> <a href="/tags/configure/" style="font-size: 10px;">configure</a> <a href="/tags/layer/" style="font-size: 18px;">layer</a> <a href="/tags/mask/" style="font-size: 10px;">mask</a> <a href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" style="font-size: 10px;">二值化</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" style="font-size: 10px;">动态库</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 14px;">动画</a> <a href="/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12px;">数据结构</a> <a href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" style="font-size: 10px;">版本控制</a> <a href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" style="font-size: 10px;">组合特效</a> <a href="/tags/%E7%BD%91%E9%80%9F/" style="font-size: 10px;">网速</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/">iOS 动态库 应用篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/30/Git-%E8%BE%85%E5%AF%BC/">Git 辅导</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%99%BA%E8%83%BD%E5%BC%B9%E5%B9%95-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS 弹幕系统之智能弹幕 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/04/iOS-Socket-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS Socket 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/16/iOS-%E7%BB%84%E5%90%88%E7%A4%BC%E7%89%A9%E7%89%B9%E6%95%88/">iOS 组合礼物特效</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AnakinChen<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

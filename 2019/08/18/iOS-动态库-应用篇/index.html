@@ -1,38 +1,339 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
 
+  
+  <title>iOS 动态库 应用篇 | RyuukuSpace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;动态库（Dynamic Framework），使用它的优点之一就是避免冲突（还有其他优点，如共享）。Xcode 的项目如果出现同名的文件和类在编译的时候就会报错。开发SDK 就需要非常注意引入第三方库等可能给其他团队出现同名的冲突情况。除了改名的方案之外，动态库也是一个好方案。本篇就将对最近应用动态库的过程进行记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 动态库 应用篇">
+<meta property="og:url" content="http://chenqihui.github.io/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;动态库（Dynamic Framework），使用它的优点之一就是避免冲突（还有其他优点，如共享）。Xcode 的项目如果出现同名的文件和类在编译的时候就会报错。开发SDK 就需要非常注意引入第三方库等可能给其他团队出现同名的冲突情况。除了改名的方案之外，动态库也是一个好方案。本篇就将对最近应用动态库的过程进行记录">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-08-18T13:25:07.000Z">
+<meta property="article:modified_time" content="2020-08-02T18:16:51.468Z">
+<meta property="article:author" content="AnakinChen">
+<meta property="article:tag" content="Framework">
+<meta property="article:tag" content="动态库">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="RyuukuSpace" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<meta name="generator" content="Hexo 5.0.0"></head>
 
-{% block page_class %}page-post-detail{% endblock %}
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RyuukuSpace</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://chenqihui.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-iOS-动态库-应用篇" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/" class="article-date">
+  <time datetime="2019-08-18T13:25:07.000Z" itemprop="datePublished">2019-08-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
 
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS 动态库 应用篇
+    </h1>
+  
 
-{% block content %}
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态库（Dynamic Framework），使用它的优点之一就是避免冲突（还有其他优点，如共享）。Xcode 的项目如果出现同名的文件和类在编译的时候就会报错。开发SDK 就需要非常注意引入第三方库等可能给其他团队出现同名的冲突情况。除了改名的方案之外，动态库也是一个好方案。本篇就将对最近应用动态库的过程进行记录 &amp; 供参考。</p>
+<a id="more"></a>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Framework 分为 Dynamic &amp; Static 两种。可以在如下进行配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Build Settings -&gt; Linking -&gt; Mach-O Type</span><br></pre></td></tr></table></figure>
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看现有的 Framework 是不是动态库，可以通过到 Framework 目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;QHFMWKLib.framework</span><br><span class="line">file QHFMWKLib</span><br><span class="line"># 输出：</span><br><span class="line"># 静态库</span><br><span class="line">QHFMWKLib: current ar archive random library</span><br><span class="line"># 动态库</span><br><span class="line">QHFMWKLib: Mach-O universal binary with 4 architectures: [i386:Mach-O dynamically linked shared library i386] [arm64:Mach-O 64-bit dynamically linked shared library arm64]</span><br><span class="line">QHFMWKLib (for architecture i386):    Mach-O dynamically linked shared library i386</span><br><span class="line">QHFMWKLib (for architecture x86_64):    Mach-O 64-bit dynamically linked shared library x86_64</span><br><span class="line">QHFMWKLib (for architecture armv7):    Mach-O dynamically linked shared library arm_v7</span><br><span class="line">QHFMWKLib (for architecture arm64):    Mach-O 64-bit dynamically linked shared library arm64</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而本篇主要介绍的是 Dynamic Framework，所以文中其余部分写的 Framework 都是指的动态库， 除非特别强调是静态库。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/000-Introduction/Introduction.html">Dynamic Library Programming Topics</a></li>
+</ul>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>背景：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在开发 SDK 时候，使用了一个购买的第三方库支持的时候，由于有另一个团队 SDK（简称： B 团队） 也需要使用。为解决共用问题进行讨论，建议让 集成两个 SDK 的 App 团队（简称：A 团队）来管理此第三方库。但是 B 团队 却认为在如果第三方库升级上可能造成问题，坚决各自使用。所以才有了下面使用 动态库 来封装 .a 库。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先，分别创建如下三个工程：</p>
+<table>
+<thead>
+<tr>
+<th>工程名</th>
+<th>生成的库</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>QHALib.xcodeproj</td>
+<td>QHALib.a &amp; (*.h)</td>
+<td>静态库</td>
+</tr>
+<tr>
+<td>QHFMWKLib.xcodeproj</td>
+<td>QHFMWKLib.framework</td>
+<td>动态库</td>
+</tr>
+<tr>
+<td>QHUseFMWKDemo.xcodeproj</td>
+<td>QHUseFMWKDemo.app</td>
+<td>Demo</td>
+</tr>
+</tbody></table>
+<h2 id="动态库的使用："><a href="#动态库的使用：" class="headerlink" title="动态库的使用："></a>动态库的使用：</h2><h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">General -&gt; Embedded Binaries -&gt; + Framework</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Xcode 会自动在 Linked Frameworks and Libraries 添加。这也是区别 静态 Framework 和 .a 库，因为它们只需添加 Linked Frameworks and Librarie 或者 Build Phase -&gt; Link Binary With Libraries。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意：如果是通过拉拽到 Xcode 工程，Xcode 只会按静态库的方式配置，即不会添加到第一项，此时需要手动添加，不然编译时会报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dyld: Library not loaded: @rpath&#x2F;QHFMWKLib.framework&#x2F;QHFMWKLib</span><br><span class="line">  Referenced from: &#x2F;Users&#x2F;...&#x2F;QHUseFMWKDemo.app&#x2F;QHUseFMWKDemo</span><br><span class="line">  Reason: image not found</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果使用 Cocoapods 集成的话，就无需考虑以上的情况。这是由于 podfile 里加入了如下将 pod install 生成的库由 Framework 替换 .a（iOS8 以上的默认支持）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Objective-C 项目：</span><br><span class="line">#use_frameworks!</span><br><span class="line">Swift 项目：</span><br><span class="line">use_frameworks!</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a target="_blank" rel="noopener" href="http://blog.cocoapods.org/Pod-Authors-Guide-to-CocoaPods-Frameworks/">Pod Authors Guide to CocoaPods Frameworks</a></li>
+</ul>
+<h3 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;引入成功后，只需要 import Framework/对应的头文件即可。如果遇到如下警告：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;QHFMWKLib&#x2F;QHHelloGG.h&gt; &#x2F;&#x2F; Missing submodule &#39;QHFMWKLib.QHHelloGG&#39;</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是由于 Framework 除了需要将对外的 Header 放置在 Public 外，还需要在创建 Framework 时的同名头文件里，将这些 public 的头文件 import 一下，这样就能消除这种警告。</p>
+<h2 id="引入静态库的动态库"><a href="#引入静态库的动态库" class="headerlink" title="引入静态库的动态库"></a>引入静态库的动态库</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将 .a 库 引入 动态库 Framework（其实就是用动态库封装 .a 库），然后再给 Demo 使用。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;把 .a 库 和 头文件引入到 Framework 之后编译可能是 OK 的。可是当编译 Demo（引用的 .a 库的头文件时），可能会遇到 Undefined symbol（未定义符号）的情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Undefined symbols for architecture x86_64:</span><br><span class="line">  &quot;_OBJC_CLASS_$_QHALib&quot;, referenced from:</span><br><span class="line">      objc-class-ref in ViewController.o</span><br><span class="line">ld: symbol(s) not found for architecture x86_64</span><br><span class="line">clang: error: linker command failed with exit code 1 (use -v to see invocation)</span><br><span class="line"></span><br><span class="line">Showing All Messages</span><br><span class="line">:-1: Undefined symbol: _OBJC_CLASS_$_QHALib</span><br></pre></td></tr></table></figure>
+
+<h3 id="Undefined-symbol"><a href="#Undefined-symbol" class="headerlink" title="Undefined symbol"></a>Undefined symbol</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这是说明 Demo 在 Framework 的符号表里面找不到 .a 的类及函数。通过 <strong>nm</strong> 来查看 Framework 的符号表，可以发现确实不包含 .a 库的任何符合表。网上的部分解释：</p>
+<blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OC 的链接器并不会为每个方法建立符号表，而是仅仅为类建立了符号表。这样的话，如果静态库中定义了已存在的一个类的分类，链接器就会以为这个类已经存在，不会把分类和核心类的代码合起来。这样的话，在最后的可执行文件中，就会缺少分类里的代码，这样函数调用就失败了。</p>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么如何解决呢？有两个办法：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一种是通过 Framework 的类进行调用 .a 库的，通过封装的方式给外部调用，即不把 .a 的类暴露出去，使用这种间接的办法回避。如果调用的接口相对简单，或者是业务变动不大，这或许是一个不错的办法。而第二是方法是：Other Linker Flags</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012703795/article/details/51490315">iOS framework/静态库 nm 调试</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e0ef5146bd7a">Mac系统下lipo, ar, nm等工具的使用简介</a></li>
+</ul>
+<h3 id="Other-Linker-Flags"><a href="#Other-Linker-Flags" class="headerlink" title="Other Linker Flags"></a>Other Linker Flags</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那通过在 Other Linker Flags 设置 <strong>-all_load</strong> 或者 <strong>-force_load +（.a 库的 Path）</strong>，如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Build Settings -&gt; Linking -&gt; Other Linker Flags</span><br><span class="line">#</span><br><span class="line">-all_load</span><br><span class="line">#</span><br><span class="line">-force_load .&#x2F;QHALib.a</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;让编译链增加 .a库 所有的符号表，再编译后，<strong>nm Framework</strong> 会看到现在有符号表都全出现。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/34232905">IOS 温习之路 ”Other Linker Flags“</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f7b0aa817cff">iOS静态库中类的分类问题和符号冲突问题(Xcode other Link Flags)</a></li>
+</ul>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当通过 Other Linker Flags 设置 Framework 之后，可能在编译时会出现其他没有符号表（Undefined symbol）的类或者函数，此时这些类大多是系统类，即需要在 Framework  -&gt; Build Phases -&gt; Link Binary With Libraries 上添加缺少的系统库（可以通过名字判断是哪个系统库）。这些依赖的系统库，如果第三方支持 pod，可以在 podspec 查看。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other Linker Flags 还有如 <strong>-lc++</strong> 的等配置，这具体需要查看第三库给的 Demo &amp; 说明文档进行配置。</p>
+<h2 id="访问动态库中的资源文件"><a href="#访问动态库中的资源文件" class="headerlink" title="访问动态库中的资源文件"></a>访问动态库中的资源文件</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Framework 中使用 image/storyboard/xib 等资源，可以直接访问 Framework 中的资源！但是需要修改方式。这是由于一般 App 本地资源都是在 mainBundle 下，而 Framework 其实也是一个 bundle，所以 Framework 里面的资源是在这个 bundle 里。因此只需指定 Framework 这个 bundle 来获取就可以：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意：如下方式只适合于 Dynamic Framework，而 Static Framework 不支持，因为它不是 bundle（囧），静态库的只能按全路径查找，或者将资源通过将 asset &amp; bundle 的形式提供出去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 图片</span><br><span class="line">NSBundle *bundle &#x3D; [NSBundle bundleForClass:[self class]];</span><br><span class="line">UIImage *img &#x3D; [UIImage imageNamed:\*imageName*\ inBundle:bundle compatibleWithTraitCollection:nil];</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; xib</span><br><span class="line">NSBundle *woHomeBundle &#x3D; [NSBundle bundleForClass:[ViewController class]];</span><br><span class="line">ViewController *mainVC &#x3D; [[ViewController alloc] initWithNibName:@&quot;ViewController&quot; bundle:woHomeBundle];</span><br><span class="line"></span><br><span class="line">NSBundle *bundle &#x3D; [NSBundle bundleForClass:[View class]];</span><br><span class="line">View *this &#x3D; [bundle loadNibNamed:@&quot;View&quot; owner:nil options:nil].firstObject;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/958ad743d19e">iOS Framework 开发资源文件(图片、本地HTML、xib等)加载</a></li>
+</ul>
+<h2 id="多架构合并"><a href="#多架构合并" class="headerlink" title="多架构合并"></a>多架构合并</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过 <strong>lipo</strong> 将编译出来的真机和虚拟机架构的 Framework 合并，使用 Aggregate，在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Build Phase -&gt; + New Run Script Phase</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其添加 Shell 脚本来运行，内容如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 输出保存合并的 Framework 文件夹路径，为当前工程文件下的 XXX-universal 文件夹</span></span><br><span class="line">UNIVERSAL_OUTPUT=$&#123;SRCROOT&#125;/$&#123;CONFIGURATION&#125;-universal</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> xcodebuild 创建 真机 &amp; 虚拟 架构的 Framework</span></span><br><span class="line">xcodebuild -configuration &quot;$&#123;CONFIGURATION&#125;&quot; -target &quot;$&#123;PROJECT_NAME&#125;&quot; -sdk iphoneos ONLY_ACTIVE_ARCH=NO   BUILD_DIR=&quot;$&#123;BUILD_DIR&#125;&quot; BUILD_ROOT=&quot;$&#123;BUILD_ROOT&#125;&quot; clean build</span><br><span class="line">xcodebuild -configuration &quot;$&#123;CONFIGURATION&#125;&quot; -target &quot;$&#123;PROJECT_NAME&#125;&quot; -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=&quot;$&#123;BUILD_DIR&#125;&quot; BUILD_ROOT=&quot;$&#123;BUILD_ROOT&#125;&quot; clean build</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除可能输入文件路径已有的文件 &amp; 文件夹</span></span><br><span class="line">if [ -d &quot;$&#123;UNIVERSAL_OUTPUT&#125;&quot; ]</span><br><span class="line">then</span><br><span class="line">rm -rf &quot;$&#123;UNIVERSAL_OUTPUT&#125;&quot;</span><br><span class="line">fi</span><br><span class="line">mkdir -p &quot;$&#123;UNIVERSAL_OUTPUT&#125;&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 将其中一个架构生成的 Framework 拷贝到 输入路径文件夹下（注意如果没有这个 Framework 是无法进行合并的）</span></span><br><span class="line">cp -R &quot;$&#123;BUILD_DIR&#125;/$&#123;CONFIGURATION&#125;-iphoneos/$&#123;PROJECT_NAME&#125;.framework&quot; &quot;$&#123;UNIVERSAL_OUTPUT&#125;/&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过 lipo 进行合并</span></span><br><span class="line">lipo -create &quot;$&#123;BUILD_DIR&#125;/$&#123;CONFIGURATION&#125;-iphonesimulator/$&#123;PROJECT_NAME&#125;.framework/$&#123;PROJECT_NAME&#125;&quot; &quot;$&#123;BUILD_DIR&#125;/$&#123;CONFIGURATION&#125;-iphoneos/$&#123;PROJECT_NAME&#125;.framework/$&#123;PROJECT_NAME&#125;&quot; -output &quot;$&#123;UNIVERSAL_OUTPUT&#125;/$&#123;PROJECT_NAME&#125;.framework/$&#123;PROJECT_NAME&#125;&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 打开合并的 Framework 所在的文件夹</span></span><br><span class="line">open &quot;$&#123;UNIVERSAL_OUTPUT&#125;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意：架构是跟支持的 iOS版本 有关，如果发现合并后需要的架构缺少，请检查项目的 Target（记住是原本 项目 Framework 的 Target，而不是 Aggregate 的 Target） </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Build Setting -&gt; Development -&gt; iOS Development Target: iOS8.0 </span><br><span class="line">及 </span><br><span class="line">Build Setting -&gt; Architectures -&gt; Build Active Architectures Only: NO</span><br><span class="line">Build Setting -&gt; Architectures -&gt; Valid Architectures 包含其他编译架构</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/bobo553443/article/details/78564628">xcode的环境变量，Build Settings参数，workspace及联编设置</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c32263138af3">xcodebuild API</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/SoaringLee_fighting/article/details/82994510">【mac】lipo命令详解</a></li>
+</ul>
+<h2 id="framework-dSYM"><a href="#framework-dSYM" class="headerlink" title="framework.dSYM"></a>framework.dSYM</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只需要设置 Release 模式下编译就会有 .framework.dSYM</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/" data-id="ckddxq2p20009gcuggh38b5f0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Framework/" rel="tag">Framework</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" rel="tag">动态库</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/07/30/Git-%E8%BE%85%E5%AF%BC/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Git 辅导</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/">Xcode</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/">动图</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul>
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FLV/" rel="tag">FLV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Framework/" rel="tag">Framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/" rel="tag">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gif/" rel="tag">Gif</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LivePhoto/" rel="tag">LivePhoto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/M3U8/" rel="tag">M3U8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MP4/" rel="tag">MP4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/" rel="tag">Objective-C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PDF/" rel="tag">PDF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Svga/" rel="tag">Svga</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-UDP-IP/" rel="tag">TCP / UDP / IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TS/" rel="tag">TS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/" rel="tag">UIButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIImage/" rel="tag">UIImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextField/" rel="tag">UITextField</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextView/" rel="tag">UITextView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/" rel="tag">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebP/" rel="tag">WebP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebSocket/" rel="tag">WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation/" rel="tag">animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/configure/" rel="tag">configure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layer/" rel="tag">layer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mask/" rel="tag">mask</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" rel="tag">二值化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" rel="tag">动态库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" rel="tag">版本控制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" rel="tag">组合特效</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E9%80%9F/" rel="tag">网速</a></li></ul>
+    </div>
+  </div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/FLV/" style="font-size: 10px;">FLV</a> <a href="/tags/Framework/" style="font-size: 10px;">Framework</a> <a href="/tags/GCD/" style="font-size: 12px;">GCD</a> <a href="/tags/Gif/" style="font-size: 10px;">Gif</a> <a href="/tags/Git/" style="font-size: 12px;">Git</a> <a href="/tags/Github/" style="font-size: 12px;">Github</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/LivePhoto/" style="font-size: 10px;">LivePhoto</a> <a href="/tags/M3U8/" style="font-size: 10px;">M3U8</a> <a href="/tags/MP4/" style="font-size: 10px;">MP4</a> <a href="/tags/MacOS/" style="font-size: 16px;">MacOS</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/PDF/" style="font-size: 10px;">PDF</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/Svga/" style="font-size: 10px;">Svga</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/TCP-UDP-IP/" style="font-size: 10px;">TCP / UDP / IP</a> <a href="/tags/TS/" style="font-size: 10px;">TS</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIImage/" style="font-size: 10px;">UIImage</a> <a href="/tags/UITextField/" style="font-size: 10px;">UITextField</a> <a href="/tags/UITextView/" style="font-size: 10px;">UITextView</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/WebP/" style="font-size: 10px;">WebP</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/animation/" style="font-size: 10px;">animation</a> <a href="/tags/configure/" style="font-size: 10px;">configure</a> <a href="/tags/layer/" style="font-size: 18px;">layer</a> <a href="/tags/mask/" style="font-size: 10px;">mask</a> <a href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" style="font-size: 10px;">二值化</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" style="font-size: 10px;">动态库</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 14px;">动画</a> <a href="/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12px;">数据结构</a> <a href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" style="font-size: 10px;">版本控制</a> <a href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" style="font-size: 10px;">组合特效</a> <a href="/tags/%E7%BD%91%E9%80%9F/" style="font-size: 10px;">网速</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/">iOS 动态库 应用篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/30/Git-%E8%BE%85%E5%AF%BC/">Git 辅导</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%99%BA%E8%83%BD%E5%BC%B9%E5%B9%95-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS 弹幕系统之智能弹幕 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/04/iOS-Socket-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS Socket 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/16/iOS-%E7%BB%84%E5%90%88%E7%A4%BC%E7%89%A9%E7%89%B9%E6%95%88/">iOS 组合礼物特效</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AnakinChen<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

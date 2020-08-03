@@ -1,38 +1,247 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
 
+  
+  <title>Hello World | RyuukuSpace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="密码：Hello">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hello World">
+<meta property="og:url" content="http://chenqihui.github.io/2018/06/11/hello-world/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="密码：Hello">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-06-11T03:29:46.000Z">
+<meta property="article:modified_time" content="2020-08-02T18:16:51.467Z">
+<meta property="article:author" content="AnakinChen">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="RyuukuSpace" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<meta name="generator" content="Hexo 5.0.0"></head>
 
-{% block page_class %}page-post-detail{% endblock %}
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RyuukuSpace</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://chenqihui.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/11/hello-world/" class="article-date">
+  <time datetime="2018-06-11T03:29:46.000Z" itemprop="datePublished">2018-06-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Hello World
+    </h1>
+  
 
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<div id="hbe-security">
+  <div class="hbe-input-container">
+  <input type="password" class="hbe-form-control" id="pass" placeholder="加密文章" />
+    <label for="pass">加密文章</label>
+    <div class="bottom-line"></div>
+  </div>
+</div>
+<div id="decryptionError" style="display: none;">Incorrect Password!</div>
+<div id="noContentError" style="display: none;">No content to display!</div>
+<div id="encrypt-blog" style="display:none">
+U2FsdGVkX1+Stc9dsJ5o/XmolL4+oDZVFmsjb9bq72vKGJBtu9YL4R6NC2xhW9bntLstgTBdL6s7GxD43ooTEdMy0xxqgXwqFvIry16aXf/3tHQ0Hdb59ff1n4FLV1mzuSVX44qxAexGoHGXWeINF3eMkSQiAYuT5jFmRv25NJjOp+QuC0xXYMmVOS6KhyDjDn/x7kRI826eNSoAtmdwDeEqrnwq8sen0d42N378xIR4HuSVaK24ktRAGlHlVe3t5KYEM39IwmRfkD+jwmuwOnwA6BalyZknr9q0mtfZ4fePn4BomLzgSjMkAT0CBsNjTq125lZNIkdEcmr8oGzM2H39WKvvIV8DDWzRa8WIskVDNz2Eqjf/ekrmDMZAzYxtrjlixrEerLl7v1utLL1zyI8vY/xXdLHj7+xbfeQlanbAA9vof5PydC+fZNVcbpbRLsxv5kgKSKCUBf7WGgh9rJIsRHcI1B59Kr9Nk/LZjyQhYyaSTe14UtQGBAT62NqttL4isUGQHavB4WngwvJ5lY228hVLSpUJRyEICb1aJVirXszp9cyvPhHlggHuIXDlpGTfA4bINdGpA5suIMDSBB+CTvKnjExXYphZShLIwvItnzRTy+61S+m7pt+yTi2zh0uQNr7wPRG2t4dfDBXNYknCGdR1AW84OcIsIgJtsP3CG69G0Utqoyo0Z1vORBYUloLIanrL6y9LOjQXVXF4kgjfOvP1lSJQc++4XcM/thpSqrUoWrfO+gvmr1BR15KiAeVAPrWIaMYt+7FfHo4YHQJjs93aHgb/OJiJlCi+78btJweJ2B3XpQ+DnmrB7nTtByHpFAbFKAyhx9+BL62KoOQk6RO00dotBi3O/HRl14wrYc8YbxjL573vM8rCCSkbftrHmxwwJPhiXlb3Fk83Ostaw5Bz+OQ69N+CImv47YhkIgBo1Zca6NdjTerfUWosj2TDpN/GABJeUVe7bM/bMAdw0UyPEeciclMqUyiDtFQlVUrypMzd7sRyXB4tVUOaBDnVqAXBF8na6DSKdVwQuJxLXRzVYkJVOWyeutkMSL8chcjVm24XSOESb90877kFd7XcZ+sqw8RHELc8oLSJgmyJ3csakYx0XpmrpvWObJ8lIn2jyzGzuzMOeu7FlpzvpcXGEbG8nAYolw5vmoS1IFvuUM2Ruoy0UCiyIgaASdJKs6cIW8TlaONBlMGV+WrnpDD4WfaMuPPMFw6MQL0mfqrTpOXMw07co591maHb07R/eVbZFEX4hoSaNdtL2tqfZgy2Ejcq1SBrLX/139mp5FM5i/tTk8lJvlJLUQbNWPVIVQiUSNRrAytC1kMJh6nzp1L4G/mkM8JRcQwD3gaLWacuqzd2MQd054IUNG098ZJajvtX7gYqDfFTBcjJKaRe9UcuElZoFJ6b/Q1vNQVubTyo8NcE1GLoUxFvicmpeZmfsUImMyleRxyzUqQAjcG4/QrNxw+NvC9mrkkvz3C6JnwdNZxEKR+CWDqSqZopN1m4sX4YAfoj7iGsXPmgCClu81PdDFIqhRPsyIPdD4ib0MJT+6fL22MMFRkCwGRSbMlfldbDop8fUkenKnkCAiWpmkPs69yNxv2gTYwE5g4yiIJqiWu8/m2ScExiJVAjOOBjQdZf8f5hZJwOdFugbLHhKJHY1c4V/LpPwfWPtvFkLtXr5jkmDTM6Zs4OuU5qAACC76Y8ceiI0RkQhZixP76qeNfrL3aCDbQAGE5t+ICyGpe3ITVTs7TYCjrqM/cU51PS3FVvvCEiVeYkZFr8jFhJKjGOZMinpmyNYPwzAJiasOOa1c6A2MXCMa5FrxJ+zBRA2EhOxeuwCj9ByKynYx577rvs+MV9BWpMu//XuIpERgpHmievGijhEWONvSq82DMZnEHo8Tz0PiAiQG59X6HJwlpiIZmPVz/AAp+gzHTrDGuey+K+uOQ7D22cN3DajofLK9BS75sO/o+lKxG6mkq1kbULidP8oMR2Z6xaZtuNdhDhI2ZYAvLOUzaLyEwAAkkv79EH4M4pu904vcaYsmgfS12pANq6La0WVTghjLtC0yhvOullj0+oTcGBaw6ZJt0ZVrcVPJTMyLSS7pS4HLbKGIxhShDGOLibuEXV/P71sF389rqPyZ6SAeh20Qx2/BjZu9gxGlGoCFJb3wzasuqncuP9UuIBxA5a+3mLxMjdg/YDpY6gIDF9hPOwsx4pyRKW5oFGuWb7PTG8ec+rMT/SSSbdgrg88Kism8yFUxJS+i4W8YiO38TGDWCgPLL3R5ZobxD8AWTUmVUxFIfUkxfBG2hXkuBLLTObVE1eOH1dXPBr2+8eOzx+O0wQvI7juhBDk3Sd4Qe7j4vMtrZysbyCrMkW9ZQKNc3NAl8ptIP/3KmNSti9dP9MI8kEltuDJ0YSiRyYzaMHVvhm20kyQgSVpdXeI64tanRcUor36Q73voZOSaoyh3BjmrbilEDoTJHF3J9PQ7CPkHLOVAp4fnSxC9s+MgOiXtBqI8QhHMB2jXySfvX+4VN2U/cGJDT6S7CkwPBUq4VH8YAFPOMiRpEdAzVPSnc9jQ/f7goiw5/GOJeWlkSa46LyzQ8VBiTfPpyaTHHscOWc3BhabrUFWAusVP4nEv4DYB1zbbfk6WcCrf/95CaAYBHbYC33zectmDYXhcgYbVBzLwOthdXnX67MEsLaEFXUDQzg2J0p5agCBKHNq4YMymxwMVYx7YSOpD02RtObNBqSYM4HlH6ZlsWhO8UW7EhBAf4rhmMIfyIE0qjwGcvs3QZTysVoRrusXyoLwj+J6fB2H4fGsrTdOIEmrxNzosupbzsypfattHzMtPOcu3n2NgdghD55vBaQeveVly9awIjq7ezNbU6TOOYC9WIK6PhgZR4/CIICU6wUzl47/93pFzTKXX6WgFS2yn+j2LJvJjrkdYTc3W9DWZEUUC2aUfJSA46F6JqQyLavZaNLVnGhbzpMl+sBwV8+fkMFba32/K3hN+6xnDKlyLawUEI5U2lkqore+tSWMGcCVtS+xe7dy/7q7KKIeUcK7aJqBpAvUMhyfHfZmGacSw6B1uaOkZyJXItLwhfzDp6Q8MnUrdAm3KYy+cG44HxqM6EtNqzYbwuMYbD5m/EpMiPv3x7V4nTByPGk0cvAoPBazMDhdJlZ59BO6xGdP0tPquwa2e4r3WlgvwiQQywG0U6KaLbM7qyzdeySMX8AtCyxapuDw2dvlOGK5c0Tn2f5GXs3abfP9iAhXpJ6ejTeFtGMJKJObh2IuGqWsRv+YyGrkHkjAXX0/hcaxtzDqLHCJmNEdrPbEYFdBEMCt3BKHtNkcJF1izPXyJWn1H3tPQsJHn/U9DHuWO6Gb321qgeMeqSW8+UOvVds+V2fweTiDgQRStoRIwxfYn/EzEOVwYkzPc5lQ4F12Z2jwaNdHupRFfG/8KDjQ3weri1wuJG0kHcpiX3llsV1RR/NITQsVT3mX1/UCtETEwSa207XvyRaJH+YoWPsv+4BXgTHPjrp89H/H983yxnnjHGhf5wJcctdoucgYMhwSZfef7kK9iUheOT5IQoG9uXGPYgCoZcmmTfnp2fo92PT9dAK2aJDpDOHrv7hdYwqgyq8oXxKi1GCGhk4F17XuBXFyKmhgvHwid/xPkePj8IOBdk/0LsFi5bM14VSdSO+P2Ul3AqzqoH11YXSKIVUmIleC84wGcHUDvxgPtjiA9Dg4+76lOZvgmG16IScg2MxJ4Cuqc79yg821ZB0gSdC0RTGZ+gxc9iWnANrbPrUNXEmSQ8jsrHXPgWLjUzRy2qzJwFWCAeRcuUpaMo2sOdOS1OrL0euxt02uSf1/hdVTwDIQ/hLRxtrEwUDM4V9TkihL6W6katbNYTJc6v2iALFXRRAJFxHUWC2nEx4D1B8fPXGg6481hU1Za40pHDU2jbUpguoy14Cv+QuJtKuUhN8nfIGKlKpQiz7outoDsJcrHDXi/H4wMIOKztXHt2LMk6jpU/eJSVDu6ZLpjk9dY9FCfwUWgj/qzNtqGr5KJQw4OhZvSJkkVmLRHsPZvh+oFnXEBfQ2WKuLfYG5E1ZjBUo/BJIy7OWdzsaJwclzYG41LOj7lCddO7arL/A6Ouwue7lwI6zSVLq4C4oFbEJN5vutN/l9pwg1LHh3HOH6Uc+Gr7iN2EYDMy2ngSw10qa1ofzG6NqbXUOBCjVC7dYcm6V3WDp8w0OX8cUtIuzi4yQpH6HiZbsXsKck35a/9uyKt0BHLzSKBnP5SlZm+ouP6pbP+f9uULY791k5Twm7ced8bafYf0FyQbsaB1rv9fcvqlPDLADGjtwnrTvKNzd/9odrCqr99Z6hKtg2BpZgO6HbkbVX1u+bAy2G5MA0B5YQUQRguw/+U9MFUD1UtnaxeYkxDE1e5GqQgBmvGEre4n0SohJ+sdoQrgDbuuSRCWkbfV7xX0Xpcx7acUx79vGZ2kuXWNmvxvi5rQUY9XgShPDs6KTkK/BfWdz4Gcl+cgoyQy+IQ4Vb9yMXHgKrVevS+YwJmvnU1471Ly1jGzpHnr099EYSjk9NJW0pzPkWvXMe/POXwzy9DEyH1hD8lJV21lVWexbuzczK5t60Zk+pSPSSBBf3hy3MSFv2KUAc6eFf5xmgWZdloPNlq70NoJEvHtbHJ4Ew49Z/MusMo83cvjg84p6MJmHbXuU+LPybHwejm7hMpqtbRPcr0vGdtmDL53YFcSbiVq05QPZWTpi5TjC0D/C29g64z1dFBikCup8oBCCbmiV1wMyAFcLkHk++ApaC27+INipSA3iFdl8zf2Xbt1VYQn9Z27Qwtnrxkyy0DctBMz9N+4aiqqiI+KhjhyWx9ithA6beLVNHDd2HvNiyXc62oW5JVrnnMEJ0Nk0LbSSkJDaZHbQAWPuxAbljlOotIvgcfka6y97d8gHtkFbWCWvqDkysYHD7n9AfNjFA+RZCKtza0ahIdT95OoVy6QjHNRgLMgK7KkJ2QS1woSWzxD+d4e+saDFYr5Gk0w8ohejkDMrT2dcBzQYkpiM5ZiITj3sASzOz74BIu/nB+T6ZsQtxlZieGUGTo6p8Wdyx4DlDRqeWVW9pRH6JbIsjJ8abZH3ibGR4pYTwXurBmObOaZUvU2sZLHFuhgQJbIAqVLoOYokGZDOC4gw7lVOl/xhgTcJT3LBqVu43kOAEldMz40RB+JzxJJT1oa30cPL1mPGgnl7D/T8o9k7pXEJvS4PjQs3v1WMgYJK3b2jPhWOy/8OaYh4MrCH76yi4pKET4zJbEprjemVRHOXe7Q0NFXhwklcOIWhMv65FWI4U4zvGEwykaxtNGmFJA1qE5/fmPYfgJjyLe4wEjDEq46qNYk4eB75xA7HklCS2mNqBD6cjAXHZnH5WpF8Hvt5voVM9BhjPjDZHopGVHIrWc6i/wZaSBym/UwAPA16jxD/IfFEKTp9BDNLw04HHT745NdZhjO/O06LDLrFfba5veLpQIgAU3mmGJiHjhqIhMCpQHRI8ZToHXNqh1ofm8vkdwCCvIzE21SjVOjOeOtqhJp6GGmbpoR7V9+lFjJiy3jiX9nM0OsPz3xUYjFwGF1k0LsQ07c9EGNLwfVEgRDoeQSKOzNHdHpm4Acvi5B9OoKsbgxpfl6dzS2Hb1sJhycfwMklwH3VUhcQlHnBIdWXFXfQlmmKP95AYaJU0HT/MyZvmUPZZOXmyECzpJ25E9RPyB3msS5sg6QvN0VprIj+HEbN2dcNZaP+p4s7DKp5Misk0Gt478K7vMiJcMIC3sKoliWLgIXop4MuhOpU7cc+KugO4Jp/mfoXFYrvMHS/1po0fW6hZ4Kbhr/YEHFMhx3D7FZWhmcw1liQGZq4jv5al9HoEqoxQMglez1+dOmVJ9w2IZXTwjSg/ekuNpuvH1MwUE354uGt+b8HLzK0ZjqZ7JapNvwTMGzvmQKVB8P0DHjJ0ZS71I/01yA7QDXSalOa3+zPF6imYq5jOsAhUHqhP7LlZ/Ht55369KHtTSZlJwdo
+</div>
+<script src="/lib/crypto-js.js"></script><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/06/11/hello-world/" data-id="ckddxq2p00007gcug94jsf5uc" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/06/11/iOS-%E5%BC%B9%E7%AA%97%E9%A1%BA%E5%BA%8F%E6%98%BE%E7%A4%BA%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B9%8B%E8%B7%AF/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          iOS 弹窗顺序显示的实现之路
+        
+      </div>
+    </a>
+  
+  
+</nav>
 
-{% block content %}
+  
+</article>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
-
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/">Xcode</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/">动图</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul>
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FLV/" rel="tag">FLV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Framework/" rel="tag">Framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/" rel="tag">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gif/" rel="tag">Gif</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LivePhoto/" rel="tag">LivePhoto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/M3U8/" rel="tag">M3U8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MP4/" rel="tag">MP4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/" rel="tag">Objective-C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PDF/" rel="tag">PDF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Svga/" rel="tag">Svga</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-UDP-IP/" rel="tag">TCP / UDP / IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TS/" rel="tag">TS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/" rel="tag">UIButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIImage/" rel="tag">UIImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextField/" rel="tag">UITextField</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextView/" rel="tag">UITextView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/" rel="tag">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebP/" rel="tag">WebP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebSocket/" rel="tag">WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation/" rel="tag">animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/configure/" rel="tag">configure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layer/" rel="tag">layer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mask/" rel="tag">mask</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" rel="tag">二值化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" rel="tag">动态库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" rel="tag">版本控制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" rel="tag">组合特效</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E9%80%9F/" rel="tag">网速</a></li></ul>
+    </div>
+  </div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/FLV/" style="font-size: 10px;">FLV</a> <a href="/tags/Framework/" style="font-size: 10px;">Framework</a> <a href="/tags/GCD/" style="font-size: 12px;">GCD</a> <a href="/tags/Gif/" style="font-size: 10px;">Gif</a> <a href="/tags/Git/" style="font-size: 12px;">Git</a> <a href="/tags/Github/" style="font-size: 12px;">Github</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/LivePhoto/" style="font-size: 10px;">LivePhoto</a> <a href="/tags/M3U8/" style="font-size: 10px;">M3U8</a> <a href="/tags/MP4/" style="font-size: 10px;">MP4</a> <a href="/tags/MacOS/" style="font-size: 16px;">MacOS</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/PDF/" style="font-size: 10px;">PDF</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/Svga/" style="font-size: 10px;">Svga</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/TCP-UDP-IP/" style="font-size: 10px;">TCP / UDP / IP</a> <a href="/tags/TS/" style="font-size: 10px;">TS</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIImage/" style="font-size: 10px;">UIImage</a> <a href="/tags/UITextField/" style="font-size: 10px;">UITextField</a> <a href="/tags/UITextView/" style="font-size: 10px;">UITextView</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/WebP/" style="font-size: 10px;">WebP</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/animation/" style="font-size: 10px;">animation</a> <a href="/tags/configure/" style="font-size: 10px;">configure</a> <a href="/tags/layer/" style="font-size: 18px;">layer</a> <a href="/tags/mask/" style="font-size: 10px;">mask</a> <a href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" style="font-size: 10px;">二值化</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" style="font-size: 10px;">动态库</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 14px;">动画</a> <a href="/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12px;">数据结构</a> <a href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" style="font-size: 10px;">版本控制</a> <a href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" style="font-size: 10px;">组合特效</a> <a href="/tags/%E7%BD%91%E9%80%9F/" style="font-size: 10px;">网速</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/">iOS 动态库 应用篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/30/Git-%E8%BE%85%E5%AF%BC/">Git 辅导</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%99%BA%E8%83%BD%E5%BC%B9%E5%B9%95-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS 弹幕系统之智能弹幕 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/04/iOS-Socket-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS Socket 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/16/iOS-%E7%BB%84%E5%90%88%E7%A4%BC%E7%89%A9%E7%89%B9%E6%95%88/">iOS 组合礼物特效</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AnakinChen<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

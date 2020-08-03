@@ -1,38 +1,395 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>UML 建模中常用图的汇总 | RyuukuSpace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;这篇之前是直接放在 Github 的 chenqihui&#x2F;QHUMLModelDiagram: UML建模，因为那时还没使用博客，如今将它迁移过来。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;而为什么整理 UML 建模呢？里面很多内容是摘录《软件工程导论（第5版）》，是读书">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UML 建模中常用图的汇总">
+<meta property="og:url" content="http://chenqihui.github.io/2018/07/05/UML-%E5%BB%BA%E6%A8%A1%E4%B8%AD%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%9A%84%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;这篇之前是直接放在 Github 的 chenqihui&#x2F;QHUMLModelDiagram: UML建模，因为那时还没使用博客，如今将它迁移过来。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;而为什么整理 UML 建模呢？里面很多内容是摘录《软件工程导论（第5版）》，是读书">
+<meta property="og:locale">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/UseCaseDiagram1.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/ClassDiagram1.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/StatechartDiagram1.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/ActivityDiagram1.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/SequenceDiagram1.png">
+<meta property="article:published_time" content="2018-07-05T07:21:23.000Z">
+<meta property="article:modified_time" content="2020-08-02T18:16:51.465Z">
+<meta property="article:author" content="AnakinChen">
+<meta property="article:tag" content="UML">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/UseCaseDiagram1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="RyuukuSpace" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RyuukuSpace</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://chenqihui.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-UML-建模中常用图的汇总" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/05/UML-%E5%BB%BA%E6%A8%A1%E4%B8%AD%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%9A%84%E6%B1%87%E6%80%BB/" class="article-date">
+  <time datetime="2018-07-05T07:21:23.000Z" itemprop="datePublished">2018-07-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UML 建模中常用图的汇总
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这篇之前是直接放在 Github 的 <a target="_blank" rel="noopener" href="https://github.com/chenqihui/QHUMLModelDiagram">chenqihui/QHUMLModelDiagram: UML建模</a>，因为那时还没使用博客，如今将它迁移过来。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而为什么整理 UML 建模呢？里面很多内容是摘录《软件工程导论（第5版）》，是读书时候的课本，现在新教材不知有没有哪些变动了。所以有出入可以联系修改，感谢。说回为什么，其实很简单，就是由于画图时常常忘了或者把多种图，在使用不熟下，交叉的使用，从而导致画出来的 UML 变成了四不像。UML 其实对开发来说，提供简单的流程、结构说，对后续优化、再次开发都很有帮助，因此还是需要认真对待。把 UML 画得不仅是给自己看，也要拿得出手给其他人查看，并且是好了解的。接下来就介绍开发中常用 UML 建模的标准定义。</p>
+<a id="more"></a>
+
+<h4 id="一、UseCase-Diagrams（用例图）"><a href="#一、UseCase-Diagrams（用例图）" class="headerlink" title="一、UseCase Diagrams（用例图）"></a>一、UseCase Diagrams（用例图）</h4><blockquote>
+<p>一般的用例图包含的模型元素有系统、行为者、用例及用例之间的关系。–《软件工程导论（第5版）》P224</p>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用例之间的关系<br>1、扩展关系：同一个用例中添加一些动作后构成了另一个用例，这两个用例之间的关系就是扩展关系，后者继承前者的一些行为，通常把后者称为扩展用例。<br>2、包含关系：包含关系描述的是一个用例需要某种功能，而该功能被另外一个用例定义，那么在用例的执行过程中，就可以调用已经定义好的用例。</p>
+<blockquote>
+<p>总结<br>1.包含关系<br>a.如果两个以上用例有大量一致的功能，则可以将这个功能分解到另一个用例中，其他用例可以和这个用例建立包含关系（如之前介绍的饮料自动售货机）。<br>b.一个用例的功能太多时，可以使用包含关系建立若干个更小的用例。（如学生管理系统的用例图）<br>2.扩展关系<br>对扩展用例的限制规则：将一些常规的动作放在一个基本用例中，将可选的或只在特定条件下才执行的动作放在它的扩展用例中。</p>
+</blockquote>
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/UseCaseDiagram1.png" alt="image"></p>
+<h4 id="二、Class-Diagrams（类图）"><a href="#二、Class-Diagrams（类图）" class="headerlink" title="二、Class Diagrams（类图）"></a>二、Class Diagrams（类图）</h4><blockquote>
+<p>类图描述类及类之间的静态关系。类图是一种静态模型，它是创建其他 UML 的基础。<br>UML中类的图形符为长方形，用两条横线把长方形分成上、中、下3个区域（下面两个区域可省略），3个区域分别放类的名字，属性和服务。–《软件工程导论（第5版）》P217</p>
+<p>类与类之间通常有关联、泛化（继承）、依赖和细化等4种关系</p>
+</blockquote>
+<h5 id="1、关联"><a href="#1、关联" class="headerlink" title="1、关联"></a>1、关联</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一种拥有的关系，它使一个类知道另一个类的属性和方法</p>
+<p>1.1、普通关联  </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只要在类与类之间存在连接关系就可以使用，使用直线连接两个类。通常，关联是双向的，可在一个方向上为关联起一个名字，在另一个方向上起另一个名字（也可不起）。为避免混淆，在名字前面（或后面）加一个表示关联方向的黑三角。</p>
+<p>1.2、聚集</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也称为聚合，是关联的特例，表示类与类之间的关系是整体与部分的关系，且部分可以离开整体而单独存在。如车和轮胎是整体和部分的关系，轮胎离开车仍然可以存在。</p>
+<p><em>聚合关系是关联关系的一种，是强的关联关系；</em>关联和聚合在语法上无法区分，必须考察具体的逻辑关系。</p>
+<p>1.2.1、共享聚集</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在聚集关系中处于部分方的对象可同时参与多个整体方对象的构成。  </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般聚集和共享聚集使用空心菱形。</p>
+<p>1.2.2、组合聚集，也就是1.3的组合</p>
+<p>1.3、组合</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是整体与部分的关系，但部分不能离开整体而单独存在。如公司和部门是整体和部分的关系，没有公司就不存在部门。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组合关系是关联关系的一种，是比聚合关系还要强的关系，它要求普通的聚合关系中代表整体的对象负责代表部分的对象的生命周期。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用实心菱形表示。</p>
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/ClassDiagram1.png" alt="image"></p>
+<h5 id="2、泛化"><a href="#2、泛化" class="headerlink" title="2、泛化"></a>2、泛化</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也叫继承，表示一般与特殊的关系，它指定了子类如何继承父类的所有特征和行为。它是通用元素和具体元素之间的一种分类关系。具体元素完全拥有通用元素的信息，并且还可以附加一些其他信息。</p>
+<p>2.1、普通泛化</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>没有具体对象的类称为抽象类</em></p>
+<p>2.2、受限泛化</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;附加约束条件，以进一步说明该泛化关系的使用方法或扩充方法。预定义的约束有4种：多重、不相交、完全和不完全。这些约束都是语义约束。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{多重}、{不相交}、{完全}和{不完全}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不相交继承就是更多重继承相反，即一个子类不能多次继承同一个基类（这样的基类相当于C++语音中的虚基类）</p>
+<h5 id="3、依赖"><a href="#3、依赖" class="headerlink" title="3、依赖"></a>3、依赖</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一种使用的关系，即一个类的实现需要另一个类的协助，所以要尽量不使用双向的互相依赖.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用实心箭头的虚线。 </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>多表示局部变量, 方法中的参数, 和对静态方法的调用，而关联则多用于成员变量，全局变量。</em></p>
+<h5 id="4、细化"><a href="#4、细化" class="headerlink" title="4、细化"></a>4、细化</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当对同一个事物在不同抽象层次上的描述时，这些描述之间具有细化关系。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用空心箭头的虚线表示。来着P223。而在参考里面有个实现，其也使用空心箭头的虚线表示。它是一种类与接口的关系，表示类是接口所有特征和行为的实现。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;常见的有以下几种关系: 泛化（Generalization）,  实现（Realization），关联（Association)，聚合（Aggregation），组合(Composition)，依赖(Dependency)。<br>各种关系的强弱顺序： 泛化 = 实现 &gt; 组合 &gt; 聚合 &gt; 关联 &gt; 依赖</p>
+<h4 id="三、Object-Diagrams（对象图）"><a href="#三、Object-Diagrams（对象图）" class="headerlink" title="三、Object Diagrams（对象图）"></a>三、Object Diagrams（对象图）</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;描述的是参与交互的各个对象在交互过程中某一时刻的状态。对象图可以被看作是类图在某一时刻的实例。</p>
+<h4 id="四、Statechart-Diagrams（状态图）"><a href="#四、Statechart-Diagrams（状态图）" class="headerlink" title="四、Statechart Diagrams（状态图）"></a>四、Statechart Diagrams（状态图）</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过描述系统的状态及引起系统状态转换的事件，来表示系统的行为。此外，它还指明了作为特定事件的结果系统将做哪些动作（例如，处理数据）。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一种由状态、变迁、事件和活动组成的状态机，用来描述类的对象所有可能的状态以及时间发生时状态的转移条件。</p>
+<p>1、状态<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要有：初态（即初始状态）、终态（即最终状态）和中间状态。一个状态图只能有一个初态，而终态则可以有0至多个。<br>2、事件<br>3、符合<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;初态用实心圆表示，终态用一对同心圆（内圆为实心圆）表示。</p>
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/StatechartDiagram1.png" alt="image"></p>
+<h4 id="五、Activity-Diagrams（活动图）"><a href="#五、Activity-Diagrams（活动图）" class="headerlink" title="五、Activity Diagrams（活动图）"></a>五、Activity Diagrams（活动图）</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从用户的角度描述用例</p>
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/ActivityDiagram1.png" alt="image"></p>
+<h4 id="六、Sequence-Diagrams（序列图-时序图）"><a href="#六、Sequence-Diagrams（序列图-时序图）" class="headerlink" title="六、Sequence Diagrams（序列图-时序图）"></a>六、Sequence Diagrams（序列图-时序图）</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从对象的角度描述用例，强调交互的时间次序。描述了对象之间传递消息的时间顺序，它用来表示用例的行为顺序。</p>
+<h5 id="1、生命线lifeline"><a href="#1、生命线lifeline" class="headerlink" title="1、生命线lifeline"></a>1、生命线lifeline</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示对象的生存时间。生命线从对象创建开始到对象销毁时终止。对象在生命线上的两种状态：休眠状态、激活状态。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;激活的符号，激活用一个细长的矩阵框（在生命线上）表示。</p>
+<h5 id="2、消息"><a href="#2、消息" class="headerlink" title="2、消息"></a>2、消息</h5><p>2.1、同步消息<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息的发送者把进程控制传递给消息的接收者，然后暂停活动，等待消息接收者的回应消息。</p>
+<p>2.2、异步消息<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息的发送者将消息发送给消息的接受者后，不用等待回应的消息，即可开始另一个活动。  </p>
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/SequenceDiagram1.png" alt="image"></p>
+<h4 id="七、Collaboration-Diagrams（协作图）"><a href="#七、Collaboration-Diagrams（协作图）" class="headerlink" title="七、Collaboration Diagrams（协作图）"></a>七、Collaboration Diagrams（协作图）</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从对象的角度描述用例，强调交互的空间结构</p>
+<h4 id="八、Component-Diagrams（构件图）"><a href="#八、Component-Diagrams（构件图）" class="headerlink" title="八、Component Diagrams（构件图）"></a>八、Component Diagrams（构件图）</h4><h4 id="九、Deployment-Diagrams（部署图）"><a href="#九、Deployment-Diagrams（部署图）" class="headerlink" title="九、Deployment Diagrams（部署图）"></a>九、Deployment Diagrams（部署图）</h4><h4 id="十、其他"><a href="#十、其他" class="headerlink" title="十、其他"></a>十、其他</h4><h5 id="1、层次方框图"><a href="#1、层次方框图" class="headerlink" title="1、层次方框图"></a>1、层次方框图</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;树状结构描述信息  </p>
+<h5 id="2、Warnier图"><a href="#2、Warnier图" class="headerlink" title="2、Warnier图"></a>2、Warnier图</h5><h5 id="3、IPO图"><a href="#3、IPO图" class="headerlink" title="3、IPO图"></a>3、IPO图</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入、处理、输出图的简称，它是由美国IBM公司发展完善起来的一种图形工具，能够方便地描绘输入数据、对数据的处理和输出数据之间的关系。</p>
+<h5 id="4、包图"><a href="#4、包图" class="headerlink" title="4、包图"></a>4、包图</h5><hr>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiangds/p/6596595.html">UML各种图总结-精华</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/wolf-sun/category/531196.html">UML建模</a></li>
+<li><a target="_blank" rel="noopener" href="http://justsee.iteye.com/blog/808799">UML关系(泛化,实现,依赖,关联(聚合,组合))</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/qq383264679/article/details/47832099">关于startUML中各种连线这间的关系</a></li>
+</ul>
+<h4 id="学习"><a href="#学习" class="headerlink" title="学习"></a>学习</h4><table>
+<thead>
+<tr>
+<th>单词</th>
+<th>音标</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Diagram</td>
+<td>[‘daɪə,græm]</td>
+<td>n. 图表；[数] 图解（diagram的复数）；略图<br>v. 用图解释；作…的图解（diagram的三单形式）</td>
+</tr>
+<tr>
+<td>abstract</td>
+<td>[‘æbstrækt]</td>
+<td>n. 摘要；抽象；抽象的概念<br>adj. 抽象的；深奥的<br>vt. 摘要；提取；使……抽象化；转移(注意力、兴趣等)；使心不在焉<br>vi. 做摘要；写梗概</td>
+</tr>
+<tr>
+<td>Association</td>
+<td>[[əˌsəʊsɪˈeɪʃn]]</td>
+<td>n. 协会，联盟，社团；联合；联想</td>
+</tr>
+<tr>
+<td>Aggregation</td>
+<td>[,ægrɪ’geʃən]</td>
+<td>n. [地质][数] 聚合，聚集；聚集体，集合体</td>
+</tr>
+<tr>
+<td>Composition</td>
+<td>[,kɑmpə’zɪʃən]</td>
+<td>n. 作文，作曲；[材] 构成；合成物</td>
+</tr>
+<tr>
+<td>Generalization</td>
+<td>[,dʒɛnrələ’zeʃən]</td>
+<td>n. 概括；普遍化；一般化</td>
+</tr>
+<tr>
+<td>Dependency</td>
+<td>[dɪ’pɛndənsi]</td>
+<td>n. 属国；从属；从属物</td>
+</tr>
+<tr>
+<td>Realization</td>
+<td>[,riələ’zeʃən]</td>
+<td>n. 实现；领悟</td>
+</tr>
+<tr>
+<td>Statechart</td>
+<td></td>
+<td>状态图</td>
+</tr>
+<tr>
+<td>Sequence</td>
+<td>[‘sikwəns]</td>
+<td>n. [数][计] 序列；顺序；续发事件<br>vt. 按顺序排好</td>
+</tr>
+<tr>
+<td>Collaboration</td>
+<td>[kə,læbə’reʃən]</td>
+<td>n. 合作；勾结；通敌</td>
+</tr>
+<tr>
+<td>Component</td>
+<td>[kəm’ponənt]</td>
+<td>adj. 组成的，构成的<br>n. 成分；组件；[电子] 元件</td>
+</tr>
+<tr>
+<td>Deployment</td>
+<td>[dɪ’plɔɪmənt]</td>
+<td>n. 调度，部署</td>
+</tr>
+</tbody></table>
+<!--|  |  |  |  -->  
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
-
-{% block page_class %}page-post-detail{% endblock %}
 
 
-{% block content %}
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/07/05/UML-%E5%BB%BA%E6%A8%A1%E4%B8%AD%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%9A%84%E6%B1%87%E6%80%BB/" data-id="ckddxq2oz0005gcuge0n470z6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UML/" rel="tag">UML</a></li></ul>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/07/08/CocoaPods-%E7%9A%84%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          CocoaPods 的实践笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/02/iOS-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2%E7%9A%84%E5%AE%9E%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">iOS 自定义图形的实现</div>
+    </a>
+  
+</nav>
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/">Xcode</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/">动图</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul>
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FLV/" rel="tag">FLV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Framework/" rel="tag">Framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/" rel="tag">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gif/" rel="tag">Gif</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LivePhoto/" rel="tag">LivePhoto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/M3U8/" rel="tag">M3U8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MP4/" rel="tag">MP4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/" rel="tag">Objective-C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PDF/" rel="tag">PDF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Svga/" rel="tag">Svga</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-UDP-IP/" rel="tag">TCP / UDP / IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TS/" rel="tag">TS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/" rel="tag">UIButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIImage/" rel="tag">UIImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextField/" rel="tag">UITextField</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextView/" rel="tag">UITextView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/" rel="tag">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebP/" rel="tag">WebP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebSocket/" rel="tag">WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation/" rel="tag">animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/configure/" rel="tag">configure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layer/" rel="tag">layer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mask/" rel="tag">mask</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" rel="tag">二值化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" rel="tag">动态库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" rel="tag">版本控制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" rel="tag">组合特效</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E9%80%9F/" rel="tag">网速</a></li></ul>
+    </div>
+  </div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/FLV/" style="font-size: 10px;">FLV</a> <a href="/tags/Framework/" style="font-size: 10px;">Framework</a> <a href="/tags/GCD/" style="font-size: 12px;">GCD</a> <a href="/tags/Gif/" style="font-size: 10px;">Gif</a> <a href="/tags/Git/" style="font-size: 12px;">Git</a> <a href="/tags/Github/" style="font-size: 12px;">Github</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/LivePhoto/" style="font-size: 10px;">LivePhoto</a> <a href="/tags/M3U8/" style="font-size: 10px;">M3U8</a> <a href="/tags/MP4/" style="font-size: 10px;">MP4</a> <a href="/tags/MacOS/" style="font-size: 16px;">MacOS</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/PDF/" style="font-size: 10px;">PDF</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/Svga/" style="font-size: 10px;">Svga</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/TCP-UDP-IP/" style="font-size: 10px;">TCP / UDP / IP</a> <a href="/tags/TS/" style="font-size: 10px;">TS</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIImage/" style="font-size: 10px;">UIImage</a> <a href="/tags/UITextField/" style="font-size: 10px;">UITextField</a> <a href="/tags/UITextView/" style="font-size: 10px;">UITextView</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/WebP/" style="font-size: 10px;">WebP</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/animation/" style="font-size: 10px;">animation</a> <a href="/tags/configure/" style="font-size: 10px;">configure</a> <a href="/tags/layer/" style="font-size: 18px;">layer</a> <a href="/tags/mask/" style="font-size: 10px;">mask</a> <a href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" style="font-size: 10px;">二值化</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" style="font-size: 10px;">动态库</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 14px;">动画</a> <a href="/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12px;">数据结构</a> <a href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" style="font-size: 10px;">版本控制</a> <a href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" style="font-size: 10px;">组合特效</a> <a href="/tags/%E7%BD%91%E9%80%9F/" style="font-size: 10px;">网速</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/">iOS 动态库 应用篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/30/Git-%E8%BE%85%E5%AF%BC/">Git 辅导</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%99%BA%E8%83%BD%E5%BC%B9%E5%B9%95-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS 弹幕系统之智能弹幕 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/04/iOS-Socket-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS Socket 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/16/iOS-%E7%BB%84%E5%90%88%E7%A4%BC%E7%89%A9%E7%89%B9%E6%95%88/">iOS 组合礼物特效</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AnakinChen<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

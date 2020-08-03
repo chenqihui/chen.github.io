@@ -1,23 +1,1162 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
 
-{% block title %}{{ config.title }}{% if theme.index_with_subtitle and config.subtitle %} - {{config.subtitle }}{% endif %}{% endblock %}
+  
+  <title>RyuukuSpace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="RyuukuSpace">
+<meta property="og:url" content="http://chenqihui.github.io/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:locale">
+<meta property="article:author" content="AnakinChen">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="RyuukuSpace" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-{% block page_class %}
-  {% if is_home() %} page-home {% endif %}
-{% endblock %}
+<meta name="generator" content="Hexo 5.0.0"></head>
 
-{% block content %}
-  <section id="posts" class="posts-expand">
-    {% for post in page.posts %}
-      {{ post_template.render(post, true) }}
-    {% endfor %}
-  </section>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RyuukuSpace</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://chenqihui.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-iOS-动态库-应用篇" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/" class="article-date">
+  <time datetime="2019-08-18T13:25:07.000Z" itemprop="datePublished">2019-08-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
 
-  {% include '_partials/pagination.swig' %}
-{% endblock %}
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/">iOS 动态库 应用篇</a>
+    </h1>
+  
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态库（Dynamic Framework），使用它的优点之一就是避免冲突（还有其他优点，如共享）。Xcode 的项目如果出现同名的文件和类在编译的时候就会报错。开发SDK 就需要非常注意引入第三方库等可能给其他团队出现同名的冲突情况。除了改名的方案之外，动态库也是一个好方案。本篇就将对最近应用动态库的过程进行记录 &amp; 供参考。</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/" data-id="ckddxq2p20009gcuggh38b5f0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Framework/" rel="tag">Framework</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" rel="tag">动态库</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Git-辅导" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/30/Git-%E8%BE%85%E5%AF%BC/" class="article-date">
+  <time datetime="2019-07-30T01:22:42.000Z" itemprop="datePublished">2019-07-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/30/Git-%E8%BE%85%E5%AF%BC/">Git 辅导</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;想写篇 Git 来让产品和设计使用 git 管理他们的产品文档与设计图。然后将想法说出来，有人觉得没必要。产品和设计其实只需要类似 SVN 这种以文件来同步即可，而 Git 的操作会比较复杂。  </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可是回想之前使用 SVN 其实也是很难用，多人提交时出现的等待，切分支，上传文件的各种慢。那回到该篇博文，将青铜部分就算入门，以单个人的维护的操作为主（这样可以避免一些比较复杂的情况）进行演示，并结合操作的截图进行说明。</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/07/30/Git-%E8%BE%85%E5%AF%BC/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2019/07/30/Git-%E8%BE%85%E5%AF%BC/" data-id="ckddxq2ph000jgcugh4ch8mu1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Github/" rel="tag">Github</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" rel="tag">版本控制</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS-弹幕系统之智能弹幕-学习篇" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/12/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%99%BA%E8%83%BD%E5%BC%B9%E5%B9%95-%E5%AD%A6%E4%B9%A0%E7%AF%87/" class="article-date">
+  <time datetime="2019-06-12T04:00:00.000Z" itemprop="datePublished">2019-06-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/12/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%99%BA%E8%83%BD%E5%BC%B9%E5%B9%95-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS 弹幕系统之智能弹幕 学习篇</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;智能弹幕不挡脸效果就是使刷屏弹幕无法遮挡想看的内容。目前很多视频网站 &amp; App 都已经实现，且还运用到直播上，提高了观看的体验。具体效果可以看看斗鱼等直播平台（记得确认该直播间是否有此功能）。接下来从客户端角度探讨如何实现智能弹幕，下面的效果的代码实现都在 – 新弹幕系统 <a target="_blank" rel="noopener" href="https://github.com/chenqihui/QHDanmu2Demo">chenqihui/QHDanmu2Demo</a>，请同步工程了解。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.admin5.com/article/20181108/884048.shtml">虎牙推出弹幕黑科技：AI智能弹幕功能不挡脸</a></li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2019/06/12/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%99%BA%E8%83%BD%E5%BC%B9%E5%B9%95-%E5%AD%A6%E4%B9%A0%E7%AF%87/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2019/06/12/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%99%BA%E8%83%BD%E5%BC%B9%E5%B9%95-%E5%AD%A6%E4%B9%A0%E7%AF%87/" data-id="ckddxq2p4000cgcugdqj94s8i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIImage/" rel="tag">UIImage</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/layer/" rel="tag">layer</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mask/" rel="tag">mask</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS-Socket-学习篇" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/04/iOS-Socket-%E5%AD%A6%E4%B9%A0%E7%AF%87/" class="article-date">
+  <time datetime="2019-03-03T17:23:14.000Z" itemprop="datePublished">2019-03-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/04/iOS-Socket-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS Socket 学习篇</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谈谈 Socket 的大纲</p>
+<ul>
+<li>概念</li>
+<li>基本操作 Socket、CFSocket、GCDCocoaAysnSocket</li>
+<li>第三方封装 SocketRocket、Pemolo、SocketIO</li>
+<li>简单功能：测试 &amp; 域名访问 SimplePing</li>
+<li>服务端（Mac）</li>
+<li>数据格式：使用 二进制 或者 protocolbuffer </li>
+<li>模拟 HTTP 和 HTTPS（顺序学习 HTTP 协议头）</li>
+<li>抓包 基本协议、了解下 TCP、UDP</li>
+<li>WebSocket 协议（WebRTC）</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2019/03/04/iOS-Socket-%E5%AD%A6%E4%B9%A0%E7%AF%87/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2019/03/04/iOS-Socket-%E5%AD%A6%E4%B9%A0%E7%AF%87/" data-id="ckddxq2pr000qgcugdov3f37i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-UDP-IP/" rel="tag">TCP / UDP / IP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WebSocket/" rel="tag">WebSocket</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS-组合礼物特效" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/16/iOS-%E7%BB%84%E5%90%88%E7%A4%BC%E7%89%A9%E7%89%B9%E6%95%88/" class="article-date">
+  <time datetime="2019-01-16T03:15:38.000Z" itemprop="datePublished">2019-01-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/16/iOS-%E7%BB%84%E5%90%88%E7%A4%BC%E7%89%A9%E7%89%B9%E6%95%88/">iOS 组合礼物特效</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" rel="noopener" href="https://github.com/chenqihui/QHGiftAnimationMan">QHGiftAnimationMan</a> 这个项目看看时间是16年2月，快三年前的工程了。最近重新 checkout 下来，将 Swift2.0 的语法根据提示修改为 Swift4.2。不得不说 Swift 每个版本的变化还是蛮多的，也增加了新功能。而该项目是作为 <a href="http://chenqihui.github.io/2018/09/16/iOS-%E5%8A%A8%E5%9B%BE%E6%92%AD%E6%94%BE-%E5%88%B6%E4%BD%9C%E5%90%88%E9%9B%86/">iOS 动图播放 &amp; 制作合集</a> 的续篇二，也是介绍直播间的礼物动图特效 —— 组合礼物特效。</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/01/16/iOS-%E7%BB%84%E5%90%88%E7%A4%BC%E7%89%A9%E7%89%B9%E6%95%88/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2019/01/16/iOS-%E7%BB%84%E5%90%88%E7%A4%BC%E7%89%A9%E7%89%B9%E6%95%88/" data-id="ckddxq2p6000fgcug6c277yxo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" rel="tag">二值化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" rel="tag">组合特效</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS-弹幕系统" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/16/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F/" class="article-date">
+  <time datetime="2019-01-16T03:02:57.000Z" itemprop="datePublished">2019-01-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/16/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F/">iOS 弹幕系统</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新弹幕系统 <a target="_blank" rel="noopener" href="https://github.com/chenqihui/QHDanmu2Demo">chenqihui/QHDanmu2Demo</a>，它在 <a href="http://chenqihui.github.io/2018/06/26/iOS-%E9%A3%9E%E5%B1%8F%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B9%8B%E8%B7%AF/">iOS 飞屏的实现之路 | RyuukuSpace</a> 里面的也提到过，与飞屏在展示与运动逻辑的实现上基本相似，区别可能在于弹幕系统会更加注重弹幕在轨道的选择，因此本次也着重介绍下弹幕系统的轨道选择部分。</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/01/16/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2019/01/16/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F/" data-id="ckddxq2p3000bgcug18ta4k09" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCD/" rel="tag">GCD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/layer/" rel="tag">layer</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Xcode-configure-了解一下" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/05/Xcode-configure-%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%8B/" class="article-date">
+  <time datetime="2018-11-05T02:59:53.000Z" itemprop="datePublished">2018-11-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Xcode/">Xcode</a>►<a class="article-category-link" href="/categories/Xcode/%E5%9F%BA%E7%A1%80/">基础</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/05/Xcode-configure-%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%8B/">Xcode configure 了解一下</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于接收其他团队的 App 项目的时候，需要了解其中一项内容就是它的多环境，如测试、开发、发布等不同环境的逻辑。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于多环境的使用，之前本人使用较多的是配置多个 target，然后在 不同target 里面配置不同的条件宏。targets 可以是 duplicate target，也可以是新建 Application、Extension 或者 Framework 等等，常用的 通知扩展、手表扩展等</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而此次接手的项目使用的是 .xcconfig 文件。那么就来大概了解下它的文件、配置 &amp; 使用。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/11/05/Xcode-configure-%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%8B/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/11/05/Xcode-configure-%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%8B/" data-id="ckddxq2p00006gcug3mfrevvx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/configure/" rel="tag">configure</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS-表单开发-基础篇" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/06/iOS-%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%91-%E5%9F%BA%E7%A1%80%E7%AF%87/" class="article-date">
+  <time datetime="2018-10-06T10:55:58.000Z" itemprop="datePublished">2018-10-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>►<a class="article-category-link" href="/categories/iOS/%E5%9F%BA%E7%A1%80/">基础</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/06/iOS-%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%91-%E5%9F%BA%E7%A1%80%E7%AF%87/">iOS 表单开发 基础篇</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;移动端大部分页面是由列表、表单、对话框展示，它们也是开发中最频繁开发的部分。说说表单，它是提供用户输入数据后提交的页面，常用于注册、登录、购物、评论等等。将表单抛开复杂控件和动画等元素，其主要由输入框、选择框、按钮构成，逻辑也就是输入、选择要提交的内容，点击提交即完成，这只是简化的逻辑。而完整的表单，其实可能根据业务不同，会有不同的细节处理，如加密，数据校验，UI 联调，状态提醒等等。那接下来介绍几个比较常见的表单设置与开发。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/10/06/iOS-%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%91-%E5%9F%BA%E7%A1%80%E7%AF%87/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/10/06/iOS-%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%91-%E5%9F%BA%E7%A1%80%E7%AF%87/" data-id="ckddxq2p7000hgcugets5bmia" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIButton/" rel="tag">UIButton</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UITextField/" rel="tag">UITextField</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UITextView/" rel="tag">UITextView</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-M3U8-TS-格式再谈" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/06/M3U8-TS-%E6%A0%BC%E5%BC%8F%E5%86%8D%E8%B0%88/" class="article-date">
+  <time datetime="2018-10-06T08:54:35.000Z" itemprop="datePublished">2018-10-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/06/M3U8-TS-%E6%A0%BC%E5%BC%8F%E5%86%8D%E8%B0%88/">M3U8 &amp; TS 格式再谈</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们已经了解到 m3u8 其实是一个文件，是 HLS 协议实现点播 &amp; 直播的，还有 TS 文件。这里还有一篇讲解 AVPlayer 的，等编辑完再更新地址。</p>
+<h4 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h4><blockquote>
+<p>HTTP Live Streaming (HLS) sends audio and video over HTTP from an ordinary web server for playback on iOS-based devices—including iPhone, iPad, iPod touch, and Apple TV—and on desktop computers (macOS). Using the same protocol that powers the web, HLS deploys content using ordinary web servers and content delivery networks. HLS is designed for reliability and dynamically adapts to network conditions by optimizing playback for the available speed of wired and wireless connections.</p>
+<p>HLS supports the following:</p>
+<ul>
+<li>Live broadcasts and prerecorded content (video on demand, or VOD)</li>
+<li>Multiple alternate streams at different bit rates</li>
+<li>Intelligent switching of streams in response to network bandwidth changes</li>
+<li>Media encryption and user authentication</li>
+</ul>
+</blockquote>
+        
+          <p class="article-more-link">
+            <a href="/2018/10/06/M3U8-TS-%E6%A0%BC%E5%BC%8F%E5%86%8D%E8%B0%88/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/10/06/M3U8-TS-%E6%A0%BC%E5%BC%8F%E5%86%8D%E8%B0%88/" data-id="ckddxq2pn000mgcuggmdgcio8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/M3U8/" rel="tag">M3U8</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TS/" rel="tag">TS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS-动图播放-制作合集" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/16/iOS-%E5%8A%A8%E5%9B%BE%E6%92%AD%E6%94%BE-%E5%88%B6%E4%BD%9C%E5%90%88%E9%9B%86/" class="article-date">
+  <time datetime="2018-09-16T14:49:15.000Z" itemprop="datePublished">2018-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%8A%A8%E5%9B%BE/">动图</a>►<a class="article-category-link" href="/categories/%E5%8A%A8%E5%9B%BE/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/16/iOS-%E5%8A%A8%E5%9B%BE%E6%92%AD%E6%94%BE-%E5%88%B6%E4%BD%9C%E5%90%88%E9%9B%86/">iOS 动图播放 &amp; 制作合集</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;今天聊到动图，它们在 App 上都很常见，如聊天的表情，直播的送礼 &amp; 座驾特效，H5 上的活动图，视频的录制等等。而动图有很多种格式，常用的 帧动画、Gif、WebP、Apng、Svga。由于最近项目加入 Svga，因此顺便学习下其他动图，也把之前记录的 LivePhoto 一起总结进来，做一次复习。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本篇可以说是一篇播放 &amp; 制作的合集。大家将会看到 YYImage，Svga-Player，iSparta 转换等开源库 &amp; 工具。而主要说明的动图格式是 Gif、WebP、Svga、LivePhoto。除了 LivePhoto，其它动图的的播放在 iOS 端的大概流程都是通过 ImageIO 绘制出 UImage，再通过 CADisplayer 进行逐帧播放，只是解码库不同，如 WebP 是依靠 Google 提供的库（因为编码不一样）。也正由于他们是逐帧播放的，所以可以将每帧数据解码后再重新编码成其他格式的动态。最为关键的还是编码上，从而形成各自的优势，就目前项目的动图还是比较多使用 WebP，而 Svga 目前使用上似乎更好，特别是在直播的大礼物特效上。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/09/16/iOS-%E5%8A%A8%E5%9B%BE%E6%92%AD%E6%94%BE-%E5%88%B6%E4%BD%9C%E5%90%88%E9%9B%86/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/09/16/iOS-%E5%8A%A8%E5%9B%BE%E6%92%AD%E6%94%BE-%E5%88%B6%E4%BD%9C%E5%90%88%E9%9B%86/" data-id="ckddxq2p10008gcug46w4epoh" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Gif/" rel="tag">Gif</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LivePhoto/" rel="tag">LivePhoto</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Svga/" rel="tag">Svga</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WebP/" rel="tag">WebP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS-网速监控-学习篇" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/05/iOS-%E7%BD%91%E9%80%9F%E7%9B%91%E6%8E%A7-%E5%AD%A6%E4%B9%A0%E7%AF%87/" class="article-date">
+  <time datetime="2018-09-05T07:45:02.000Z" itemprop="datePublished">2018-09-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/05/iOS-%E7%BD%91%E9%80%9F%E7%9B%91%E6%8E%A7-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS 网速监控 学习篇</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网络测速会在 App 性能里面经常提到。网络的好与坏影响了 App 的使用体验。因此监听网络状态，根据网络的状态来控制 App 的功能 或者 对应处理，能达到提升用户体验的目的，它也就成了 App 优化项的关键之一。当然性能还包括 App 体积，App 的热启动 &amp; 冷启动 等等指标。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先说下测速的需求，要在不增加额外的上传 &amp; 下载的资源消耗，就能达到实时测速的目的。也就是得通过计算 App 现有业务的网络请求，获取的传输数据大小 &amp; 请求时间，从而得出网速。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/09/05/iOS-%E7%BD%91%E9%80%9F%E7%9B%91%E6%8E%A7-%E5%AD%A6%E4%B9%A0%E7%AF%87/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/09/05/iOS-%E7%BD%91%E9%80%9F%E7%9B%91%E6%8E%A7-%E5%AD%A6%E4%B9%A0%E7%AF%87/" data-id="ckddxq2ps000rgcug5hh950w5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E9%80%9F/" rel="tag">网速</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS-核心动画高级技巧" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/23/iOS-%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7/" class="article-date">
+  <time datetime="2018-08-23T07:04:50.000Z" itemprop="datePublished">2018-08-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/23/iOS-%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7/">iOS 核心动画高级技巧</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果阅读前面的文章 《<a href="http://chenqihui.github.io/2018/07/02/iOS-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2%E7%9A%84%E5%AE%9E%E7%8E%B0/">iOS 自定义图形的实现 | RyuukuSpace</a>》 和 《<a href="http://chenqihui.github.io/2018/08/16/PDF-%E9%A2%84%E8%A7%88-%E8%A7%A3%E6%9E%90/">PDF 预览 &amp; 解析 | RyuukuSpace</a>》，会发现里面就使用了 CAShapeLayer 和 CATiledLayer。其实它们是苹果提供视图更底层的操作——图层，对于 UIView 大多数人都比较了解和常用，UIView 其实就是在 layer 的基础上加工，并提供更加高级的操作，而有些时候还是需要使用 layer 来进行更高效，更专有的使用。接下来就推荐下关于 layer 的一本翻译书籍。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/08/23/iOS-%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/08/23/iOS-%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7/" data-id="ckddxq2p5000egcug4mkoesdc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/layer/" rel="tag">layer</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-传说中的爱因斯坦提出的思考题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/20/%E4%BC%A0%E8%AF%B4%E4%B8%AD%E7%9A%84%E7%88%B1%E5%9B%A0%E6%96%AF%E5%9D%A6%E6%8F%90%E5%87%BA%E7%9A%84%E6%80%9D%E8%80%83%E9%A2%98/" class="article-date">
+  <time datetime="2018-08-20T07:57:12.000Z" itemprop="datePublished">2018-08-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/20/%E4%BC%A0%E8%AF%B4%E4%B8%AD%E7%9A%84%E7%88%B1%E5%9B%A0%E6%96%AF%E5%9D%A6%E6%8F%90%E5%87%BA%E7%9A%84%E6%80%9D%E8%80%83%E9%A2%98/">传说中的爱因斯坦提出的思考题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;近期看了 《<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/aq7yEML5Kwt0vl-5uGTARw">别乱说，算法才不是脑筋急转弯</a>》 这篇推文里面最后一题让人好奇（其实其他的也还不错，有些就是脑筋急转弯呀，真能用算法来写就强了），它就是是传说中的爱因斯坦提出的思考题，他宣称世界上只有2％的人能解出这个题目，你肯定听说过不下一次这道题，但也肯定你始终连题目都没记清楚过。因此也就试试解答下，居然断断续续合计花了两天，泪崩，并且还不是完美的答案。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/08/20/%E4%BC%A0%E8%AF%B4%E4%B8%AD%E7%9A%84%E7%88%B1%E5%9B%A0%E6%96%AF%E5%9D%A6%E6%8F%90%E5%87%BA%E7%9A%84%E6%80%9D%E8%80%83%E9%A2%98/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/08/20/%E4%BC%A0%E8%AF%B4%E4%B8%AD%E7%9A%84%E7%88%B1%E5%9B%A0%E6%96%AF%E5%9D%A6%E6%8F%90%E5%87%BA%E7%9A%84%E6%80%9D%E8%80%83%E9%A2%98/" data-id="ckddxq2qf002cgcugayxc4st6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-PDF-预览-解析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/16/PDF-%E9%A2%84%E8%A7%88-%E8%A7%A3%E6%9E%90/" class="article-date">
+  <time datetime="2018-08-16T10:08:53.000Z" itemprop="datePublished">2018-08-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/16/PDF-%E9%A2%84%E8%A7%88-%E8%A7%A3%E6%9E%90/">PDF 预览 &amp; 解析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单讲就是它独立包含文档所有信息，如文本、字体、图形等等。并且当看到下面解析工具解析看到结构，每一页也都具有完整信息，这样就可以分开处理显示。可以通过 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8F%AF%E7%A7%BB%E6%A4%8D%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F">可移植文档格式 - 维基百科，自由的百科全书</a> &amp; <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/pdf/317608?fr=aladdin">pdf_百度百科</a> 来了解更多 PDF 信息。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回到需求，产品上看可能 APP 只要能看，并在看到第几页的时候显示相应的提示或者其他动作。而对于开发者，如果使用自定义的话，会疑问如何显示？是列表呢、还是翻页，加载效果？加载方式？在线还是本地等等。并且自定义显示的效率如何？是否占内存，占CPU。是否需要编辑？再深入就是研究 PDF 结构。然后发现想多了，还是老老实实先实现产品需求。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/08/16/PDF-%E9%A2%84%E8%A7%88-%E8%A7%A3%E6%9E%90/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/08/16/PDF-%E9%A2%84%E8%A7%88-%E8%A7%A3%E6%9E%90/" data-id="ckddxq2pq000ngcugfk3b4hw3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PDF/" rel="tag">PDF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-MP4-格式了解下" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/07/MP4-%E6%A0%BC%E5%BC%8F%E4%BA%86%E8%A7%A3%E4%B8%8B/" class="article-date">
+  <time datetime="2018-08-06T17:32:02.000Z" itemprop="datePublished">2018-08-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/07/MP4-%E6%A0%BC%E5%BC%8F%E4%BA%86%E8%A7%A3%E4%B8%8B/">MP4 格式了解下</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;继 <a target="_blank" rel="noopener" href="https://github.com/chenqihui/QHFlvParserMan">QHFlvParserMan</a> 解析 FLV 之后，本次增加了对 MP4 视频格式的解析支持。而通过上一篇 《<a href="http://chenqihui.github.io/2018/06/20/FLV-%E6%A0%BC%E5%BC%8F%E4%B8%80%E8%B0%88/">FLV 格式一谈</a>》入门了音视频的知识后。可以通过对 MP4 了解，来更进一步学习音视频知识。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MP4 多用于点播，它也是现在用的比较多的视频封装格式，它为了播放流式媒体的高质量视频而专门设计的，以求使用最少的数据获得最佳的图像质量。但是它的文件格式复杂，索引慢，时长较长的 MP4 视频在线播放时加载较慢。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/08/07/MP4-%E6%A0%BC%E5%BC%8F%E4%BA%86%E8%A7%A3%E4%B8%8B/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/08/07/MP4-%E6%A0%BC%E5%BC%8F%E4%BA%86%E8%A7%A3%E4%B8%8B/" data-id="ckddxq2oy0004gcug0rfwc6eo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MP4/" rel="tag">MP4</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS-字符的-Encode-Decode" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/23/iOS-%E5%AD%97%E7%AC%A6%E7%9A%84-Encode-Decode/" class="article-date">
+  <time datetime="2018-07-23T15:08:53.000Z" itemprop="datePublished">2018-07-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/23/iOS-%E5%AD%97%E7%AC%A6%E7%9A%84-Encode-Decode/">iOS 字符的 Encode &amp; Decode</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本次的话题应该算是老话题。在开发用户系统，用户昵称修改，聊天等功能的时候，会遇到用户输入 Emoji，特殊字符。甚至直接输入 Unicode 编码的时候。如果客户端提交给服务端，再从服务端获取，直接显示可能会出现乱码。甚至有时是服务端进行编码保存，然后给客户端，并没有协商谁来负责解码。这都只是一方面，因为特殊字符的存在还会影响数据上报。当服务端拿到这种特殊数据，会无法解析，导致请求失败等等。所以需要对字符进行 Encode &amp; Decode。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/07/23/iOS-%E5%AD%97%E7%AC%A6%E7%9A%84-Encode-Decode/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/07/23/iOS-%E5%AD%97%E7%AC%A6%E7%9A%84-Encode-Decode/" data-id="ckddxq2p2000agcugarkwephf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CocoaPods-的实践笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/08/CocoaPods-%E7%9A%84%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2018-07-08T11:04:41.000Z" itemprop="datePublished">2018-07-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/08/CocoaPods-%E7%9A%84%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/">CocoaPods 的实践笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" rel="noopener" href="https://cocoapods.org/">CocoaPods.org</a> 的出现极大的方便了项目的集成，第三方库的发展，特别是开源，我们不单单可以使用 framework 和 a库。不过还是很怀念 Xcode 支持插件的时候，可视化的使用 CocoaPods 的时候，不仅仅是 iOS 第三方库，还会安装 Xcode 的插件等等，不得不给个赞，而现在虽然不能再使用类似插件（对于官方版本的Xcode），但是 CocoaPods 依然是一个很方便的利器。而对于通过 CocoaPods 的维护和管理的方式，也是加快了开发组件化，开源模块的进程。所以当开源自己的模块时，支持 CocoaPods 也相对重要了，所以需要熟悉它，和基本的操作使用。接下来就先从 CocoaPods 的基本操作开始。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/07/08/CocoaPods-%E7%9A%84%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/07/08/CocoaPods-%E7%9A%84%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/" data-id="ckddxq2ou0001gcug54xj9xrz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/" rel="tag">Git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-UML-建模中常用图的汇总" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/05/UML-%E5%BB%BA%E6%A8%A1%E4%B8%AD%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%9A%84%E6%B1%87%E6%80%BB/" class="article-date">
+  <time datetime="2018-07-05T07:21:23.000Z" itemprop="datePublished">2018-07-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/05/UML-%E5%BB%BA%E6%A8%A1%E4%B8%AD%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%9A%84%E6%B1%87%E6%80%BB/">UML 建模中常用图的汇总</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这篇之前是直接放在 Github 的 <a target="_blank" rel="noopener" href="https://github.com/chenqihui/QHUMLModelDiagram">chenqihui/QHUMLModelDiagram: UML建模</a>，因为那时还没使用博客，如今将它迁移过来。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而为什么整理 UML 建模呢？里面很多内容是摘录《软件工程导论（第5版）》，是读书时候的课本，现在新教材不知有没有哪些变动了。所以有出入可以联系修改，感谢。说回为什么，其实很简单，就是由于画图时常常忘了或者把多种图，在使用不熟下，交叉的使用，从而导致画出来的 UML 变成了四不像。UML 其实对开发来说，提供简单的流程、结构说，对后续优化、再次开发都很有帮助，因此还是需要认真对待。把 UML 画得不仅是给自己看，也要拿得出手给其他人查看，并且是好了解的。接下来就介绍开发中常用 UML 建模的标准定义。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/07/05/UML-%E5%BB%BA%E6%A8%A1%E4%B8%AD%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%9A%84%E6%B1%87%E6%80%BB/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/07/05/UML-%E5%BB%BA%E6%A8%A1%E4%B8%AD%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%9A%84%E6%B1%87%E6%80%BB/" data-id="ckddxq2oz0005gcuge0n470z6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UML/" rel="tag">UML</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS-自定义图形的实现" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/02/iOS-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="article-date">
+  <time datetime="2018-07-01T22:44:15.000Z" itemprop="datePublished">2018-07-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/02/iOS-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2%E7%9A%84%E5%AE%9E%E7%8E%B0/">iOS 自定义图形的实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自定义图形在产品的开发慢慢占据愈来愈多的时间，当然还有性能优化。这其实都是一般开发者特别想忽略或者很难长期坚持开发的内容。如这种自定义图形和动画，简单点不是又不耗性能，又方便开发，其实倒觉得是开发者都比较懒，能简单肯定更好。但懂的偷懒和不懂的偷懒天差地别了。动效这块还有很多知识点，特别是 FB 开源的 <a target="_blank" rel="noopener" href="https://github.com/facebook/pop">pop</a> 库。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回到本次的需求需求，**<em>倒计时 &amp; 水波纹**</em>，用在产品的连麦申请和连麦成功的状态。它们的需求说明分别为：倒计时，是个圆圈弧形进度条，中间就是倒计时的时间数字表示向用户发起连麦的显示，倒计时用于计算用户是否接受连麦请求。而水波纹，即水面的波纹一样，一圈一圈的扩散，用来表示当前用户正在与主播进行语音连麦。接下来会将代码直接全部贴出，可能有点多，是将项目的这部分代码移到 Playground 实现，也就是只需将代码拷贝到 Playground 就可以看到效果。但是需要注意，只有第一个 UIView 的倒计时看到效果（记得点开右边的显示按钮喔），而其它无法看到效果，可能得复制到 Demo ，也是 OK 的。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/07/02/iOS-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2%E7%9A%84%E5%AE%9E%E7%8E%B0/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/07/02/iOS-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2%E7%9A%84%E5%AE%9E%E7%8E%B0/" data-id="ckddxq2p7000ggcugg3jmah2l" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/animation/" rel="tag">animation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/layer/" rel="tag">layer</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS-飞屏的实现之路" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/26/iOS-%E9%A3%9E%E5%B1%8F%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B9%8B%E8%B7%AF/" class="article-date">
+  <time datetime="2018-06-26T03:58:58.000Z" itemprop="datePublished">2018-06-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/26/iOS-%E9%A3%9E%E5%B1%8F%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B9%8B%E8%B7%AF/">iOS 飞屏的实现之路</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;开发 <strong>飞屏</strong> 功能，跟我较早前的弹幕系统相似 <a target="_blank" rel="noopener" href="https://github.com/chenqihui/QHDanumuDemo">QHDanumuDemo: 弹幕系统</a>。不同之处在于，弹幕系统需要计算弹幕轨道的空闲与否，弹幕是否处在相互碰撞位置，时间校准等控制每条弹幕的出现，并且大多数弹幕系统是有多种位置（上中下），及不同出现方式，最近 bilibili 实现了弹幕绕开人脸的实现，cool。那么飞屏呢，它一般是固定规律显示的条数，并且动画较少，但是飞屏的样式比弹幕复杂（我目前的需求是这样，这个不是重点）。抛开样式，从逻辑来讲，飞屏其实就是简化版的弹幕系统。本次需求由于要集成 SDK，所以不打算在原有的弹幕系统增加支持。以重新开发，去掉复杂逻辑，也就抽出今天的内容。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/06/26/iOS-%E9%A3%9E%E5%B1%8F%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B9%8B%E8%B7%AF/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://chenqihui.github.io/2018/06/26/iOS-%E9%A3%9E%E5%B1%8F%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B9%8B%E8%B7%AF/" data-id="ckddxq2p8000igcug3rpa02pw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCD/" rel="tag">GCD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/layer/" rel="tag">layer</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/">Xcode</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Xcode/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/%E5%9F%BA%E7%A1%80/">基础</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/">动图</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8A%A8%E5%9B%BE/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FLV/" rel="tag">FLV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Framework/" rel="tag">Framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/" rel="tag">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gif/" rel="tag">Gif</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LivePhoto/" rel="tag">LivePhoto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/M3U8/" rel="tag">M3U8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MP4/" rel="tag">MP4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/" rel="tag">Objective-C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PDF/" rel="tag">PDF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/" rel="tag">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Svga/" rel="tag">Svga</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/" rel="tag">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-UDP-IP/" rel="tag">TCP / UDP / IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TS/" rel="tag">TS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/" rel="tag">UIButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIImage/" rel="tag">UIImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextField/" rel="tag">UITextField</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITextView/" rel="tag">UITextView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/" rel="tag">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebP/" rel="tag">WebP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebSocket/" rel="tag">WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation/" rel="tag">animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/configure/" rel="tag">configure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layer/" rel="tag">layer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mask/" rel="tag">mask</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" rel="tag">二值化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" rel="tag">动态库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" rel="tag">版本控制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" rel="tag">组合特效</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E9%80%9F/" rel="tag">网速</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/FLV/" style="font-size: 10px;">FLV</a> <a href="/tags/Framework/" style="font-size: 10px;">Framework</a> <a href="/tags/GCD/" style="font-size: 12px;">GCD</a> <a href="/tags/Gif/" style="font-size: 10px;">Gif</a> <a href="/tags/Git/" style="font-size: 12px;">Git</a> <a href="/tags/Github/" style="font-size: 12px;">Github</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/LivePhoto/" style="font-size: 10px;">LivePhoto</a> <a href="/tags/M3U8/" style="font-size: 10px;">M3U8</a> <a href="/tags/MP4/" style="font-size: 10px;">MP4</a> <a href="/tags/MacOS/" style="font-size: 16px;">MacOS</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/PDF/" style="font-size: 10px;">PDF</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/Svga/" style="font-size: 10px;">Svga</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/TCP-UDP-IP/" style="font-size: 10px;">TCP / UDP / IP</a> <a href="/tags/TS/" style="font-size: 10px;">TS</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIImage/" style="font-size: 10px;">UIImage</a> <a href="/tags/UITextField/" style="font-size: 10px;">UITextField</a> <a href="/tags/UITextView/" style="font-size: 10px;">UITextView</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/WebP/" style="font-size: 10px;">WebP</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/animation/" style="font-size: 10px;">animation</a> <a href="/tags/configure/" style="font-size: 10px;">configure</a> <a href="/tags/layer/" style="font-size: 18px;">layer</a> <a href="/tags/mask/" style="font-size: 10px;">mask</a> <a href="/tags/%E4%BA%8C%E5%80%BC%E5%8C%96/" style="font-size: 10px;">二值化</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93/" style="font-size: 10px;">动态库</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 14px;">动画</a> <a href="/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12px;">数据结构</a> <a href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" style="font-size: 10px;">版本控制</a> <a href="/tags/%E7%BB%84%E5%90%88%E7%89%B9%E6%95%88/" style="font-size: 10px;">组合特效</a> <a href="/tags/%E7%BD%91%E9%80%9F/" style="font-size: 10px;">网速</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/18/iOS-%E5%8A%A8%E6%80%81%E5%BA%93-%E5%BA%94%E7%94%A8%E7%AF%87/">iOS 动态库 应用篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/30/Git-%E8%BE%85%E5%AF%BC/">Git 辅导</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%99%BA%E8%83%BD%E5%BC%B9%E5%B9%95-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS 弹幕系统之智能弹幕 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/04/iOS-Socket-%E5%AD%A6%E4%B9%A0%E7%AF%87/">iOS Socket 学习篇</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/16/iOS-%E7%BB%84%E5%90%88%E7%A4%BC%E7%89%A9%E7%89%B9%E6%95%88/">iOS 组合礼物特效</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AnakinChen<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
