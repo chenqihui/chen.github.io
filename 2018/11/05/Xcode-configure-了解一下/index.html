@@ -1,38 +1,459 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"chenqihui.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;对于接收其他团队的 App 项目的时候，需要了解其中一项内容就是它的多环境，如测试、开发、发布等不同环境的逻辑。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;对于多环境的使用，之前本人使用较多的是配置多个 target，然后在 不同target 里面配置不同的条件宏。targ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xcode configure 了解一下">
+<meta property="og:url" content="http://chenqihui.github.io/2018/11/05/Xcode-configure-%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%8B/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;对于接收其他团队的 App 项目的时候，需要了解其中一项内容就是它的多环境，如测试、开发、发布等不同环境的逻辑。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;对于多环境的使用，之前本人使用较多的是配置多个 target，然后在 不同target 里面配置不同的条件宏。targ">
+<meta property="og:locale">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig0.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig1.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig2.png">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig3.png">
+<meta property="article:published_time" content="2018-11-05T02:59:53.000Z">
+<meta property="article:modified_time" content="2020-08-02T18:16:51.000Z">
+<meta property="article:author" content="AnakinChen">
+<meta property="article:tag" content="Swift">
+<meta property="article:tag" content="configure">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig0.png">
+
+<link rel="canonical" href="http://chenqihui.github.io/2018/11/05/Xcode-configure-%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%8B/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>Xcode configure 了解一下 | RyuukuSpace</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RyuukuSpace</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">iOS开发</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://chenqihui.github.io/2018/11/05/Xcode-configure-%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="AnakinChen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RyuukuSpace">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Xcode configure 了解一下
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-11-05 10:59:53" itemprop="dateCreated datePublished" datetime="2018-11-05T10:59:53+08:00">2018-11-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-03 02:16:51" itemprop="dateModified" datetime="2020-08-03T02:16:51+08:00">2020-08-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Xcode/" itemprop="url" rel="index"><span itemprop="name">Xcode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Xcode/%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于接收其他团队的 App 项目的时候，需要了解其中一项内容就是它的多环境，如测试、开发、发布等不同环境的逻辑。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于多环境的使用，之前本人使用较多的是配置多个 target，然后在 不同target 里面配置不同的条件宏。targets 可以是 duplicate target，也可以是新建 Application、Extension 或者 Framework 等等，常用的 通知扩展、手表扩展等</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而此次接手的项目使用的是 .xcconfig 文件。那么就来大概了解下它的文件、配置 &amp; 使用。</p>
+<a id="more"></a>
+
+
+<h4 id="1、文件"><a href="#1、文件" class="headerlink" title="1、文件"></a>1、文件</h4><h5 id="1-1、workspace-gt-project-gt-targets"><a href="#1-1、workspace-gt-project-gt-targets" class="headerlink" title="1.1、workspace -&gt; project -&gt; targets"></a>1.1、workspace -&gt; project -&gt; targets</h5><blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workspace，顾名思义就是我们的工作区。一个workspace可以包含多个project以及一些其它文件。workspace也可以把多可以project组织起来。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个project会包含属于这个项目的&gt;所有文件，资源，以及生成一个或者多个软件产品的信息。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个project会包含一个或者多个 target，而每一个 target都对应一个products，也就是最终产生的.app。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个targets可以有多个configuration（如我们平常用到的debug和release，当然我们还可以自己添加），每个configuration就会有对应的build settings。每次build都是在一个configuration下build的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;build setting 中包含了 product 生成过程中所需的参数信息。project的build settings会对于整个project 中的所有targets生效，而target的build settings是重写了project的build settings，重写的配置以target为准。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么，什么又是scheme呢？scheme就相当于一个组织者。在build的时候，schema会指定一个target和configuration，这样就能保证在build的时候configuration的唯一性，就能产生一个特定的product。</p>
+</blockquote>
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig0.png" alt="0"></p>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/aad1f9e72382">xcconfig 的使用与 xcode 环境变量</a></p>
+<h5 id="1-2、了解-xcconfig-文件、及-Project-设置"><a href="#1-2、了解-xcconfig-文件、及-Project-设置" class="headerlink" title="1.2、了解 .xcconfig 文件、及 Project 设置"></a>1.2、了解 .xcconfig 文件、及 Project 设置</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有个总体了解之后，可以再深入一点了解下 Target 和 Project。了解了 Target 和 Project 里面的配置关系后，就动手配置 .xcconfig 文件</p>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/270e2c555d35">Xcode 使用 xcconfig文件 配置环境</a></p>
+<h4 id="2、配置"><a href="#2、配置" class="headerlink" title="2、配置"></a>2、配置</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.xcconfig 文件 其实是一个键值对文件</p>
+<p>内容一般如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">XCCONFIG_ACCOUNT &#x3D; MOBILE</span><br><span class="line"></span><br><span class="line">XCCONFIG_DISPLAY_NAME_MOBILE &#x3D; MOBILE</span><br><span class="line">XCCONFIG_DISPLAY_NAME_APPSTORE &#x3D; APPSTORE</span><br><span class="line"></span><br><span class="line">ENABLE_BITCODE &#x3D; NO</span><br><span class="line"></span><br><span class="line">XCCONFIG_DISPLAY_NAME &#x3D; $(XCCONFIG_DISPLAY_NAME_$(XCCONFIG_ACCOUNT))</span><br><span class="line"></span><br><span class="line">CONFIG_FLAG &#x3D; FREE_VERSION_TEST &#x2F;&#x2F;DEBUG</span><br><span class="line"></span><br><span class="line">CONFIG_TEST &#x3D; $(XCCONFIG_DISPLAY_NAME)</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后在 project-&gt;info 里面给 target 配置 configure</p>
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig1.png" alt="0"></p>
+<h4 id="3、使用"><a href="#3、使用" class="headerlink" title="3、使用"></a>3、使用</h4><h5 id="3-1、添加到项目"><a href="#3-1、添加到项目" class="headerlink" title="3.1、添加到项目"></a>3.1、添加到项目</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${XXXX}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可配置的使用的地方很多，如 项目名称、版本、URL Scheme 等。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如针对项目 App 名称的设置，使用 ${XCCONFIG_DISPLAY_NAME} 后，它将根据 configure 文件的配置来填充内容。</p>
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig2.png" alt="0"></p>
+<h5 id="3-2、添加到-info-plist"><a href="#3-2、添加到-info-plist" class="headerlink" title="3.2、添加到 info.plist"></a>3.2、添加到 info.plist</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if let dictionary &#x3D; Bundle.main.infoDictionary &#123;</span><br><span class="line">    if let appName &#x3D; dictionary[&quot;Test&quot;] as? String &#123;</span><br><span class="line">        print(&quot;appName: \(appName)&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000004080030">Xcode:用于管理多个 target 配置的 XCConfig 文件 - SwiftGG翻译组</a></li>
+</ul>
+<h5 id="3-3、添加到-Swift-条件编译"><a href="#3-3、添加到-Swift-条件编译" class="headerlink" title="3.3、添加到 Swift 条件编译"></a>3.3、添加到 Swift 条件编译</h5><p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/xcconfig3.png" alt="0"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（注意： Objective-C &amp; Swift 项目的配置条件宏位置不同）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#if FREE_VERSION_TEST2</span><br><span class="line">    print(&quot;app FREE_VERSION_TEST2&quot;)</span><br><span class="line">#elseif FREE_VERSION_TEST</span><br><span class="line">    print(&quot;app FREE_VERSION_TEST&quot;)</span><br><span class="line">#else</span><br><span class="line">    print(&quot;app FREE_VERSION3&quot;)</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://www.cocoachina.com/ios/20160815/17360.html">用xcconfig文件配置iOS app环境变量</a></li>
+<li><a target="_blank" rel="noopener" href="https://swifter.tips/condition-compile/">Swifter - Swift 必备 tips</a></li>
+</ul>
+<h4 id="4、总结"><a href="#4、总结" class="headerlink" title="4、总结"></a>4、总结</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用 configure 的优势在于文本话切统一管理，但是目前使用需要修改 对应的配置值，并且更新使用前需要 clean 之后才生效。如果使用分支管理，在发布分支已经修改好，也能避免重复修改。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而 多个target 的配置是可以在 Xcode 或者 xcrun 选择，总的来说都能达到相同效果。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Swift/" rel="tag"># Swift</a>
+              <a href="/tags/configure/" rel="tag"># configure</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/06/iOS-%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%91-%E5%9F%BA%E7%A1%80%E7%AF%87/" rel="prev" title="iOS 表单开发 基础篇">
+      <i class="fa fa-chevron-left"></i> iOS 表单开发 基础篇
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/01/16/iOS-%E5%BC%B9%E5%B9%95%E7%B3%BB%E7%BB%9F/" rel="next" title="iOS 弹幕系统">
+      iOS 弹幕系统 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">1、文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1%E3%80%81workspace-gt-project-gt-targets"><span class="nav-number">1.1.</span> <span class="nav-text">1.1、workspace -&gt; project -&gt; targets</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2%E3%80%81%E4%BA%86%E8%A7%A3-xcconfig-%E6%96%87%E4%BB%B6%E3%80%81%E5%8F%8A-Project-%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">1.2、了解 .xcconfig 文件、及 Project 设置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">2、配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">3、使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1%E3%80%81%E6%B7%BB%E5%8A%A0%E5%88%B0%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.1.</span> <span class="nav-text">3.1、添加到项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2%E3%80%81%E6%B7%BB%E5%8A%A0%E5%88%B0-info-plist"><span class="nav-number">3.2.</span> <span class="nav-text">3.2、添加到 info.plist</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3%E3%80%81%E6%B7%BB%E5%8A%A0%E5%88%B0-Swift-%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="nav-number">3.3.</span> <span class="nav-text">3.3、添加到 Swift 条件编译</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">4、总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">AnakinChen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AnakinChen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

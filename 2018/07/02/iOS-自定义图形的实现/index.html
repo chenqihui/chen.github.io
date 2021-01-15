@@ -1,38 +1,468 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"chenqihui.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;自定义图形在产品的开发慢慢占据愈来愈多的时间，当然还有性能优化。这其实都是一般开发者特别想忽略或者很难长期坚持开发的内容。如这种自定义图形和动画，简单点不是又不耗性能，又方便开发，其实倒觉得是开发者都比较懒，能简单肯定更好。但懂的偷懒和不懂的偷懒天差地别了。动效这块还有很多知识点，特别是 FB 开源的 pop 库。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 自定义图形的实现">
+<meta property="og:url" content="http://chenqihui.github.io/2018/07/02/iOS-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="RyuukuSpace">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;自定义图形在产品的开发慢慢占据愈来愈多的时间，当然还有性能优化。这其实都是一般开发者特别想忽略或者很难长期坚持开发的内容。如这种自定义图形和动画，简单点不是又不耗性能，又方便开发，其实倒觉得是开发者都比较懒，能简单肯定更好。但懂的偷懒和不懂的偷懒天差地别了。动效这块还有很多知识点，特别是 FB 开源的 pop 库。">
+<meta property="og:locale">
+<meta property="og:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHCountdownView.png">
+<meta property="article:published_time" content="2018-07-01T22:44:15.000Z">
+<meta property="article:modified_time" content="2020-08-02T18:16:51.000Z">
+<meta property="article:author" content="AnakinChen">
+<meta property="article:tag" content="Swift">
+<meta property="article:tag" content="layer">
+<meta property="article:tag" content="animation">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHCountdownView.png">
+
+<link rel="canonical" href="http://chenqihui.github.io/2018/07/02/iOS-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2%E7%9A%84%E5%AE%9E%E7%8E%B0/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>iOS 自定义图形的实现 | RyuukuSpace</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RyuukuSpace</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">iOS开发</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://chenqihui.github.io/2018/07/02/iOS-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="AnakinChen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RyuukuSpace">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS 自定义图形的实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-02 06:44:15" itemprop="dateCreated datePublished" datetime="2018-07-02T06:44:15+08:00">2018-07-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-03 02:16:51" itemprop="dateModified" datetime="2020-08-03T02:16:51+08:00">2020-08-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自定义图形在产品的开发慢慢占据愈来愈多的时间，当然还有性能优化。这其实都是一般开发者特别想忽略或者很难长期坚持开发的内容。如这种自定义图形和动画，简单点不是又不耗性能，又方便开发，其实倒觉得是开发者都比较懒，能简单肯定更好。但懂的偷懒和不懂的偷懒天差地别了。动效这块还有很多知识点，特别是 FB 开源的 <a target="_blank" rel="noopener" href="https://github.com/facebook/pop">pop</a> 库。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回到本次的需求需求，**<em>倒计时 &amp; 水波纹**</em>，用在产品的连麦申请和连麦成功的状态。它们的需求说明分别为：倒计时，是个圆圈弧形进度条，中间就是倒计时的时间数字表示向用户发起连麦的显示，倒计时用于计算用户是否接受连麦请求。而水波纹，即水面的波纹一样，一圈一圈的扩散，用来表示当前用户正在与主播进行语音连麦。接下来会将代码直接全部贴出，可能有点多，是将项目的这部分代码移到 Playground 实现，也就是只需将代码拷贝到 Playground 就可以看到效果。但是需要注意，只有第一个 UIView 的倒计时看到效果（记得点开右边的显示按钮喔），而其它无法看到效果，可能得复制到 Demo ，也是 OK 的。</p>
+<a id="more"></a>
+
+<h2 id="自定义图形"><a href="#自定义图形" class="headerlink" title="自定义图形"></a>自定义图形</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;绘制自定义图形，一般用 UIView ，大多情况是加圆角，矩形和圆形之类的。而当需要绘制同心圆，五角星这类比较复杂图形的时候，可能几个 UIView 也无法拼凑出来。因此就需要通过以下来实现。</p>
+<h3 id="UIView"><a href="#UIView" class="headerlink" title="UIView"></a>UIView</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过它的 <strong><em>open func draw(_ rect: CGRect)</em></strong> 来绘制图形。如经常使用的控件 UILabel ，其文本的显示说到底也是通过绘制出来。</p>
+<p><img src="https://anakinpublicspace-1253727175.cos.ap-chengdu.myqcloud.com/blog/QHCountdownView.png" alt="QHCountdownView"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接在 Playground 试试绘制倒计时的圆圈和倒计时数值，代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> PlaygroundSupport</span><br><span class="line"><span class="keyword">import</span> CoreGraphics</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QHCountdownView</span>: <span class="title">UIView</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> <span class="built_in">count</span>: <span class="type">CGFloat</span> = <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> nowCount: <span class="type">CGFloat</span> = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">init</span>(frame: <span class="type">CGRect</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(frame: frame)</span><br><span class="line">        backgroundColor = <span class="type">UIColor</span>.white</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">init</span>?(coder aDecoder: <span class="type">NSCoder</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(coder: aDecoder)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">draw</span><span class="params">(<span class="number">_</span> rect: CGRect)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> context = <span class="type">UIGraphicsGetCurrentContext</span>() &#123;</span><br><span class="line">              <span class="comment">// 绘制文本属性</span></span><br><span class="line">            <span class="keyword">let</span> textStyle = <span class="type">NSMutableParagraphStyle</span>()</span><br><span class="line">            textStyle.alignment = .center</span><br><span class="line">            <span class="keyword">var</span> textAttributes = [<span class="type">NSAttributedStringKey</span> : <span class="type">Any</span>]()</span><br><span class="line">            textAttributes[<span class="type">NSAttributedStringKey</span>.font] = <span class="type">UIFont</span>.systemFont(ofSize: <span class="number">22</span>)</span><br><span class="line">            textAttributes[<span class="type">NSAttributedStringKey</span>.foregroundColor] = <span class="type">UIColor</span>.orange</span><br><span class="line">            textAttributes[<span class="type">NSAttributedStringKey</span>.paragraphStyle] = textStyle</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> text = <span class="type">NSString</span>(format: <span class="string">&quot;%.0f&quot;</span>, nowCount)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> strSize = text.size(withAttributes: textAttributes)</span><br><span class="line">            <span class="comment">// 文本绘制</span></span><br><span class="line">            <span class="keyword">let</span> centerP = <span class="type">CGPoint</span>(x: (rect.size.width - strSize.width)/<span class="number">2</span>, y: (rect.size.height - strSize.height)/<span class="number">2</span>)</span><br><span class="line">            text.draw(at: centerP, withAttributes: textAttributes)</span><br><span class="line">            <span class="comment">// 圆弧角度设置</span></span><br><span class="line">            context.setLineWidth(<span class="number">2</span>)</span><br><span class="line">            context.setStrokeColor(<span class="type">UIColor</span>.orange.cgColor)</span><br><span class="line">            <span class="keyword">let</span> <span class="built_in">c</span> = <span class="type">CGPoint</span>(x: rect.origin.x + rect.size.width/<span class="number">2</span>, y: rect.origin.y + rect.size.height/<span class="number">2</span>)</span><br><span class="line">            <span class="keyword">let</span> end = <span class="type">CGFloat</span>(<span class="type">Float</span>(<span class="number">2</span>)*<span class="type">Float</span>.pi) * <span class="type">CGFloat</span>((<span class="built_in">count</span> - nowCount)/<span class="built_in">count</span>) - <span class="type">CGFloat</span>(<span class="type">Float</span>.pi/<span class="type">Float</span>(<span class="number">2</span>))</span><br><span class="line">            context.addArc(center: <span class="built_in">c</span>, radius: rect.size.height/<span class="number">2</span>-<span class="type">CGFloat</span>(<span class="number">2</span>), startAngle: <span class="type">CGFloat</span>(-<span class="type">Float</span>.pi/<span class="number">2</span>), endAngle: end, clockwise: <span class="literal">false</span>)</span><br><span class="line">            <span class="comment">// 圆弧绘制</span></span><br><span class="line">            context.drawPath(using: .stroke)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 再次刷新图形，通过比例计算其新的圆弧角度</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">progress</span><span class="params">(<span class="built_in">count</span>: CGFloat)</span></span> &#123;</span><br><span class="line">        nowCount = <span class="built_in">max</span>(<span class="built_in">min</span>(<span class="keyword">self</span>.<span class="built_in">count</span>, <span class="built_in">count</span>), <span class="type">CGFloat</span>(<span class="number">0</span>))</span><br><span class="line">        setNeedsDisplay()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyViewController</span> : <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> cdTime: <span class="type">CGFloat</span> = <span class="number">15</span></span><br><span class="line">    <span class="keyword">let</span> countdownV = <span class="type">QHCountdownView</span>(frame: <span class="type">CGRect</span>(x: <span class="number">100</span>, y: <span class="number">100</span>, width: <span class="number">100</span>, height: <span class="number">100</span>))</span><br><span class="line">    <span class="keyword">var</span> countdownTimer: <span class="type">Timer?</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.view.addSubview(countdownV)</span><br><span class="line">        countdownV.<span class="built_in">count</span> = cdTime</span><br><span class="line">        countdownV.nowCount = cdTime</span><br><span class="line">        <span class="comment">// 计时器</span></span><br><span class="line">        countdownTimer = <span class="type">Timer</span>.scheduledTimer(withTimeInterval: <span class="number">0.1</span>, repeats: <span class="literal">true</span>) &#123;[<span class="keyword">weak</span> <span class="keyword">self</span>] (timer) <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">var</span> cdT = <span class="keyword">self</span>?.cdTime &#123;</span><br><span class="line">                <span class="keyword">self</span>?.countdownV.progress(<span class="built_in">count</span>: cdT)</span><br><span class="line">                <span class="keyword">if</span> cdT &lt; <span class="type">CGFloat</span>(<span class="number">0</span>) &#123;</span><br><span class="line">                    cdT = <span class="type">CGFloat</span>(<span class="number">15</span>)</span><br><span class="line">                    <span class="keyword">self</span>?.releaseTimer()</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">self</span>?.cdTime -= <span class="type">CGFloat</span>(<span class="number">0.1</span>)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">releaseTimer</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> cT = countdownTimer &#123;</span><br><span class="line">            <span class="keyword">if</span> cT.isValid &#123;</span><br><span class="line">                cT.invalidate()</span><br><span class="line">            &#125;</span><br><span class="line">            countdownTimer = <span class="literal">nil</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Present the view controller in the Live View window</span></span><br><span class="line"><span class="type">PlaygroundPage</span>.current.liveView = <span class="type">MyViewController</span>()</span><br></pre></td></tr></table></figure>
+
+<p>执行刷新 UI 的代码：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setNeedsDisplay()</td>
+<td>这是为了缓冲一下，要刷新的view都放在一起刷新，避免浪费性能。它会触发 drawRect 绘制</td>
+</tr>
+<tr>
+<td>layoutIfNeeded()</td>
+<td>此方法立即执行</td>
+</tr>
+<tr>
+<td>setNeedsLayout()</td>
+<td>不是立即执行而是在下一个drawing cycle update中一起更新</td>
+</tr>
+</tbody></table>
+<h3 id="CAShapeLayer"><a href="#CAShapeLayer" class="headerlink" title="CAShapeLayer"></a>CAShapeLayer</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用 layer 来绘制自定义图形。其实，UIView 绘制也是对它的 layer 的绘制。所以使用它是底层，并且也是通过给 layer 动效的。UIBezierPath 是常用的路径绘制，而 PS 软件都会有这个画图工具。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CAShapeLayer 图层</span></span><br><span class="line"><span class="keyword">var</span> clayer = <span class="type">CAShapeLayer</span>()</span><br><span class="line">clayer.strokeColor = <span class="type">UIColor</span>.orange.cgColor</span><br><span class="line">clayer.fillColor = <span class="type">UIColor</span>.clear.cgColor</span><br><span class="line">clayer.contentsScale = <span class="type">UIScreen</span>.main.scale</span><br><span class="line">clayer.borderWidth = <span class="number">2</span></span><br><span class="line">clayer.lineCap = kCALineCapRound</span><br><span class="line">    </span><br><span class="line"><span class="keyword">self</span>.view.layer.addSublayer(clayer)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">let</span> point = <span class="keyword">self</span>.view.center</span><br><span class="line"><span class="keyword">let</span> angle = <span class="type">CGFloat</span>(<span class="type">Float</span>.pi)/<span class="number">6</span></span><br><span class="line"><span class="keyword">let</span> startAngle: <span class="type">CGFloat</span> = <span class="type">CGFloat</span>(<span class="number">3</span>/<span class="number">2</span> * <span class="type">Float</span>.pi) - (<span class="type">CGFloat</span>(<span class="type">Float</span>.pi)/<span class="number">2</span> - angle)</span><br><span class="line"><span class="keyword">let</span> endAngle = <span class="type">CGFloat</span>(<span class="type">Float</span>.pi)-(<span class="type">CGFloat</span>(<span class="type">Float</span>.pi)/<span class="number">2</span>) - (<span class="type">CGFloat</span>(<span class="type">Float</span>.pi)/<span class="number">2</span> - angle)</span><br><span class="line"><span class="comment">// UIBezierPath 路径，相当于前一部分的 context.addArc</span></span><br><span class="line"><span class="keyword">let</span> path = <span class="type">UIBezierPath</span>(arcCenter: point, radius: <span class="number">50</span>, startAngle: startAngle, endAngle: endAngle, clockwise: <span class="literal">false</span>)</span><br><span class="line">    </span><br><span class="line">clayer.path = path.cgPath</span><br></pre></td></tr></table></figure>
+
+<h3 id="上圆角"><a href="#上圆角" class="headerlink" title="上圆角"></a>上圆角</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 <a href="http://chenqihui.github.io/2018/10/06/iOS-%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%91-%E5%9F%BA%E7%A1%80%E7%AF%87/#%E5%9C%86%E8%A7%92">iOS 表单开发 基础篇/3.2. 圆角</a> 这里写了圆角只能是控制四边。而设计可能需要只是上圆角。因此此方法不适用，怎么办呢？<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;答案其实就是上面介绍的 CAShapeLayer &amp; UIBezierPath，代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> rect = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: <span class="type">UIScreen</span>.main.bounds.size.width, height: <span class="number">200</span>)</span><br><span class="line"><span class="comment">// UIRectCorner 设置需要的圆角位置</span></span><br><span class="line"><span class="keyword">let</span> path = <span class="type">UIBezierPath</span>(roundedRect: rect, byRoundingCorners: [.topLeft, .topRight], cornerRadii: <span class="type">CGSize</span>(width: <span class="number">20</span>, height: <span class="number">20</span>))</span><br><span class="line"><span class="keyword">let</span> layer = <span class="type">CAShapeLayer</span>()</span><br><span class="line">layer.frame = rect</span><br><span class="line">layer.path = path.cgPath</span><br><span class="line">bgV.layer.mask = layer</span><br></pre></td></tr></table></figure>
+
+<h3 id="渐变色"><a href="#渐变色" class="headerlink" title="渐变色"></a>渐变色</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;渐变色背景使用的是 CAGradientLayer（都很经常使用）</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> gradient = <span class="type">CAGradientLayer</span>()</span><br><span class="line">gradient.frame = rect</span><br><span class="line">gradient.colors = [<span class="type">UIColor</span>.red.cgColor, <span class="type">UIColor</span>.blue.cgColor]</span><br><span class="line">gradient.startPoint = <span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="number">0.5</span>)</span><br><span class="line">gradient.endPoint = <span class="type">CGPoint</span>(x: <span class="number">1</span>, y: <span class="number">0.5</span>)</span><br><span class="line"><span class="comment">// 控制渐变的均匀性</span></span><br><span class="line">gradient.locations = [<span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">    </span><br><span class="line">bgV.layer.addSublayer(gradient)</span><br></pre></td></tr></table></figure>
+
+<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><h3 id="UIView-1"><a href="#UIView-1" class="headerlink" title="UIView"></a>UIView</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UIView animation 具有显性动画，在 animations 的 block 里面对 frame 进行修改的话，它会在设置的时间里持续显示图形的变化过程。用它来做一些平移、缩放等动画。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">UIView</span>.animate(withDuration: <span class="number">1.8</span>, animations: &#123;</span><br><span class="line">           &#125;, completion: &#123; (finished) <span class="keyword">in</span></span><br><span class="line">           &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回到需求的水波纹，采用 CAShapeLayer &amp; UIView animation 来实现，然后通过 Timer 控制连续添加的水波，并配合渐隐和放大的动效，从而模拟出了现实的水波纹效果。当然真实水波的扩散还有物理计算，如阻力等，这里暂且忽略，采用简单均速来实现。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> PlaygroundSupport</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QHWaterView</span> : <span class="title">UIView</span> </span>&#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">init</span>(frame: <span class="type">CGRect</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(frame: frame)</span><br><span class="line">        <span class="keyword">self</span>.backgroundColor = <span class="type">UIColor</span>.white</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">init</span>?(coder aDecoder: <span class="type">NSCoder</span>) &#123;</span><br><span class="line">        <span class="built_in">fatalError</span>(<span class="string">&quot;init(coder:) has not been implemented&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">draw</span><span class="params">(<span class="number">_</span> rect: CGRect)</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> radius: <span class="type">CGFloat</span> = <span class="number">26</span></span><br><span class="line">        <span class="keyword">let</span> startAngle: <span class="type">CGFloat</span> = <span class="number">0</span></span><br><span class="line">        <span class="keyword">let</span> point = <span class="keyword">self</span>.center</span><br><span class="line">        <span class="keyword">let</span> endAngle = <span class="type">CGFloat</span>(<span class="number">2</span> * <span class="type">Float</span>.pi)</span><br><span class="line">         <span class="comment">// 绘制圆圈</span></span><br><span class="line">        <span class="keyword">let</span> path = <span class="type">UIBezierPath</span>(arcCenter: point, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: <span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> shapeLayer = <span class="type">CAShapeLayer</span>()</span><br><span class="line">        shapeLayer.path = path.cgPath</span><br><span class="line">        shapeLayer.strokeColor = <span class="type">UIColor</span>.orange.cgColor</span><br><span class="line">        shapeLayer.fillColor = <span class="type">UIColor</span>.clear.cgColor</span><br><span class="line"></span><br><span class="line">        <span class="keyword">self</span>.layer.addSublayer(shapeLayer)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyViewController</span> : <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> actionView = <span class="type">UIView</span>(frame: <span class="type">CGRect</span>(x: <span class="number">100</span>, y: <span class="number">100</span>, width: <span class="number">100</span>, height: <span class="number">100</span>))</span><br><span class="line">    <span class="keyword">var</span> countdownTimer: <span class="type">Timer?</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        addWaterAction()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">removeViewAction</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> cT = countdownTimer &#123;</span><br><span class="line">            <span class="keyword">if</span> cT.isValid &#123;</span><br><span class="line">                cT.invalidate()</span><br><span class="line">            &#125;</span><br><span class="line">            countdownTimer = <span class="literal">nil</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">addWaterAction</span><span class="params">()</span></span> &#123;</span><br><span class="line">        removeViewAction()</span><br><span class="line">        countdownTimer = <span class="type">Timer</span>.scheduledTimer(withTimeInterval: <span class="number">0.6</span>, repeats: <span class="literal">true</span>) &#123;[<span class="keyword">weak</span> <span class="keyword">self</span>] (timer) <span class="keyword">in</span></span><br><span class="line">              <span class="comment">// 定时添加水波</span></span><br><span class="line">            <span class="keyword">let</span> waterView = <span class="type">QHWaterView</span>(frame: <span class="keyword">self</span>!.actionView.bounds)</span><br><span class="line">            <span class="keyword">self</span>?.view.addSubview(waterView)</span><br><span class="line">            <span class="comment">// 模拟水波的渐隐扩散</span></span><br><span class="line">            <span class="type">UIView</span>.animate(withDuration: <span class="number">1.8</span>, animations: &#123;</span><br><span class="line">                waterView.transform = <span class="type">CGAffineTransform</span>(scaleX: <span class="number">2</span>, y: <span class="number">2</span>)</span><br><span class="line">                waterView.alpha = <span class="number">0</span></span><br><span class="line">            &#125;, completion: &#123; (finished) <span class="keyword">in</span></span><br><span class="line">                waterView.removeFromSuperview()</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">RunLoop</span>.current.add(countdownTimer!, forMode: .commonModes)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Present the view controller in the Live View window</span></span><br><span class="line"><span class="type">PlaygroundPage</span>.current.liveView = <span class="type">MyViewController</span>()</span><br></pre></td></tr></table></figure>
+
+<h3 id="CAKeyframeAnimation"><a href="#CAKeyframeAnimation" class="headerlink" title="CAKeyframeAnimation"></a>CAKeyframeAnimation</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的 clayer 是倒计时里的 CAShapeLayer，然后通过多个 CAKeyframeAnimation 的组合动画，并设置的时间，添加到 clayer 上，这样动画会按照 path 来的绘制，从而呈现动画效果。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建多个 CAKeyframeAnimation</span></span><br><span class="line"><span class="keyword">let</span> startAnimation = <span class="type">CAKeyframeAnimation</span>(keyPath: <span class="string">&quot;startAnimation&quot;</span>)</span><br><span class="line">startAnimation.values = [<span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">startAnimation.duration = <span class="number">4</span></span><br><span class="line"><span class="keyword">let</span> endAnimation = <span class="type">CAKeyframeAnimation</span>(keyPath: <span class="string">&quot;endAnimation&quot;</span>)</span><br><span class="line">endAnimation.values = [<span class="number">1</span>, <span class="number">0</span>]</span><br><span class="line">endAnimation.duration = <span class="number">4</span></span><br><span class="line">endAnimation.beginTime = <span class="number">4</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 组合 CAKeyframeAnimation   </span></span><br><span class="line"><span class="keyword">let</span> animationGroup = <span class="type">CAAnimationGroup</span>()</span><br><span class="line">animationGroup.animations = [startAnimation, endAnimation]</span><br><span class="line">animationGroup.duration = <span class="number">8</span></span><br><span class="line">animationGroup.setValue(<span class="string">&quot;animationStep3&quot;</span>, forKey: <span class="string">&quot;animationName&quot;</span>)</span><br><span class="line">clayer.add(animationGroup, forKey: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CAKeyframeAnimation 可以作为单个动画，也可以通过 CAAnimationGroup 将多个动画组合在一起。而如果不设置单个的开始时间，所添加的动画会并发执行。所以这里通过 <code>endAnimation.beginTime = 4</code> 设置开始时间，从而达到顺序执行的效果。</p>
+<p>动画的教学：</p>
+<ul>
+<li><a href="http://chenqihui.github.io/2018/08/23/iOS-%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7/">iOS 核心动画高级技巧 | RyuukuSpace</a></li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过以上的知识点，简单地了解和掌握了绘制自定义图片和动效。例子比较简单，但复杂的图形和动效，原理离不开上述内容，也就是再复杂也是通过简单组合而成，关键看代码如果编写。程序员其实也是个画家，也是个动画片制作者，只是使用的是代码。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c5cbb5e05075">放肆的使用UIBezierPath和CAShapeLayer画各种图形</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1e2b8ff3519e">干货系列之手把手教你使用Core animation 做动画</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cocoachina.com/ios/20160712/17010.html">iOS动画（Core Animation）总结</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Swift/" rel="tag"># Swift</a>
+              <a href="/tags/layer/" rel="tag"># layer</a>
+              <a href="/tags/animation/" rel="tag"># animation</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/06/26/iOS-%E9%A3%9E%E5%B1%8F%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B9%8B%E8%B7%AF/" rel="prev" title="iOS 飞屏的实现之路">
+      <i class="fa fa-chevron-left"></i> iOS 飞屏的实现之路
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/07/05/UML-%E5%BB%BA%E6%A8%A1%E4%B8%AD%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%9A%84%E6%B1%87%E6%80%BB/" rel="next" title="UML 建模中常用图的汇总">
+      UML 建模中常用图的汇总 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2"><span class="nav-number">1.</span> <span class="nav-text">自定义图形</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UIView"><span class="nav-number">1.1.</span> <span class="nav-text">UIView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CAShapeLayer"><span class="nav-number">1.2.</span> <span class="nav-text">CAShapeLayer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E5%9C%86%E8%A7%92"><span class="nav-number">1.3.</span> <span class="nav-text">上圆角</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%90%E5%8F%98%E8%89%B2"><span class="nav-number">1.4.</span> <span class="nav-text">渐变色</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB"><span class="nav-number">2.</span> <span class="nav-text">动画</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UIView-1"><span class="nav-number">2.1.</span> <span class="nav-text">UIView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CAKeyframeAnimation"><span class="nav-number">2.2.</span> <span class="nav-text">CAKeyframeAnimation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">AnakinChen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AnakinChen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
